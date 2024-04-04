@@ -1,31 +1,26 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import connectDB from "./src/db/connect.js";
+import blogRouter from "./src/routes/blogRoutes.js";
 
-const app = express();
 dotenv.config();
 
+const app = express();
 const PORT = process.env.PORT || 3000;
-const MONGODB_URL = process.env.MONGODB_URL;
+app.use(express.json());
+app.use("/blogs", blogRouter);
 
-mongoose
-  .connect(MONGODB_URL)
-  .then(() => {
-    console.log("Connected to MongoDB");
+
+const start = async () => {
+  try {
+    await connectDB();
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
-  })
-  .catch((err) => console.log(err));
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-const blogSchema = new mongoose.Schema({
-  title: String,
-  content: String,
-});
-
-const BlogModel = mongoose.model("blogs", blogSchema);
-
-app.get("/blogs", async (req, res) => {
-  const blogs = await BlogModel.find();
-  res.json(blogs);
-});
+start();
