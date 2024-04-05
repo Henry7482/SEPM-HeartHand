@@ -1,0 +1,115 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #808080;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 50px;
+}
+
+/* Header Styles */
+header {
+    background-color: #808080;
+    color: #fff;
+    padding: 50px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: large;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+nav ul li:last-child {
+    margin-right: 0;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.my-account-container {
+    margin-left: auto; 
+}
+
+.my-account {
+    color: #fff;
+    text-decoration: none;
+    padding: 3px 50px;
+    border-radius: 15px;
+    background-color: #808080;
+    transition: background-color 0.3s ease;
+    text-align: right;
+}
+
+.my-account:hover {
+    background-color: #0056b3;
+}
+
+/* Hero Section Styles */
+.hero {
+    background-color: #343a40;
+    color: #fff;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.hero h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #ffA500;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #808080;
+    color: #fff;
+    padding: 120px 0;
+    text-align: center;
+}
+
+footer p {
+    font-size: 14px;
+}
