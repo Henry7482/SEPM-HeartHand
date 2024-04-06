@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const blogSchema = new mongoose.Schema({
   title: String,
+  shortform: String,
   content: String,
   date: {
     type: Date,
