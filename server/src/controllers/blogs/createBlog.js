@@ -1,5 +1,5 @@
 import Blog from "../../models/Blogs.js";
-import genrerateBLog from "../../ai/generateBlog.js";
+import genrerateBLog from "../../ai/gpt/generateBlog.js";
 
 const newBlogInstance = async () => {
   const keywords = ["test", "blog"];

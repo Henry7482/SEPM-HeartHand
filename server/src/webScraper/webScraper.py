@@ -15,8 +15,7 @@ def scrape_news():
 
         articles_headers = soup.find_all('h2', class_='title_news_site', limit=5) 
 
-        # articles_links = [article.find('a')['href'] for article in articles_headers]
-        articles_links = ["https://e.vnexpress.net/news/education/vietnam-approves-ielts-one-skill-retake-4730846.html"]
+        articles_links = [article.find('a')['href'] for article in articles_headers]
 
         articleDic = {}
         articles = []
