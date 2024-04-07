@@ -1,14 +1,35 @@
 import mongoose from "mongoose";
 
 const blogSchema = new mongoose.Schema({
-  title: String,
-  shortform: String,
-  content: String,
+  title: {
+    type: String,
+    required: true,
+  },
+  shortform: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now,
+    required: true,
   },
-  keywords: [String],
+  keywords: {
+    type: Array,
+    required: true,
+  },
+  references: {
+    type: Array,
+    required: true,
+  },
+  imageURL: {
+    type: String,
+    required: true,
+  },
 });
 
 const dashboardDB = mongoose.connection.useDb("dashboard");

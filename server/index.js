@@ -1,17 +1,19 @@
 import express from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import connectDB from "./src/db/connect.js";
 import blogRouter from "./src/routes/blogRoutes.js";
 
 dotenv.config();
-
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Middleware
 app.use(express.json());
-app.use("/blogs", blogRouter);
 
+// App Routes
+app.use("/api/v1/blogs", blogRouter);
 
+// Start Function
 const start = async () => {
   try {
     await connectDB();
@@ -23,6 +25,5 @@ const start = async () => {
   }
 };
 
+// Start the server
 start();
-
-export default app;
