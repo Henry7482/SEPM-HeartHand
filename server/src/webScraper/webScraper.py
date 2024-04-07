@@ -10,6 +10,7 @@ def scrape_news():
 
     # If get successful
     if response.status_code == 200:
+
         soup = BeautifulSoup(response.content, 'html.parser')
 
         articles = soup.find_all('___', class_='___') # Chua biet team frontend se dung id/class ntn
@@ -31,9 +32,12 @@ def scrape_news():
 
             # Them dictionary data vao db
             scraped_data.append(data)
-
+        
         return scraped_data
     else:
         print('Failed to retrieve data from the website.')
         return None
 
+data = scrape_news()
+for d in data:
+    print(d)
