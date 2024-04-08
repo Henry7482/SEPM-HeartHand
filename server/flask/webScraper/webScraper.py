@@ -27,7 +27,7 @@ def scrape_news():
                 articleDic["link"] = link
                 articles.append(articleDic)
             else:
-                print('=> Failed to retrieve data from one website.')
+                print('-> Failed to retrieve data from one article.')
                 continue
 
         # Vdu store data vao database
