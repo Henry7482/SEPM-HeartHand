@@ -35,5 +35,6 @@ def uploadData():
             "Error message:": str(e)
         }
 
-def create_app():
-   return app
+# For local testing purposes
+# def create_app():
+#    return app
