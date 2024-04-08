@@ -1,6 +1,5 @@
 import requests
-from bs4 import BeautifulSoup
-import json
+import BeautifulSoup
 
 # Function scrape data tu website (demo)
 def scrape_news():
