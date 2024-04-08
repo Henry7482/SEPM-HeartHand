@@ -7,7 +7,7 @@ const Footer=()=>{
         <div className="footer">
             <div className="sb_footer section_padding">
                 <div className="sb_footer-links">
-                    <div className="sb_footer-links-div">
+                    <div className="sb_footer-links_div">
                         <h4>For Business</h4>
                         <a href="/employeer">
                             <p>Employeer</p>
@@ -70,12 +70,6 @@ const Footer=()=>{
                 <p>
                     @{new Date().getFullYear()} CodeInn.All right reserved. 
                 </p>
-            </div>
-            <div className="sb_footer-below-links">
-                <a href="/terms"><div><p>Terms&Condition</p></div></a>
-                <a href="/privacy"><div><p>Privacy</p></div></a>
-                <a href="/security"><div><p>Security</p></div></a>
-                <a href="/cookie"><div><p>Cookie Declaration</p></div></a>
             </div>
         </div>
 
