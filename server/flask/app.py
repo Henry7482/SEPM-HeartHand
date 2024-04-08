@@ -1,6 +1,6 @@
 from flask import Flask
 import requests
-from src.webScraper.webScraper import scrape_news
+from webScraper.webScraper import scrape_news
 
 app = Flask(__name__)
 
