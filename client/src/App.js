@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import Footer from './footer/footer.tsx';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
@@ -18,6 +20,11 @@ function App() {
           Learn React
         </a>
       </header>
+        <BrowserRouter>
+      <Routes>
+        <Route path="/footerTest" element={<Footer />} />
+      </Routes>
+    </BrowserRouter>
     </div>
   );
 }

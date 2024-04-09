@@ -2,9 +2,10 @@ import React from "react";
 import './footer.css';
 
 
-const Footer=()=>{
+export default function Footer() {
     return (
-        <div className="footer">
+    <div className="footer">
+        <div className="sb_footer-top">
             <div className="sb_footer section_padding">
                 <div className="sb_footer-links">
                     <div className="sb_footer-links_div">
@@ -72,7 +73,6 @@ const Footer=()=>{
 
             </div>
         </div>
-    )
+    </div>
+    );
 }
-
-export default Footer
