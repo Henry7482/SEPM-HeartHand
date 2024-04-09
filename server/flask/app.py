@@ -34,7 +34,3 @@ def uploadData():
             "message": "An error occurred while uploading scraper data to MongoDB!",
             "Error message:": str(e)
         }
-
-# For local testing purposes
-# def create_app():
-#    return app
