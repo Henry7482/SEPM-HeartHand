@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./src/db/connect.js";
-import blogRouter from "./src/routes/blogRoutes.js";
+import {blogRouter, scraperRouter} from "./src/routes/index.js";
 
 dotenv.config();
 const app = express();
@@ -12,6 +12,7 @@ app.use(express.json());
 
 // App Routes
 app.use("/api/v1/blogs", blogRouter);
+app.use("/api/v1/scraperdata", scraperRouter);
 
 // Start Function
 const start = async () => {

@@ -84,6 +84,7 @@ let genrerateBLog = async (keywords) => {
       json_output = JSON.parse(output_text);
 
       valid_output = true;
+
     } catch (err) {
       if (err.response) {
         console.log("Status: " + err.response.status);
