@@ -8,6 +8,9 @@ const Body = () => {
         <h2>Latest News</h2>
         <p className="italic-line">Get the perspective and insights that improve the lives for people in our nation</p>
       </div>
+      <div className="home-page"> 
+        <img src="picture1.png" alt="Home" className="home-picture" /> 
+      </div>
       <div className="blog-detail">
         <img src="news-picture.jpg" alt="Home" className="news-picture" />
         <div className="blog-content">
@@ -34,3 +37,4 @@ const Body = () => {
 };
 
 export default Body;
+
