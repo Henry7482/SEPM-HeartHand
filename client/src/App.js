@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import Footer from './footer/footer.tsx';
+import Header from './header/header.jsx';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -23,6 +24,8 @@ function App() {
         <BrowserRouter>
       <Routes>
         <Route path="/footerTest" element={<Footer />} />
+        <Route path="/headerTest" element={<Header />} />
+
       </Routes>
     </BrowserRouter>
     </div>
