@@ -4,7 +4,7 @@ import './footer.css';
 
 export default function Footer() {
     return (
-    <div className="footer">
+    <footer className="footer">
         <div className="sb_footer-top">
             <div className="sb_footer section_padding">
                 <div className="sb_footer-links">
@@ -73,6 +73,6 @@ export default function Footer() {
 
             </div>
         </div>
-    </div>
+    </footer>
     );
 }
