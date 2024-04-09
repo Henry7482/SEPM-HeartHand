@@ -8,34 +8,31 @@ const Footer=()=>{
             <div className="sb_footer section_padding">
                 <div className="sb_footer-links">
                     <div className="sb_footer-links_div">
-                        <h4>For Business</h4>
-                        <a href="/employeer">
-                            <p>Employeer</p>
+                        <h4>Contact Us</h4>
+                        <a href="/location">
+                            <p>702D,Nguyen Van Linh,Tan Hung,District 7,Ho Chi Minh City</p>
                         </a>
-                        <a href="/healthplan">
-                            <p>Healthplan</p>
+                        <a href="/phonenumber">
+                            <p>0123-123-123</p>
                         </a>
-                        <a href="/Individual">
-                            <p>Individual</p>
-                        </a>
-                    </div>
-                    <div className="sb_footer-links_div">
-                        <h4>Resources</h4>
-                        <a href="/resource">
-                            <p>Resource center</p>
-                        </a>
-                        <a href="/resource">
-                            <p>Testimonials</p>
-                        </a>
-                        <a href="/Iresource">
-                            <p>STV</p>
+                        <a href="/info">
+                            <p>info@charityweb.org</p>
                         </a>
                     </div>
                     <div className="sb_footer-links_div">
-                        <h4>Partners</h4>
-                        <a href="/employeer">
-                            <p>Swing Tech</p>
+                        <h4>Navigation</h4>
+                        <a href="/Latest News">
+                            <p>Latest news</p>
                         </a>
+                        <a href="/Our Impact">
+                            <p>Our impact</p>
+                        </a>
+                        <a href="/About Us">
+                            <p>About Us</p>
+                        </a>
+                    </div>
+                    <div className="sb_footer-links_div">
+                        <h4>Organization</h4>
                     </div>
                     <div className="sb_footer-links_div">
                         <h4>Company</h4>
@@ -53,12 +50,12 @@ const Footer=()=>{
                         </a>
                     </div>
                     <div className="sb_footer-links_div">
-                        <h4>Coming soon on`</h4>
+                        <h4>Follow Us </h4>
                         <div className="socialmedia">
+                            <p><img src="http://surl.li/skdxi" alt="youtube"/></p>
                             <p><img src="https://t.ly/_V-5f" alt="facebook"/></p>
-                            <p><img src="https://t.ly/VGhpi" alt="twitter"/></p>
-                            <p><img src="https://t.ly/_hGw4" alt="linkedIn"/></p>
                             <p><img src="http://surl.li/sjpdg" alt="instagram"/></p>
+                            <p><img src="https://t.ly/VGhpi" alt="twitter"/></p>
                         </div>
                     </div>
                 </div>
