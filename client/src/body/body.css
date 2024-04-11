@@ -1,0 +1,102 @@
+.body-div {
+    height: 700px;
+    background-color: #6364d5;
+}
+
+.home-page img {
+    position: absolute;
+    width: 100%; 
+    max-width: 2159px;
+    height: auto; 
+    right: 0;
+    top: 276px;
+}
+
+.blog-detail,
+.news-picture {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.news-picture img {
+    width: 100%; 
+    max-width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.blog-content {
+    margin-top: 10px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.blog-content h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.blog-content p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.page-name {
+    position: absolute;
+    width: 634px;
+    height: 144px;
+    left: 57px;
+    top: 170px;
+    background-color: black;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.page-name h2 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.italic-line {
+    font-style: italic;
+}
+
+.rectangle {
+    position: absolute;
+    width: 1045px;
+    height: 494px;
+    left: 149px;
+    top: 852px;
+    background: #d9d9d9;
+    transform: rotate(-0.23deg);
+}
+
+.latest-news-title {
+    font-family: 'Inter';
+    font-weight: 800;
+    font-size: 48px;
+    line-height: 58px;
+    color: #ffffff;
+    position: absolute;
+    width: 293px;
+    height: 58px;
+    left: 80px;
+    top: 52px;
+}
+
+.line {
+    position: absolute;
+    width: 251.5px;
+    height: 0;
+    left: 85px;
+    top: 128.5px;
+    border: 1px solid #ffffff;
+}

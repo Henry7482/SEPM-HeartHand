@@ -1,0 +1,147 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 20px 0;
+}
+
+header .logo img {
+    height: 50px;
+}
+
+header nav ul {
+    list-style: none;
+}
+
+header nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+header nav ul li:last-child {
+    margin-right: 0;
+}
+.header__nav {
+    float: right;
+}
+
+.header__nav ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.header__nav ul li:last-child {
+    margin-right: 0;
+}
+
+.header__nav a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.header__nav a:hover {
+    text-decoration: underline;
+}
+
+.hero {
+    background: #f4f4f4;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.latest-news {
+    padding: 50px 0;
+}
+
+.latest-news .news-item {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+footer {
+    background: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+.footer {
+    background-color: #808080;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer__contact-us,
+.footer__navigation,
+.footer__organization,
+.footer__follow-us {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.footer__contact-us h3,
+.footer__navigation h3,
+.footer__organization h3,
+.footer__follow-us h3 {
+    color: #FFFFFF;
+}
+
+.footer__contact-us p {
+    margin: 5px 0;
+}
+
+.footer__navigation ul,
+.footer__organization ul,
+.footer__follow-us ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer__navigation ul li,
+.footer__organization ul li,
+.footer__follow-us ul li {
+    margin-bottom: 5px;
+}
+
+.footer__navigation ul li a,
+.footer__organization ul li a,
+.footer__follow-us ul li a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.footer__navigation ul li a:hover,
+.footer__organization ul li a:hover,
+.footer__follow-us ul li a:hover {
+    color: #000;
+}
+
+
