@@ -1,7 +1,6 @@
 import React from "react";
 import "./body.css";
-import Header from '../header/header.jsx';
-import Footer from '../footer/footer.jsx';
+import Homepage from "../assets/homepage.jpeg"
 
 const Body = () => {
   return (
@@ -12,7 +11,7 @@ const Body = () => {
         <p className="italic-line">Get the perspective and insights that improve the lives for people in our nation</p>
       </div>
       <div className="home-page"> 
-        <img src="picture1.png" alt="Home" className="home-picture" /> 
+        <img src="" alt="Home" className="home-picture" /> 
       </div>
       <div className="blog-detail">
         <img src="news-picture.jpg" alt="Home" className="news-picture" />
@@ -40,4 +39,3 @@ const Body = () => {
 };
 
 export default Body;
-
