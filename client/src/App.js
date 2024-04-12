@@ -4,6 +4,7 @@ import Header from "./header/header.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Body from "./body/body.tsx";
 import HomePage from "./homePage/homePage.tsx";
+import React from "react"
 
 function App() {
   return (

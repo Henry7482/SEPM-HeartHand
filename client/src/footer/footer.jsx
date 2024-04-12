@@ -1,6 +1,9 @@
-import React from "react";
-import './footer.css';
-
+import React, { Component } from "react";
+import './header.css';
+import youtubeLogo from "../assets/youtube";
+import facebookLogo from "../assets/facebook.png";
+import instagramLogo from "../assets/instagram.png";
+import twitterLogo from "../assets/twitter.png";
 
 export default function Footer() {
     return (
@@ -53,10 +56,10 @@ export default function Footer() {
                     <div className="sb_footer-links_div">
                         <h4>Follow Us </h4>
                         <div className="socialmedia">
-                            <p><img src="http://surl.li/skdxi" alt="youtube"/></p>
-                            <p><img src="https://t.ly/_V-5f" alt="facebook"/></p>
-                            <p><img src="http://surl.li/sjpdg" alt="instagram"/></p>
-                            <p><img src="https://t.ly/VGhpi" alt="twitter"/></p>
+                        <a><img src={youtubeLogo} alt="youtube" width="30" height="30" /></a>
+                        <a><img src={facebookLogo} alt="facebook" width="30" height="30"/></a>
+                        <a><img src={instagramLogo} alt="instagram" width="30" height="30"/></a>
+                        <a><img src={twitterLogo} alt="twitter" width="30" height="30"/></a>
                         </div>
                     </div>
                 </div>
