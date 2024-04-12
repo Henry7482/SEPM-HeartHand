@@ -11,7 +11,7 @@ const Body = () => {
         <p className="italic-line">Get the perspective and insights that improve the lives for people in our nation</p>
       </div>
       <div className="home-page"> 
-        <img src="" alt="Home" className="home-picture" /> 
+        <img src="homepage.jpeg" alt="Home" className="home-picture" /> 
       </div>
       <div className="blog-detail">
         <img src="news-picture.jpg" alt="Home" className="news-picture" />
