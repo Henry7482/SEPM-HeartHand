@@ -1,9 +1,9 @@
 import "./App.css";
-import Footer from "./footer/footer.tsx";
+import Footer from "./footer/footer.jsx";
 import Header from "./header/header.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Body from "./body/body.tsx";
-import HomePage from "./homePage/homePage.tsx";
+import Body from "./body/body.jsx";
+import HomePage from "./homePage/homePage.jsx";
 import React from "react"
 
 function App() {

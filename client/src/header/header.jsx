@@ -20,7 +20,7 @@ class Navbar extends Component {
                 <ul id="headbar">
                     <li>
                         <a href="www.google.com">FAQs </a>
-                        <a href="www.google.com">Contac Us </a>
+                        <a href="www.google.com">Contact Us </a>
                     </li>
 
                     <li>

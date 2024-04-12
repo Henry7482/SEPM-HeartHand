@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import './header.css';
-import youtubeLogo from "../assets/youtube";
+import './footer.css';
+import youtubeLogo from "../assets/youtube.png";
 import facebookLogo from "../assets/facebook.png";
 import instagramLogo from "../assets/instagram.png";
 import twitterLogo from "../assets/twitter.png";

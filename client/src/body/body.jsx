@@ -1,8 +1,11 @@
 import React from "react";
 import "./body.css";
+import Header from '../header/header.jsx';
+import Footer from '../footer/footer.jsx';
 
 const Body = () => {
   return (
+
     <div className="body-container">
       <div className="page-name">
         <h2>Latest News</h2>
