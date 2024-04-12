@@ -1,15 +1,17 @@
 import React from "react";
 import "./body.css";
+import Homepage from "../assets/homepage.jpeg"
 
 const Body = () => {
   return (
+
     <div className="body-container">
       <div className="page-name">
         <h2>Latest News</h2>
         <p className="italic-line">Get the perspective and insights that improve the lives for people in our nation</p>
       </div>
       <div className="home-page"> 
-        <img src="picture1.png" alt="Home" className="home-picture" /> 
+        <img src="homepage.jpeg" alt="Home" className="home-picture" /> 
       </div>
       <div className="blog-detail">
         <img src="news-picture.jpg" alt="Home" className="news-picture" />
@@ -37,4 +39,5 @@ const Body = () => {
 };
 
 export default Body;
+
 
