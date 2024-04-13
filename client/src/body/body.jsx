@@ -17,25 +17,21 @@ const Body = () => {
         <img src="news-picture.jpg" alt="Home" className="news-picture" />
         <div className="blog-content">
           <h2>Mưa lớn gây lũ lụt nghiêm trọng tại Sydney, Australia</h2>
-          <p>VTV.vn - Khu vực Đông Nam Australia đã phải hứng chịu mưa lớn từ ngày 4/4 và sẽ tiếp tục kéo dài đến sáng 6/4 (theo giờ địa phương), gây ngập lụt trên diện rộng...</p>
+          <li><i>VTV.vn - Khu vực Đông Nam Australia đã phải hứng chịu mưa lớn từ ngày 4/4 và sẽ tiếp tục kéo dài đến sáng 6/4 (theo giờ địa phương), gây ngập lụt trên diện rộng...</i></li>
         </div>
       </div>
       <div className="news-picture">
         <img src="news-picture.jpg" alt="Home" className="news-picture" />
         <div className="blog-content">
           <h2>Mưa lớn gây lũ lụt nghiêm trọng tại Sydney, Australia</h2>
-          <p>VTV.vn - Khu vực Đông Nam Australia đã phải hứng chịu mưa lớn từ ngày 4/4 và sẽ tiếp tục kéo dài đến sáng 6/4 (theo giờ địa phương), gây ngập lụt trên diện rộng...</p>
+          <li><i>VTV.vn - Khu vực Đông Nam Australia đã phải hứng chịu mưa lớn từ ngày 4/4 và sẽ tiếp tục kéo dài đến sáng 6/4 (theo giờ địa phương), gây ngập lụt trên diện rộng...</i></li>
         </div>
       </div>
       <div className="blog-detail">
         <img src="news-picture.jpg" alt="Home" className="news-picture" />
         <div className="blog-content">
           <h2>Mưa lớn gây lũ lụt nghiêm trọng tại Sydney, Australia</h2>
-          <p>VTV.vn - Khu vực Đông Nam Australia đã phải hứng chịu mưa lớn từ ngày 4/4 và sẽ tiếp tục kéo dài đến sáng 6/4 (theo giờ địa phương), gây ngập lụt trên diện rộng...</p>
+          <li><i>VTV.vn - Khu vực Đông Nam Australia đã phải hứng chịu mưa lớn từ ngày 4/4 và sẽ tiếp tục kéo dài đến sáng 6/4 (theo giờ địa phương), gây ngập lụt trên diện rộng...</i></li>
         </div>
       </div>
     </div>
-  );
-};
-
-export default Body;
