@@ -23,7 +23,7 @@ const Body = () => {
           <p><i>28 March 2024 | Article</i></p>
         </div>
       </div>
-      <div className="news-picture">
+      <div className="blog-detail">
         <img src="news-picture.jpg" alt="Home" className="news-picture" />
         <div className="blog-content">
           <h2>Mưa lớn gây lũ lụt nghiêm trọng tại Sydney, Australia</h2> 
