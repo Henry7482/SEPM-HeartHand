@@ -114,7 +114,7 @@ vietnamnews_preset = {
     },
 }
 
-data = scraper_by_presets(vietnamnews_preset)
+data = scraper_by_presets(vnexpress_preset)
 print(data)
 
 def tester():
