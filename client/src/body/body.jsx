@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
 import "./body.css";
-import Homepage from "../assets/homepage.jpeg"
+import Homepage from "../assets/homepage.jpeg";
 
 const Body = () => {
   return (

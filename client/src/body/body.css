@@ -16,7 +16,6 @@
     height: auto; 
     right: 0;
     top: 276px;
-    background: url(homepage.jpeg);
 }
 
 .blog-detail,
@@ -115,3 +114,6 @@
     top: 128.5px;
     border: 1px solid #ffffff;
 }
+
+
+
