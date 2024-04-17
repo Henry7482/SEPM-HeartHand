@@ -1,0 +1,35 @@
+.blog-page {
+    font-family: Arial, sans-serif;
+}
+
+.background-image {
+    height: 400px; /* Adjust height as needed */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.detail-box {
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    padding: 20px;
+    width: 50%;
+}
+
+.detail-box h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.detail-box p {
+    font-size: 1.2em;
+}
+
+.detail-box hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #ccc;
+}
+
+/* Additional styles can be added as needed */
