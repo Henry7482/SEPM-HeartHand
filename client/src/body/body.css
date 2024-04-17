@@ -10,12 +10,7 @@
 }
 
 .home-page img {
-    position: absolute;
     width: 100%; 
-    max-width: 2159px;
-    height: auto; 
-    right: 0;
-    top: 276px;
 }
 
 .blog-detail,
@@ -85,14 +80,6 @@
     transform: rotate(-0.23deg);
 }
 
-.home-page {
-    width: 100%; 
-    height: auto; 
-    margin-top: 20px; 
-    margin-bottom: 20px; 
-    padding: 10px; 
-    position: relative; 
-}
   
 .blog-detail {
     margin-top: 60px;
