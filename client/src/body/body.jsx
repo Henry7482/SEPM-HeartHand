@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./body.css";
 import Homepage from "../assets/image.png";
+import Blogdetail from "../assets/image copy.png"
 
 const Body = () => {
   return (
@@ -14,7 +15,7 @@ const Body = () => {
         <img src={Homepage}alt="Home" className="home-picture" /> 
       </div>
       <div className="blog-detail">
-        <img src="news-picture.jpg" alt="Home" className="news-picture" />
+        <img src={Blogdetail} alt="Home" className="news-picture" />
         <div className="blog-content">
           <h2>Mưa lớn gây lũ lụt nghiêm trọng tại Sydney, Australia</h2> 
           <p><i>VTV.vn - Khu vực Đông Nam Australia đã phải hứng chịu mưa lớn từ ngày 4/4<br />
