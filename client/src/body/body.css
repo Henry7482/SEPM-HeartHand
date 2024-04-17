@@ -51,12 +51,13 @@
 
 .page-name {
     position: absolute;
-    height: 144px;
+    height: 146px;
     left: 57px;
     background-color: black;
     color: white;
     padding: 20px;
     text-align: center;
+    top: 35rem
     
 }
 
