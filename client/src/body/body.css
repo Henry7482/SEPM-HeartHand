@@ -86,7 +86,12 @@
 }
 
 .home-page {
-    margin-top: 60px; 
+    width: 100%; 
+    height: auto; 
+    margin-top: 20px; 
+    margin-bottom: 20px; 
+    padding: 10px; 
+    position: relative; 
 }
   
 .blog-detail {
