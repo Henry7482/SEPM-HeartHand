@@ -1,5 +1,8 @@
 import React from 'react';
 import './blog.css';
+import Donate from '../blogPage/donatebox'
+import Header from '../header/header'
+import Footer from '../footer/footer';
 
 
 const BlogPage = () => {
@@ -13,7 +16,7 @@ const BlogPage = () => {
 
     return (
         <div className="blog-page">
-            
+            <Header/>
 
             <div 
                 className="background-image"
@@ -24,11 +27,13 @@ const BlogPage = () => {
                     <hr />
                     <p>{article.readers} people have read this article</p>
                 </div>
+                <Donate/>
             </div>
 
-
-
+            <Footer/>
         </div>
+
+
     );
 }
 
