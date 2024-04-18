@@ -36,7 +36,6 @@ function App() {
 
   return (
     <div className="App">
-       <h1>{JSON.stringify(data.message[0].title)}</h1>
       <BrowserRouter>
         <Routes>
           <Route path="/footerTest" element={<Footer />} />
