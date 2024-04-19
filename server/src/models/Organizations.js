@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+// import { Number } from 'mongoose/lib/schema/index';
 
 const organizationSchema = new mongoose.Schema({
   name: {
@@ -6,7 +7,7 @@ const organizationSchema = new mongoose.Schema({
     required: true
   },
   phone_number: {
-    type: Int16Array,
+    type: Number,
     required: true
   },
   address : {
@@ -27,5 +28,6 @@ const organizationSchema = new mongoose.Schema({
   },
 });
 
-const Organization = mongoose.model('Organization', organizationSchema);
+const dashboardDB = mongoose.connection.useDb("dashboard");
+const Organization = dashboardDB.model('Organization', organizationSchema);
 export default Organization;
