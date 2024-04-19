@@ -1,5 +1,6 @@
 import "./App.css";
 import Footer from "./footer/footer.jsx";
+import Authentication from "./loginauthentication/login.js"
 import Header from "./header/header.jsx";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import HomePage from "./homePage/homePage.jsx";
@@ -62,6 +63,8 @@ function App() {
           <Route path="/donateTest" element={<Donate />} />
                                               {/* !!Pass in blogs value for Blog page to read */}
           <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
+          <Route path="/footerTest" element={<Footer />} />
+          <Route path="/authenticationTest" element={<Authentication />} />
           
         </Routes>
       </BrowserRouter>
