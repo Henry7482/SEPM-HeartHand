@@ -16,9 +16,12 @@
 .blog-detail,
 .news-picture {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    width: 675px;
+    width: 35rem;
+    margin-right: auto;
+    height:20rem;
+    justify-content: end;
+    object-fit: cover;
 }
 
 .news-picture img {
@@ -34,7 +37,7 @@
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    text-align: initial;
 }
 
 .blog-content h2 {
