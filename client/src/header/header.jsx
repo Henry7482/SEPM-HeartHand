@@ -5,7 +5,7 @@ import youtubeLogo from "../assets/youtube.png";
 import facebookLogo from "../assets/facebook.png";
 import instagramLogo from "../assets/instagram.png";
 import twitterLogo from "../assets/twitter.png";
-import userLogo from "../assets/user.png";
+import userLogo from "../assets/usericon.png";
 
 class Navbar extends Component {
     state = { clicked: false };
