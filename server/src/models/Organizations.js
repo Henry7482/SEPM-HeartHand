@@ -6,7 +6,7 @@ const organizationSchema = new mongoose.Schema({
     required: true
   },
   phone_number: {
-    type: Int16Array,
+    type: Int32Array,
     required: true
   },
   address : {
