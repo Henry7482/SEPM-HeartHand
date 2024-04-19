@@ -1,12 +1,10 @@
 import Register from './register'
 
-function App() {
-
+function app() {
     return (
-        <main className="App">
-            <Register />
-        </main>
-    );
+        <div>
+            <login/>
+        </div>
+    )
 }
-
-export default App;
+export default app;
