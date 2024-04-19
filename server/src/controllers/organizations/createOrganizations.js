@@ -1,6 +1,6 @@
 import Organization from '../../models/Organizations.js';
 
-const createOrganization = async (req, res) => {
+const createOrganizations = async (req, res) => {
   try {
     const { name, description } = req.body;
     const organization = new Organization({ name, description });
@@ -11,4 +11,4 @@ const createOrganization = async (req, res) => {
   }
 };
 
-export default createOrganization;
+export default createOrganizations;
