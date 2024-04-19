@@ -2,8 +2,8 @@ import Organization from '../../models/Organizations.js';
 
 const createOrganizations = async (req, res) => {
   try {
-    const { name, description } = req.body;
-    const organization = new Organization({ name, description });
+    const { name, phone_number, address, email, website, keywords } = req.body;
+    const organization = new Organization({ name, phone_number, address, email, website, keywords });
     const savedOrganization = await organization.save();
     res.status(201).json(savedOrganization);
   } catch (error) {
