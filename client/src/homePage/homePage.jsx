@@ -16,7 +16,7 @@ const HomePage = ({ blogs = [] }) => {
   const displayBlogs = (data) => {
     if (Array.isArray(data)) {
       return data.map((item, index) => (
-        <Link to={`/blogTest/${item._id}`} key={index}>
+        <Link to={`/blogTest/${item._id}`} key={index} className="block-link">
           <div className="blog-detail">
             <img src={Blogdetail} alt="Home" className="news-picture" />
             <div className="blog-content">

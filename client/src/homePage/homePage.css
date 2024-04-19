@@ -13,12 +13,14 @@
     width: 100%; 
 }
 
+.block-link{
+    width: 80%;
+}
 .blog-detail,
 .news-picture {
     display: flex;
     align-items: center;
     width: 35rem;
-    margin-right: auto;
     height:20rem;
     justify-content: end;
     object-fit: cover;
@@ -32,12 +34,13 @@
 }
 
 .blog-content {
-    margin-top: 10px;
-    padding: 20px;
+    padding-inline: 20px;
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: initial;
+    width: 60rem;
+    height: 20rem;
 }
 
 .blog-content h2 {
@@ -86,8 +89,9 @@
 
   
 .blog-detail {
-    margin-top: 60px;
-    margin-bottom: 60px; 
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .latest-news-title {
