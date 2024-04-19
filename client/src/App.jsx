@@ -60,10 +60,11 @@ function App() {
           <Route path="/footerTest" element={<Footer />} />
           <Route path="/bodyTest" element={<Body />} />
           <Route path="/headerTest" element={<Header />} />
-          <Route path="/homeTest" element={<HomePage />} />
+          <Route path="/homeTest" element={<HomePage blogs={blogs}/>} />
           <Route path="/donateTest" element={<Donate />} />
                                               {/* !!Pass in blogs value for Blog page to read */}
           <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
+          
         </Routes>
       </BrowserRouter>
     </div>

@@ -15,6 +15,9 @@ const BlogPage = ({ blogs }) => {
     title: blog.title,
     content: blog.content,
     readers: 100,
+    date: blog.date,
+    references: blog.references,
+    image:blog.image,
   };
 
   console.log("Blog: ", blog);
@@ -29,10 +32,10 @@ const BlogPage = ({ blogs }) => {
         <div className="detail-box">
           <h1>{article.title}</h1>
           <hr />
-          <p>{article.content}</p>
-          <hr />
           <p>{article.readers} people have read this article</p>
         </div>
+
+        
         <Donate />
       </div>
 
