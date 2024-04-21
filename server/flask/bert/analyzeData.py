@@ -1,82 +1,125 @@
-from gensim.models.doc2vec import Doc2Vec, TaggedDocument
-import pandas as pd
-import json
-from umap import UMAP
-import re
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
+import gensim.downloader as api
+from bertopic import BERTopic
+import os
+from .functions.text_processor import preprocess_text
+from .functions.prompts_extraction import extract_prompts
+from .functions.document_summarizer import summarize
+import nltk
+nltk.download('punkt')
+nltk.download('stopwords')
 
-# Read text data from path
-file_path = "message.json" 
-documents = []
-with open(file_path, 'r') as file:
-    response = json.load(file)
-    data = response["data"]
-    documents = [item["content"] for item in data]
-# would be better if there are some preprocessing steps here
+def analyzeData(data):
+    # LOAD MODEL--------------------------------------------------------------
 
-# Apply preprocessing to each document
-preprocessed_documents = []
-# Define stopwords and stemmer
-stop_words = set(stopwords.words('english'))
-ps = PorterStemmer()
-# Preprocessing function
-def preprocess_text(text):
-    # Lowercasing
-    text = text.lower()
+    # Load the FastText embedding model
+    ft = api.load('fasttext-wiki-news-subwords-300')
+
+    # Load the model
+    loaded_model = BERTopic.load(os.environ['BERTOPIC_MODEL_PATH'])
+
+    # EXTRACT DATA--------------------------------------------------------------
+
+    # Extract content from each dictionary in new_data
+    new_contents = [item["content"] for item in data]
+
+    # Ensure new_contents is a list of strings
+    new_contents = [str(content) for content in new_contents]
+
+    # Apply preprocessing to each document
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
+    preprocessed_new_content = []
+    for content in new_contents:
+        preprocessed_con = preprocess_text(content)
+        if preprocessed_con:  # Check if the preprocessed document is not empty
+            preprocessed_new_content.append(preprocessed_con)
+        else:
+            print("Failed to preprocess a document. Placing original content.")
+            preprocessed_new_content.append(content)
+
+    # RUN MODEL--------------------------------------------------------------
     
-    # Tokenization
-    tokens = word_tokenize(text)
+    # Transform the new data using the loaded model
+    topics, _ = loaded_model.transform(preprocessed_new_content)
+
+    # EXTRACT KEYWORDS--------------------------------------------------------------
     
-    # Removing special characters and punctuation
-    tokens = [re.sub(r'[^a-zA-Z0-9]', '', token) for token in tokens]
+    # Create topic sets
+    document_sets = []
+    for item in data:
+        document_sets.append(
+            {
+                "content": item["content"],
+                "link": item["link"]
+            }
+        )
+    # Get prompts from the topics
+    prompts = extract_prompts(loaded_model, topics, document_sets, top_n=3)
     
-    # Removing stopwords and stemming
-    tokens = [ps.stem(token) for token in tokens if token not in stop_words]
-    
-    # Remove tokens with only one character
-    tokens = [token for token in tokens if len(token) > 1]
-    
-    return " ".join(tokens)
+    # Summarize the documents in the prompts
+    for prompt in prompts:
+        for i, document in enumerate(prompt["documents"]):
+            prompt["documents"][i] = summarize(document)
 
-for doc in documents:
-    preprocessed_doc = preprocess_text(doc)
-    if preprocessed_doc:  # Check if the preprocessed document is not empty
-        preprocessed_documents.append(preprocessed_doc)
+    # Attach hyperlinks to the prompts
 
-# Tag documents for Doc2Vec
-tagged_documents = [TaggedDocument(words=word_tokenize(doc), tags=[str(i)]) for i, doc in enumerate(preprocessed_documents)]
+    # OUTPUT PROMPTS--------------------------------------------------------------
+    return prompts
 
-# Train Doc2Vec model
-print("Training Doc2Vec model...")
-model_doc2vec = Doc2Vec(tagged_documents, vector_size=100, window=5, min_count=1, workers=4, epochs=20)  # Adjust parameters as needed
+# # Test
+# prompts = analyzeData([
+#     {
+#         "title": "Mitigating Flood Risks: Innovative Solutions for Disaster Resilience",
+#         "content": "Communities around the world are implementing innovative solutions to mitigate flood risks and enhance disaster resilience. From green infrastructure projects to advanced early warning systems, these initiatives aim to minimize the impact of flooding and protect lives and property.",
+#         "link": "article1"
+#     },
+#     {
+#         "title": "Building Flood-Resilient Infrastructure: Strategies for Sustainable Development",
+#         "content": "Engineers and urban planners are incorporating flood-resilient design principles into infrastructure projects to promote sustainable development in flood-prone areas. By elevating buildings, improving drainage systems, and preserving natural floodplains, cities can better withstand the challenges of flooding and adapt to a changing climate.",
+#         "link": "article2"
+#     },
+#     {
+#         "title": "Community-Based Flood Management: Empowering Local Residents to Take Action",
+#         "content": "Community-based flood management initiatives empower local residents to take proactive measures to mitigate flood risks and build resilience. Through education, training, and collaborative planning, communities can develop effective strategies for flood preparedness and response, strengthening their ability to withstand natural disasters.",
+#         "link": "article3"
+#     },
+#     {
+#         "title": "Promoting Cultural Heritage: Vietnam's Support for Ethnic Minority Communities",
+#         "content": "Vietnam is promoting cultural heritage and preserving the traditions of ethnic minority communities through various initiatives and programs. From cultural festivals to heritage preservation projects, these efforts aim to celebrate and protect the rich diversity of Vietnam's ethnic minorities. By recognizing the importance of cultural heritage, Vietnam is fostering pride and resilience within minority communities, ensuring that their unique identities continue to thrive for future generations.",
+#         "link": "article4"
+#     },
+#      {
+#         "title": "Investing in Disaster Resilience: The Economic Case for Flood Risk Reduction",
+#         "content": "Investing in disaster resilience pays dividends in the form of reduced damage, improved public safety, and enhanced economic stability. By allocating resources to flood risk reduction measures such as levees, stormwater management systems, and emergency preparedness, governments and businesses can protect valuable assets and ensure long-term prosperity.",
+#         "link": "article5"
+#     },
+#     {
+#         "title": "Advancing Disaster Resistance: Breakthrough Technologies for Enhanced Resilience",
+#         "content": "Breakthrough technologies are advancing disaster resistance efforts, offering new opportunities to enhance resilience and mitigate the impact of drought and other natural disasters. From flood-resistant materials to real-time monitoring systems, these innovations empower communities to build stronger and more resilient infrastructure.",
+#         "link": "article6"
+#     },
+#     {
+#         "title": "Empowering Vulnerable Populations: Ensuring Equity in Disaster Resilience Efforts",
+#         "content": "Disaster resilience efforts must prioritize the needs of vulnerable populations, ensuring equity and inclusivity in preparedness and response strategies. By addressing social, economic, and environmental disparities, communities can build resilience that benefits all residents, regardless of their socioeconomic status or background.",
+#         "link": "article7"
+#     },
+#     {
+#         "title": "Empowering Minority Entrepreneurs: Vietnam's Support for Economic Inclusion",
+#         "content": "Vietnam is empowering minority entrepreneurs by providing support and resources to foster economic inclusion and entrepreneurship in minority communities. From business incubators to microfinance programs, these initiatives aim to create opportunities for minority-owned businesses to thrive and contribute to local economic development. By investing in minority entrepreneurs, Vietnam is promoting economic growth, reducing inequality, and building stronger, more resilient communities.",
+#         "link": "article8"
+#     },
+#     {
+#         "title": "Strengthening Disability Services: Vietnam's Efforts in Rehabilitation and Support",
+#         "content": "Vietnam is strengthening disability services by expanding rehabilitation programs and support services for people with disabilities. From physical therapy centers to assistive technology initiatives, these efforts aim to enhance the quality of life and independence of individuals with disabilities. By prioritizing disability services, Vietnam is ensuring that all its citizens have access to the resources they need to live full and meaningful lives.",
+#         "link": "article9"
+#     },
+#     {
+#         "title": "Promoting Minority Representation: Vietnam's Commitment to Political Inclusion",
+#         "content": "Vietnam is promoting minority representation and political inclusion through initiatives aimed at increasing the participation of ethnic minorities in decision-making processes and governance structures. From affirmative action policies to minority quota systems, these efforts aim to ensure that minority voices are heard and represented in the political arena. By promoting minority representation, Vietnam is fostering greater diversity and inclusivity in its democratic institutions.",
+#         "link": "article10"
+#     }
+# ])
 
-# Get document vectors
-doc2vec_vectors = [model_doc2vec.infer_vector(word_tokenize(doc)) for doc in preprocessed_documents]
+# print(prompts)
 
-# Initialize UMAP model
-umap_model = UMAP(n_neighbors=4)
 
-# Fit UMAP model to the document vectors
-print("Fitting UMAP model to document vectors...")
-umap_embeddings = umap_model.fit_transform(doc2vec_vectors)
 
-# Initialize BERTopic model
-print("Initializing BERTopic model...")
-model = BERTopic(umap_model=umap_model)
-
-# Fit BERTopic model to the data
-print("Fitting BERTopic model to the data...")
-topics, _ = model.fit_transform(preprocessed_documents)
-
-# Get topic information
-print("Getting topic information...")
-topic_info = model.get_topic_info()
-
-# Create a DataFrame from the topic information
-print("Creating DataFrame from the topic information...")
-df_topic_info = pd.DataFrame(topic_info, columns=["Topic", "Count", "Name"])
-
-# Display the DataFrame
-print(df_topic_info)
