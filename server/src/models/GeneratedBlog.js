@@ -36,4 +36,4 @@ const GeneratedBlogSchema = new mongoose.Schema({
 const dashboardDB = mongoose.connection.useDb("dashboard");
 const GeneratedBlog = dashboardDB.model("generated_blogs", GeneratedBlogSchema);
 
-export default Blog;
+export default GeneratedBlog;
