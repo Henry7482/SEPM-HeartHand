@@ -13,7 +13,7 @@ def create_app():
     def hello():
         return "<p>Welcome to HeartHand's Flask server!</p>"
 
-    @app.route("/upload", methods=['POST'])
+    @app.route("/uploadscraper", methods=['POST'])
     def uploadData(dataToSend):
         try:
             print('=> Sending data to MongoDB...')
@@ -37,8 +37,8 @@ def create_app():
                 "Error message:": str(e)
             }
 
-    @app.route("/pytest", methods=['POST'])
-    def pytest():
+    @app.route("/generateblogs", methods=['POST'])
+    def generateblogs():
         try:
             # Scrap news data
             print('=> Scraping data from websites...')
@@ -72,7 +72,7 @@ def create_app():
 
             # Upload generated blogs to MongoDB
             print('=> Sending generated blogs to MongoDB...')
-            res = requests.post('https://hearthand.onrender.com/api/v1/generatedBlogs', json=generated_blogs)
+            res = requests.post('https://hearthand.onrender.com/api/v1/generatedblogs', json=generated_blogs)
             if res.status_code == 200:
                 return {
                     "message": "Successfully generated blogs!",
