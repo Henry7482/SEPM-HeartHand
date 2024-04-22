@@ -1,11 +1,12 @@
-import React from "react";
-import './login.css'
+import React, { useState } from "react";
+import './SignUp.css'
 
-import user_icon from '../assets/usericon.png'
-import email_icon from '../assets/email.png'
-import password_icon from '../assets/password.png'
+import user_icon from '../assets/usericon.png';
+import email_icon from '../assets/email.png';
+import password_icon from '../assets/password.png';
 
 const login = () => {
+
     return(
         <div className="container">
             <div className="header">
@@ -15,15 +16,15 @@ const login = () => {
             <div className="input">
                 <div className="input">
                     <img src={user_icon} alt="" />
-                    <input type="text" />
+                    <input type="text" placeholder="Name" />
                 </div>
                 <div className="input">
                     <img src={email_icon} alt="" />
-                    <input type="email" />
+                    <input type="email" placeholder="Email ID" />
                 </div>
                 <div className="input">
                     <img src={password_icon}alt="" />
-                    <input type="password" />
+                    <input type="password" placeholder="Password" />
                 </div>
             </div>
             <div className="forgot-password">Loss Password? <span>Click Here!</span></div>

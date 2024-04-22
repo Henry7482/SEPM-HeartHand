@@ -1,6 +1,6 @@
 import "./App.css";
 import Footer from "./footer/footer.jsx";
-import Authentication from "./loginauthentication/login.js"
+import Authentication from "./loginauthentication/SignUp.js"
 import Header from "./header/header.jsx";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import HomePage from "./homePage/homePage.jsx";
