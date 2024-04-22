@@ -1,4 +1,4 @@
-import Blog from "../../models/Blogs.js";
+import Blog from "../../models/Blog.js";
 
 const deleteBlog = async (req, res) => {
   const { id } = req.params;

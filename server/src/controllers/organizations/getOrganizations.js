@@ -1,4 +1,4 @@
-import Organization from '../../models/Organizations.js';
+import Organization from "../../models/Organization.js";
 
 const getOrganizations = async (req, res) => {
   try {
@@ -10,17 +10,16 @@ const getOrganizations = async (req, res) => {
 };
 
 const getOrganizationById = async (req, res) => {
-    const { id } = req.params;
-    try {
-      const organization = await Organization.findById(id);
-      if (!organization) {
-        return res.status(404).json({ message: 'Organization not found' });
-      }
-      res.status(200).json(organization);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+  const { id } = req.params;
+  try {
+    const organization = await Organization.findById(id);
+    if (!organization) {
+      return res.status(404).json({ message: "Organization not found" });
     }
-  };
-  
-  export { getOrganizations, getOrganizationById };
-  
+    res.status(200).json(organization);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { getOrganizations, getOrganizationById };
