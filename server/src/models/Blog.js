@@ -18,7 +18,7 @@ const blogSchema = new mongoose.Schema({
     default: Date.now,
     required: true,
   },
-  keywords: {
+  tags: {
     type: Array,
     required: true,
   },

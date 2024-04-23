@@ -64,7 +64,8 @@ def generate_blog(prompts):
                 print(f"Error: {str(e)}")
                 count += 1
 
-    return generated_blogs
+    json_data = {"data": generated_blogs}
+    return json_data
 
 
 # # Testing

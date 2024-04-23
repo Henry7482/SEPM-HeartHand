@@ -43,10 +43,6 @@ def create_app():
             # Scrap news data
             print('=> Scraping data from websites...')
             newsData = scrape_news()
-            res = uploadData(newsData)
-            print("-> Uploading data to MongoDB.")
-            if res[1] != 200:
-                print(res)
 
             # Filter news data
             print('=> Filtering news data...')
@@ -60,6 +56,14 @@ def create_app():
                         break
             print("\033[92m-> Successfully filtered data.\033[0m")
 
+            # Upload filtered news data to MongoDB
+            print("-> Uploading data to MongoDB.")
+            res = uploadData(filteredNews)
+            if res[1] != 200:
+                print(res)
+            else:
+                print("\033[92m-> Successfully uploaded data to MongoDB.\033[0m")
+
             # Analyze news data
             print('=> Analyzing news data...')
             prompts = analyzeData(filteredNews)
@@ -72,7 +76,7 @@ def create_app():
 
             # Upload generated blogs to MongoDB
             print('=> Sending generated blogs to MongoDB...')
-            res = requests.post('https://hearthand.onrender.com/api/v1/generatedblogs', json=generated_blogs)
+            res = requests.post('https://hearthand.onrender.com/api/v1/blogs/generatedblogs', json=generated_blogs)
             if res.status_code == 200:
                 return {
                     "message": "Successfully generated blogs!",

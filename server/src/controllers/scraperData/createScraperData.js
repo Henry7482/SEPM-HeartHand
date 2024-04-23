@@ -8,7 +8,7 @@ const createScraperData = async (req, res) => {
     }
 
     await ScraperData.create(scraperData);
-    res.status(200).json({ scraperData });
+    res.status(200).json({ message: "Scraper data created successfully",  scraperData });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

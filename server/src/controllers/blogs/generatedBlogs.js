@@ -1,4 +1,4 @@
-import GeneratedBlog from '../../models/GeneratedBlog.js'
+import GeneratedBlogs from '../../models/GeneratedBlogs.js'
 
 const getGeneratedBlogs = async (req, res) => {
     try {
@@ -11,18 +11,14 @@ const getGeneratedBlogs = async (req, res) => {
 
 const uploadGeneratedBlogs = async (req, res) => {
     try {
-        const rawBlogs = req.body;
-        const newGeneratedBlogs = new GeneratedBlog({
-            title: rawBlogs.title,
-            shortform: rawBlogs.shortform,
-            content: rawBlogs.content,
-            date: new Date(),
-            keywords: rawBlogs.keywords,
-            references: rawBlogs.references,
-          });
-        await newGeneratedBlogs.save();
+        const rawBlogsObject = req.body;
+        if (!rawBlogsObject || typeof rawBlogsObject !== "object") {
+          return res.status(400).json({ message: "Input is not a valid JSON object" });
+        }
+
+        await GeneratedBlogs.create(rawBlogsObject);
  
-        res.status(201).json(newGeneratedBlogs);
+        res.status(201).json({message: "Generated blogs uploaded successfully", rawBlogsObject});
       } catch (error) {
         res.status(500).json({ message: error.message });
       }
