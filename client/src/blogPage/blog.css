@@ -11,13 +11,13 @@
 
 .detail-box {
     position: absolute;
-    height: 146px;
+    height: 100;
     left: 57px;
     background-color: black;
     color: white;
     padding: 20px;
     text-align: center;
-    top: 35rem
+    top:15rem ;
 }
 
 .detail-box h1 {
@@ -38,3 +38,20 @@
 }
 
 
+.article-content {
+    padding-right: 20%;
+    padding-left: 5%;
+    
+  }
+  
+  .image-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px; 
+  }
+  
+  .news-picture {
+    max-width: 100%;
+    height: auto;
+  }
+  

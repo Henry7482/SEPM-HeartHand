@@ -37,6 +37,19 @@ export default function Footer() {
                     </div>
                     <div className="sb_footer-links_div">
                         <h4>Organization</h4>
+                        <a href="/Latest News">
+                            <p>North side</p>
+                        </a>
+                        <a href="/Our Impact">
+                            <p>Middle side</p>
+                        </a>
+                        <a href="/About Us">
+                            <p>West side</p>
+                        </a>
+
+
+
+
                     </div>
                     <div className="sb_footer-links_div">
                         <h4>Company</h4>
