@@ -15,7 +15,7 @@ def analyzeData(data):
     ft = api.load('fasttext-wiki-news-subwords-300')
 
     # Load the model
-    loaded_model = BERTopic.load(os.environ['BERTOPIC_MODEL_PATH'])
+    loaded_model = BERTopic.load(os.environ['BERTOPIC_MODEL_PATH'], embedding_model=ft)
 
     # EXTRACT DATA--------------------------------------------------------------
 
