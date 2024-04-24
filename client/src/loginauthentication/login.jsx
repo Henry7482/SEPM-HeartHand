@@ -4,7 +4,7 @@ import './login.css'
 import user_icon from '../assets/usericon.png';
 import password_icon from '../assets/password.png';
 
-const Login = () => {
+export default function Login() {
 
     return (
       <section className="vh-100">
@@ -94,4 +94,4 @@ const Login = () => {
     );
   };
   
-  export default Login;
+  

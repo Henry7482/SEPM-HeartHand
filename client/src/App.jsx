@@ -1,13 +1,13 @@
 import "./App.css";
 import Footer from "./footer/footer.jsx";
-import Authentication from "./signupauthentication/SignUp.js"
+import SignUp from "./signupauthentication/SignUp.jsx"
 import Header from "./header/header.jsx";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import HomePage from "./homePage/homePage.jsx";
 import Donate from "./blogPage/donatebox.jsx";
 import Blog from "./blogPage/blog.jsx";
 import React, { useState, useEffect } from "react";
-import Authentication1 from "./loginauthentication/login.js";
+import LogIn from "./loginauthentication/login.jsx";
 
 function App() {
   const [blogs, setBlogs] = useState(null);
@@ -65,8 +65,8 @@ function App() {
                                               {/* !!Pass in blogs value for Blog page to read */}
           <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
           <Route path="/footerTest" element={<Footer />} />
-          <Route path="/authenticationTest" element={<Authentication />} />
-          <Route path="/authentication1Test" element={<Authentication1 />} />
+          <Route path="/authenticationTest" element={<SignUp />} />
+          <Route path="/authentication1Test" element={<LogIn />} />
         </Routes>
       </BrowserRouter>
     </div>
