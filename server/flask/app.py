@@ -58,7 +58,7 @@ def create_app():
 
             # Upload filtered news data to MongoDB
             print("-> Uploading data to MongoDB.")
-            res = uploadData(filteredNews)
+            res = uploadData({"data": filteredNews})
             if res[1] != 200:
                 print(res)
             else:
@@ -77,18 +77,20 @@ def create_app():
             # Upload generated blogs to MongoDB
             print('=> Sending generated blogs to MongoDB...')
             res = requests.post('https://hearthand.onrender.com/api/v1/blogs/generatedblogs', json=generated_blogs)
-            if res.status_code == 200:
+            if res.status_code != 200:
+                return             {
+                    "message": "Failed to generate blogs!",
+                    "Response from node server:": res.json().get('message'),
+                    "Generated blogs:": generated_blogs
+                }
+            else:
+                print("\033[92m-> Successfully uploaded generated blogs to MongoDB.\033[0m")
                 return {
                     "message": "Successfully generated blogs!",
                     "Response from node server:": res.json().get('message'),
                     "Generated blogs:": generated_blogs
                 }
-            else:
-                return {
-                    "message": "Failed to generate blogs!",
-                    "Response from node server:": res.json().get('message'),
-                    "Generated blogs:": generated_blogs
-                }
+
         except Exception as e:
             return {
                 "message": "An error occurred while generating data!",
