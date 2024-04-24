@@ -37,13 +37,13 @@ const Login = () => {
                 {/* Email input */}
                 <div data-mdb-input-init className="form-outline mb-4">
                   <input type="email" id="form3Example3" className="form-control form-control-lg" placeholder="Enter a valid email address" />
-                  <label className="form-label" htmlFor="form3Example3">Email address</label>
+                  <label className="form-label" htmlFor="form3Example3"> Your Email Address</label>
                 </div>
   
                 {/* Password input */}
                 <div data-mdb-input-init className="form-outline mb-3">
                   <input type="password" id="form3Example4" className="form-control form-control-lg" placeholder="Enter password" />
-                  <label className="form-label" htmlFor="form3Example4">Password</label>
+                  <label className="form-label" htmlFor="form3Example4"> Your Password</label>
                 </div>
   
                 <div className="d-flex justify-content-between align-items-center">
@@ -51,7 +51,7 @@ const Login = () => {
                   <div className="form-check mb-0">
                     <input className="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
                     <label className="form-check-label" htmlFor="form2Example3">
-                      Remember me
+                      Remember me?
                     </label>
                   </div>
                   <a href="#!" className="text-body">Forgot password?</a>
