@@ -36,7 +36,7 @@ const SignUp = () => {
                             <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
                             <div data-mdb-input-init className="form-outline flex-fill mb-0">
                               <input type="password" id="form3Example4c" className="form-control" />
-                              <label className="form-label" htmlFor="form3Example4c">Password</label>
+                              <label className="form-label" htmlFor="form3Example4c"> Your Password</label>
                             </div>
                           </div>
                           <div className="d-flex flex-row align-items-center mb-4">
