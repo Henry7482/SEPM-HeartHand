@@ -7,7 +7,7 @@ import HomePage from "./homePage/homePage.jsx";
 import Donate from "./blogPage/donatebox.jsx";
 import Blog from "./blogPage/blog.jsx";
 import React, { useState, useEffect } from "react";
-import Authentication1 from "./loginauthentication/login.js";
+import Authentication1 from "./loginauthentication/login.jsx";
 
 function App() {
   const [blogs, setBlogs] = useState(null);
