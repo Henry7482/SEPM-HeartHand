@@ -7,6 +7,7 @@ import HomePage from "./homePage/homePage.jsx";
 import Donate from "./blogPage/donatebox.jsx";
 import Blog from "./blogPage/blog.jsx";
 import React, { useState, useEffect } from "react";
+import Authentication1 from "./loginauthentication/login.js"
 
 function App() {
   const [blogs, setBlogs] = useState(null);
@@ -65,7 +66,7 @@ function App() {
           <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
           <Route path="/footerTest" element={<Footer />} />
           <Route path="/authenticationTest" element={<Authentication />} />
-          
+          <Route path="/authentication1Test" element={<Authentication1 />} />
         </Routes>
       </BrowserRouter>
     </div>
