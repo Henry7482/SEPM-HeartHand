@@ -10,6 +10,8 @@ COPY ./bert_api /code/app
 
 ENV BERTOPIC_MODEL_PATH=/code/app/BARTBaker
 
-EXPOSE 8000
 
-CMD [ "uvicorn", "app.server:app", "--host", "0.0.0.0", "--port", "8000" ]
+
+EXPOSE 8080
+
+CMD ["uvicorn", "app.server:app", "--host", "0.0.0.0", "--port", "8080"]
