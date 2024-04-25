@@ -10,7 +10,7 @@ async function uploadImagesToCloudinary(folderPath) {
     const files = await readImageFilesFromFolder("../server/images");
     const imageUrls = [];
     for (const file of files) {
-        const result = await cloudinary.uploader.upload("../server/images");
+        const result = await cloudinary.uploader.upload("../server/images" + file);
         imageUrls.push(result.secure_url);
     }
     return imageUrls;
