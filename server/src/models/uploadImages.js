@@ -6,7 +6,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-async function uploadImagesToCloudinary(folderPath) {
+async function uploadImagesToCloudinary() {
     const files = await readImageFilesFromFolder("../server/images");
     const imageUrls = [];
     for (const file of files) {
