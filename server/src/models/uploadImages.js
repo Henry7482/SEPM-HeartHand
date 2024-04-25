@@ -7,7 +7,7 @@ cloudinary.config({
 });
 
 async function uploadImagesToCloudinary(folderPath) {
-    const files = await readImageFilesFromFolder(folderPath);
+    const files = await readImageFilesFromFolder("../server/images");
     const imageUrls = [];
     for (const file of files) {
         const result = await cloudinary.uploader.upload("../server/images");
