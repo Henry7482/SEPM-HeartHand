@@ -5,7 +5,7 @@ const scraperDataSchema = new mongoose.Schema({
         title: String,
         content: String,
         publish_date: String,
-        ref_link: String,
+        link: String,
     }]
 });
 
