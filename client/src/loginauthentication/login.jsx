@@ -28,6 +28,10 @@ export default function Login() {
                   <button type="button" data-mdb-button-init data-mdb-ripple-init className="btn btn-primary btn-floating mx-1">
                     <i className="fab fa-linkedin-in"></i>
                   </button>
+
+                  <button type="button" data-mdb-button-init data-mdb-ripple-init className="btn btn-primary btn-floating mx-1">
+                    <i className="fab fa-google"></i>
+                  </button>
                 </div>
   
                 <div className="divider d-flex align-items-center my-4">
