@@ -8,6 +8,7 @@ import Donate from "./blogPage/donatebox.jsx";
 import Blog from "./blogPage/blog.jsx";
 import React, { useState, useEffect } from "react";
 import LogIn from "./loginauthentication/login.jsx";
+import Admin from "./admin/admin.js";
 
 function App() {
   const [blogs, setBlogs] = useState(null);
@@ -67,6 +68,8 @@ function App() {
           <Route path="/footerTest" element={<Footer />} />
           <Route path="/authenticationTest" element={<SignUp />} />
           <Route path="/authentication1Test" element={<LogIn />} />
+          <Route path="/adminTest" element={<Admin />} />
+
         </Routes>
       </BrowserRouter>
     </div>
