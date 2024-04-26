@@ -5,14 +5,18 @@ from .functions.text_processor import preprocess_text
 from .functions.prompts_extraction import extract_prompts
 from .functions.document_summarizer import summarize
 import nltk
+
+# Download necessary NLTK resources
 nltk.download('punkt')
 nltk.download('stopwords')
+
+# Load the FastText embedding model
+ft = api.load('fasttext-wiki-news-subwords-300')
 
 async def analyzeData(data):
     # LOAD MODEL--------------------------------------------------------------
 
-    # Load the FastText embedding model
-    ft = api.load('fasttext-wiki-news-subwords-300')
+
 
     # Load the model
     loaded_model = BERTopic.load(os.environ['BERTOPIC_MODEL_PATH'], embedding_model=ft)
