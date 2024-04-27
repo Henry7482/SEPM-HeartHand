@@ -1,15 +1,7 @@
 Flask==2.2.5
 Requests==2.31.0
 gunicorn==21.2.0
-gevent==24.2.1
-
-bertopic==0.16.0
-gensim==4.3.2
-nltk==3.8.1
-pandas==2.2.2
-sumy==0.11.0
-umap-learn==0.5.6
-scipy==1.10.1    
+gevent==24.2.1 
 
 openai==1.23.2
 

@@ -3,7 +3,6 @@ import requests
 from webScraper.webScraper import scrape_news
 from gpt.filterContent import filter_content
 from gpt.generateBlogs import generate_blog
-from bert.analyzeData import analyzeData
 
 
 def create_app():
@@ -66,7 +65,14 @@ def create_app():
 
             # Analyze news data
             print('=> Analyzing news data...')
-            prompts = analyzeData(filteredNews)
+            res = requests.post('http://128.199.116.9:8080/predict', json={"data": filteredNews})
+            if res.status_code != 200:
+                return {
+                    "message": "Failed to analyze data!",
+                    "Response from node server:": res.json().get('message'),
+                    "Data analyzed:": filteredNews
+                }
+            prompts = res.json()
             print("\033[92m-> Successfully analyzed data.\033[0m")
 
             # Generate blogs
@@ -77,7 +83,7 @@ def create_app():
             # Upload generated blogs to MongoDB
             print('=> Sending generated blogs to MongoDB...')
             res = requests.post('https://hearthand.onrender.com/api/v1/blogs/generatedblogs', json=generated_blogs)
-            if res.status_code != 200:
+            if res.status_code != 201:
                 return             {
                     "message": "Failed to generate blogs!",
                     "Response from node server:": res.json().get('message'),
