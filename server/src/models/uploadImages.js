@@ -1,6 +1,6 @@
-const cloudinary = require('cloudinary').v2;
+import cloudinary from 'cloudinary';
 
-cloudinary.config({
+cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
@@ -10,10 +10,10 @@ async function uploadImagesToCloudinary() {
     const files = await readImageFilesFromFolder("../server/images");
     const imageUrls = [];
     for (const file of files) {
-        const result = await cloudinary.uploader.upload("../server/images" + file);
+        const result = await cloudinary.v2.uploader.upload("../server/images" + file);
         imageUrls.push(result.secure_url);
     }
     return imageUrls;
 }
 
-module.exports = uploadImagesToCloudinary;
+export default uploadImagesToCloudinary;
