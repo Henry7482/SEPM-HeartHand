@@ -1,106 +1,61 @@
-import React, {useState} from "react";
+import React, { Component } from "react";
 import './header.css';
-import {RiMenu3Line, RiCloseLine} from 'react-icons/ri';
-import logo from "../assets/Screenshot 2024-04-10 022637.png";
+import logo from "../assets/logo.png";
+import youtubeLogo from "../assets/youtube.png";
+import facebookLogo from "../assets/facebook.png";
+import instagramLogo from "../assets/instagram.png";
+import twitterLogo from "../assets/twitter.png";
+import userLogo from "../assets/usericon.png";
 
-const Header=()=>{
-    const [toggleMenu, setToggleMenu] = useState(false);
+class Navbar extends Component {
+    state = { clicked: false };
 
-    return(
-       <div className= "navbar-bg">
-            <div className= "sb_navbar">
-                 <div className="sb_navbar-links">
-                    <div className="sb_navbar-links_logo">
-                        <a href="www.google.com">
-                            <img src={logo} alt="logo" />
-                         </a>
+    handleClick = () => {
+        this.setState({ clicked: !this.state.clicked });
+    };
+
+    render() {
+        return (
+            <div>
+                <ul id="headbar">
+                    <li>
+                        <a href="www.google.com">FAQs </a>
+                        <a href="www.google.com">Contact Us </a>
+                    </li>
+
+                    <li>
+                        <a><img src={youtubeLogo} alt="youtube" width="30" height="30" /></a>
+                        <a><img src={facebookLogo} alt="facebook" width="30" height="30"/></a>
+                        <a><img src={instagramLogo} alt="instagram" width="30" height="30"/></a>
+                        <a><img src={twitterLogo} alt="twitter" width="30" height="30"/></a>
+                    
+                    </li>
+
+                    <li>
+                        <a><img src={userLogo} alt="MyAccount" width="20" height="20"/> MyAccount</a>
+                    </li>
+                </ul>
+
+                <nav>
+                    <a href="www.google.com" className="logo">
+                        <img src={logo} alt="logo" />
+                    </a>
+    
+                    <div>
+                        <ul id="navbar" className={this.state.clicked ? "active" : ""}>
+                            <li><a className="active" href="www.google.com">Latest news </a></li>
+                            <li><a href="www.google.com">Organization </a></li>
+                            <li><a href="www.google.com">Our impact </a></li>
+                            <li><a href="www.google.com"> About Us </a></li>
+                        </ul>
                     </div>
-                    <div className="sb_navbar-links_container">
-                        <p>
-                            <a href="www.google.com">
-                            Latest news 
-                            </a>
-                        </p>
-                        <p>
-                            <a href="www.google.com">
-                            Organization
-                            </a>
-                        </p>
-                        <p>
-                            <a href="www.google.com">
-                            Our impact
-                            </a>
-                        </p>
-                        <p>
-                            <a href="www.google.com">
-                            About Us
-                            </a>
-                        </p>
+                    <div id="mobile" onClick={this.handleClick}>
+                        <i id="bar" className={this.state.clicked ? "fas fa-times" : "fas fa-bars"}></i>
                     </div>
-                </div>
-                <div className="sb_navbar-button">
-                <a href="www.google.com">
-                    <button type ="button">DONATE</button>
-                </a>    
-                </div>
-                <div className="sb_navbar-menu">
-                    {toggleMenu ? (
-                        <RiCloseLine
-                        color="#000"
-                        size={27}
-                        onClick={()=> setToggleMenu(false)}
-                        />) :(
-                            <RiMenu3Line
-                            color="#000"
-                            size={27}
-                            onClick={()=> setToggleMenu(true)}
-                        />
-
-                    )}
-
-                    {toggleMenu && (
-                        <div className="sb_navbar-menu_container scale-up-center">
-                            <div className ="sb_navbar-menu_container-links">
-                                <p>
-                                    <a href="www.google.com">
-                                        Latest news 
-                                    </a>
-                                </p>
-                                <p>
-                                    <a href="www.google.com">
-                                    Organization
-                                    </a>
-                                </p>
-                                <p>
-                                    <a href="www.google.com">
-                                    Our impact
-                                    </a>
-                                </p>
-                                <p>
-                                    <a href="www.google.com">
-                                    About Us
-                                    </a>
-                                </p>
-                            </div>
-
-                            <div className="sb_navbar-menu_container-links-sign">
-                                <a href="www.google.com">
-                                     <button type ="button">DONATE</button>
-                                </a>    
-                            </div>
-                            </div>
-                    )}
-
-
-                </div>
+                </nav>
             </div>
-        </div>
-       
-    )
+        );
+    }
 }
 
-
-
-
-
-export default Header;
+export default Navbar;
