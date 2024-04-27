@@ -42,7 +42,7 @@ app.post("/users", async (req, res) => {
 // Start Function
 const start = async () => {
   try {
-    // await connectDB();
+    await connectDB();
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
