@@ -66,8 +66,8 @@ function App() {
                                               {/* !!Pass in blogs value for Blog page to read */}
           <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
           <Route path="/footerTest" element={<Footer />} />
-          <Route path="/authenticationTest" element={<SignUp />} />
-          <Route path="/authentication1Test" element={<LogIn />} />
+          <Route path="/signupTest" element={<SignUp />} />
+          <Route path="/loginTest" element={<LogIn />} />
           <Route path="/adminTest" element={<Admin />} />
 
         </Routes>
