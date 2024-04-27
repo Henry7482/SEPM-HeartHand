@@ -4,5 +4,6 @@ gunicorn==21.2.0
 gevent==24.2.1 
 
 openai==1.23.2
+numpy==1.26.4
 
 beautifulsoup4==4.12.3
