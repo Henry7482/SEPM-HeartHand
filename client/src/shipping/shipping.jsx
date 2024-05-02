@@ -70,7 +70,7 @@ const CheckoutPage = () => {
                         <div className="form-group">
                           <label>Address</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" value="Sunrise City" />
+                            <input type="text" value="Nguyen Huu Tho street,Sunrise City" />
                             <span className="fas fa-check text-success pr-2"></span>
                           </div>
                         </div>
