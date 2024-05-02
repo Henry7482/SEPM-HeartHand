@@ -23,7 +23,7 @@ const newBlogInstance = async () => {
 
 const createBlog = async (req, res) => {
   try {
-    const imageUrls = await uploadImagesToCloudinary('../server/images');
+    const imageUrls = await uploadImagesToCloudinary('../../images');
     const blog = await newBlogInstance();
     const output = await Blog.create(blog);
     res.status(200).json({message: "Successfully added blog", output });
