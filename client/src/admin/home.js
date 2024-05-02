@@ -50,28 +50,43 @@ function home({Toggle}) {
             <thead>
                 <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">Name</th>
+                <th scope="col">ProductName</th>
+                <th scope="col">ProductType</th>
+                <th scope="col">Quantity/Status</th>
+                <th scope="col">Organization</th>
+                <th scope="col">Discription</th>
+
                 </tr>
             </thead>
             <tbody>
                 <tr>
                 <th scope="row">1</th>
                 <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <td>Shirt</td>
+                <td>Cloth</td>
+                <td>2</td>
+                <td>HearHand</td>
+                <td>I want to donate </td>
+
                 </tr>
                 <tr>
                 <th scope="row">2</th>
                 <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
+                <td>Shirt</td>
+                <td>Cloth</td>
+                <td>2</td>
+                <td>HearHand</td>
+                <td>I want to donate </td>
                 </tr>
                 <tr>
                 <th scope="row">3</th>
                 <td col span="2">Larry the Bird</td>
-                <td>@twitter</td>
+                <td>Shirt</td>
+                <td>Cloth</td>
+                <td>2</td>
+                <td>HearHand</td>
+                <td>I want to donate </td>
                 </tr>
             </tbody>
         </table>
