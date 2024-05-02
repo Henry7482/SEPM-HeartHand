@@ -10,6 +10,7 @@ import React, { useState, useEffect } from "react";
 import LogIn from "./loginauthentication/login.jsx";
 import Admin from "./admin/admin.js";
 import LogIn2 from "./loginfordonors/loginfordonor.jsx";
+import CheckoutPage from "./shipping/shipping.jsx";
 function App() {
   const [blogs, setBlogs] = useState(null);
   const [error, setError] = useState(null);
@@ -70,6 +71,7 @@ function App() {
           <Route path="/authentication1Test" element={<LogIn />} />
           <Route path="/adminTest" element={<Admin />} />
           <Route path="/LogIn2" element={<LogIn2 />} />
+          <Route path="/shippingtest" element={<CheckoutPage />} />
 
         </Routes>
       </BrowserRouter>
