@@ -7,9 +7,9 @@ import HomePage from "./homePage/homePage.jsx";
 import Donate from "./blogPage/donatebox.jsx";
 import Blog from "./blogPage/blog.jsx";
 import React, { useState, useEffect } from "react";
-import LogIn from "./loginauthentication/login.jsx";
+import Login from "./loginauthentication/AdminLogin.jsx";
 import Admin from "./admin/admin.js";
-import LogIn2 from "./loginfordonors/loginfordonor.jsx";
+import LogIn2 from "./loginfordonors/DonorLogin.jsx";
 import CheckoutPage from "./shipping/shipping.jsx";
 function App() {
   const [blogs, setBlogs] = useState(null);
@@ -65,7 +65,7 @@ function App() {
           <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
           <Route path="/footerTest" element={<Footer />} />
           <Route path="/authenticationTest" element={<SignUp />} />
-          <Route path="/authentication1Test" element={<LogIn />} />
+          <Route path="/authentication1Test" element={<Login />} />
           <Route path="/adminTest" element={<Admin blogs={blogs} />} />
 
           <Route path="/LogIn2" element={<LogIn2 />} />

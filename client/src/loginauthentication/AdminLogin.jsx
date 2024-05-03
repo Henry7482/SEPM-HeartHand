@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import './login.css'
 
 import user_icon from '../assets/usericon.png';
 import password_icon from '../assets/password.png';
 
-export default function Login() {
+const Login = () => {
 
     return (
       <section className="vh-100">
@@ -97,5 +97,5 @@ export default function Login() {
       </section>
     );
   };
-  
-  
+ 
+export default Login;
