@@ -21,7 +21,6 @@ function Admin() {
         <div className='col'>
           {activePage === 'Dashboard' && <Dashboard />}
           {activePage === 'Home' && <Home />}
-          {/* Add more conditional renders for other components as needed */}
         </div>
       </div>
     </div>

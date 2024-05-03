@@ -2,6 +2,7 @@ import React from 'react';
 import '../admin/admin.css';
 
 function Sidebar({ selectPage }) {
+    
   return (
     <div className='bg-white sidebar p-2'>
       <div className='m-2'>
