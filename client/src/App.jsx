@@ -1,14 +1,15 @@
 import "./App.css";
 import Footer from "./footer/footer.jsx";
-import SignUp from "./signupauthentication/SignUp.jsx"
-import Header from "./header/header.jsx";
+import SignUp from "./signupauthentication/SignUp.jsx";
+import Header from "./header/Header.jsx";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import HomePage from "./homePage/homePage.jsx";
-import Donate from "./blogPage/donatebox.jsx";
-import Blog from "./blogPage/blog.jsx";
+import Donate from "./blogPage/Donatebox.jsx";
+import Blog from "./blogPage/Blog.jsx";
 import React, { useState, useEffect } from "react";
-import LogIn from "./loginauthentication/login.jsx";
+import LogIn from "./loginauthentication/Login.jsx";
 import Admin from "./admin/admin.js";
+import { useLogout } from "./hooks/useLogout";
 
 function App() {
   const [blogs, setBlogs] = useState(null);
@@ -51,25 +52,48 @@ function App() {
     } else {
       return <h1>Loading...</h1>;
     }
-  }
+  };
+
+  const handleRequest = async () => {
+    try {
+      // Get access token from local storage
+      const accessToken = localStorage.getItem("accessToken");
+
+      if (!accessToken) {
+        throw new Error("Access token not found");
+      }
+      // Make authorized request to backend API
+      const response = await fetch("http://localhost:8080/secret", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const responseData = await response.json();
+      console.log("Data from backend:", JSON.stringify(responseData));
+      alert("Data from backend:" + JSON.stringify(responseData));
+    } catch (err) {
+      console.log("Error from backend:", err.message);
+    }
+  };
 
   return (
     <div className="App">
       <BrowserRouter>
-      {/* Call out function */}
-      {/* {displayBlogs(blogs)} */}
+        {/* Call out function */}
+        {/* {displayBlogs(blogs)} */}
+        <button onClick={handleRequest}>Request to secret page</button>
         <Routes>
           <Route path="/footerTest" element={<Footer />} />
           <Route path="/headerTest" element={<Header />} />
-          <Route path="/homeTest" element={<HomePage blogs={blogs}/>} />
+          <Route path="/homeTest" element={<HomePage blogs={blogs} />} />
           <Route path="/donateTest" element={<Donate />} />
-                                              {/* !!Pass in blogs value for Blog page to read */}
           <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
           <Route path="/footerTest" element={<Footer />} />
           <Route path="/signupTest" element={<SignUp />} />
           <Route path="/loginTest" element={<LogIn />} />
           <Route path="/adminTest" element={<Admin />} />
-
         </Routes>
       </BrowserRouter>
     </div>
