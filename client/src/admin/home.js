@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Nav from './Nav';
-import { Link } from 'react-router-dom';
+
 
 function Home({ articles, handleAccept, handleDelete, Toggle }) {
   const [selectedImage, setSelectedImage] = useState({});
@@ -18,7 +18,7 @@ function Home({ articles, handleAccept, handleDelete, Toggle }) {
   return (
     <div className='px-3'>
       <Nav Toggle={Toggle} />
-      <div className='container'>
+      <div className='container-fluid'>
         {articles.map((article) => (
           <div key={article._id} className="article-container my-3 p-3 bg-light">
             <h2>{article.title}</h2>

@@ -18,25 +18,22 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "https://hearthand.onrender.com/api/v1/blogs"
-        );
-
+        const response = await fetch("https://hearthand.onrender.com/api/v1/blogs");
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
-
         const jsonData = await response.json();
         setBlogs(jsonData);
-        console.log("Data from server:" + JSON.stringify(jsonData));
+        console.log("Data from server:", JSON.stringify(jsonData));
       } catch (err) {
-        setError(err.message);
-        console.log("Error from server:" + error);
+        setError("Failed to load blogs: " + err.message);
+        console.error("Error from server:", err.message);
       }
     };
-
+  
     fetchData();
   }, []);
+  
 
   // Function to display blogs
   const displayBlogs = (data) => {
@@ -69,7 +66,8 @@ function App() {
           <Route path="/footerTest" element={<Footer />} />
           <Route path="/authenticationTest" element={<SignUp />} />
           <Route path="/authentication1Test" element={<LogIn />} />
-          <Route path="/adminTest" element={<Admin />} />
+          <Route path="/adminTest" element={<Admin blogs={blogs} />} />
+
           <Route path="/LogIn2" element={<LogIn2 />} />
           <Route path="/shippingtest" element={<CheckoutPage />} />
 

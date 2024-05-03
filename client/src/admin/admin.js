@@ -1,16 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Sidebar from './Sidebar';
 import Dashboard from './dashboard';
-import Home from './home'; // Import Home component
+import Home from './home';
+import Organization from './organaiztion';
+
 
 function Admin() {
   const [activePage, setActivePage] = useState('Dashboard'); // Default to Dashboard
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    // Mock fetch function to simulate fetching articles from an API
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch('https://hearthand.onrender.com/api/v1/blogs'); 
+        const data = await response.json();
+        setArticles(data);
+      } catch (error) {
+        console.error('Failed to fetch articles:', error);
+      }
+    };
+
+    fetchArticles();
+  }, []);
 
   const selectPage = (page) => {
     setActivePage(page);
-  }
+  };
 
   return (
     <div className='container-fluid bg-secondary min-vh-100'>
@@ -20,7 +38,8 @@ function Admin() {
         </div>
         <div className='col'>
           {activePage === 'Dashboard' && <Dashboard />}
-          {activePage === 'Home' && <Home />}
+          {activePage === 'Home' && <Home articles={articles} />}
+          {activePage === 'Organization' && <Organization />}
         </div>
       </div>
     </div>
