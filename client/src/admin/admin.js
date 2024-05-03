@@ -1,26 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css'
-import Sidebar from './Sidebar'
-import Home from './home';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import Sidebar from './Sidebar';
+import Dashboard from './dashboard';
+import Home from './home'; // Import Home component
 
 function Admin() {
-  const [toggle, setToggle] = useState(false)
-  const Toggle = ()=>{
-    setToggle(!toggle)
+  const [activePage, setActivePage] = useState('Dashboard'); // Default to Dashboard
+
+  const selectPage = (page) => {
+    setActivePage(page);
   }
+
   return (
     <div className='container-fluid bg-secondary min-vh-100'>
       <div className='row'>
-        {toggle &&<div className= 'col-2 bg-white vh-100'>
-        <Sidebar/>
-        </div>}
+        <div className='col-2 bg-white vh-100'>
+          <Sidebar selectPage={selectPage} />
+        </div>
         <div className='col'>
-          <Home Toggle={Toggle}/>
+          {activePage === 'Dashboard' && <Dashboard />}
+          {activePage === 'Home' && <Home />}
+          {/* Add more conditional renders for other components as needed */}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Admin
+export default Admin;
