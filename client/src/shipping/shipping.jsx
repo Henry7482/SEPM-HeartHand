@@ -7,16 +7,16 @@ const CheckoutPage = () => {
           <nav className="bg-white">
             <div className="d-flex align-items-center">
               <div className="logo">
-                <a href="#" className="text-uppercase">shop</a>
+                <a href="#" className="text-uppercase">ship</a>
               </div>
               <div className="ml-auto">
-                <a href="#" className="text-uppercase">Back to shopping</a>
+                <a href="#" className="text-uppercase">Back to shipping</a>
               </div>
             </div>
           </nav>
           <header>
             <div className="d-flex justify-content-center align-items-center pb-3">
-              <div className="px-sm-5 px-2 active">SHOPPING CART
+              <div className="px-sm-5 px-2 active">SHIPPING CART
                 <span className="fas fa-check"></span>
               </div>
               <div className="px-sm-5 px-2">CHECKOUT</div>
@@ -96,7 +96,7 @@ const CheckoutPage = () => {
                 <label>Shipping address is same as billing</label>
                 <div id="address" className="bg-light rounded mt-3">
                   <div className="h5 font-weight-bold text-primary">
-                    Shopping Address
+                    Shipping Address
                   </div>
                   <div className="d-md-flex justify-content-md-start align-items-md-center pt-3">
                     <div className="mr-auto">
@@ -158,7 +158,7 @@ const CheckoutPage = () => {
                 <p className="text-muted"><a href="#" className="text-danger">Hotline:</a>+38291942 (International)</p>
                 <div className="h4 pt-3">
                   <span className="fas fa-shield-alt text-primary pr-2"></span>
-                  Security of your shopping</div>
+                  Security of your shipping</div>
                 <div id="summary" className="bg-white rounded py-2 my-4">
                   <div className="table-responsive">
                     <table className="table table-borderless w-75">
@@ -195,12 +195,12 @@ const CheckoutPage = () => {
                 </div>
                 <div className="row pt-lg-3 pt-2 buttons mb-sm-0 mb-2">
                   <div className="col-md-6">
-                    <div className="btn text-uppercase">Back to shopping</div>
+                    <div className="btn text-uppercase">Back to shipping</div>
                   </div>
                   <div className="col-md-6 pt-md-0 pt-3">
                     <div className="btn text-white ml-auto">
                       <span className="fas fa-lock"></span>
-                      Continue to Shopping
+                      Continue to Shipping
                     </div>
                   </div>
                 </div>
