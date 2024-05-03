@@ -11,6 +11,7 @@ import Login from "./loginauthentication/AdminLogin.jsx";
 import Admin from "./admin/admin.js";
 import LogIn2 from "./loginfordonors/DonorLogin.jsx";
 import CheckoutPage from "./shipping/shipping.jsx";
+import AdminLogin from "./loginauthentication/Login.jsx";
 function App() {
   const [blogs, setBlogs] = useState(null);
   const [error, setError] = useState(null);
@@ -70,7 +71,7 @@ function App() {
 
           <Route path="/LogIn2" element={<LogIn2 />} />
           <Route path="/shippingtest" element={<CheckoutPage />} />
-
+          <Route path="/adminLogIn" element={<AdminLogin />} />
         </Routes>
       </BrowserRouter>
     </div>

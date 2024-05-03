@@ -1,10 +1,10 @@
 import React from "react";
-import './AdminLogin.css'
+import './Login.css'
 
 import user_icon from '../assets/usericon.png';
 import password_icon from '../assets/password.png';
 
-const Login = () => {
+const AdminLogin = () => {
 
     return (
       <section className="vh-100">
@@ -15,39 +15,20 @@ const Login = () => {
             </div>
             <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
               <form>
-                <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-                  <p className="lead fw-normal mb-0 me-3">Sign in with</p>
-                  <button type="button" data-mdb-button-init data-mdb-ripple-init className="btn btn-primary btn-floating mx-1">
-                    <i className="fab fa-facebook-f"></i>
-                  </button>
-  
-                  <button type="button" data-mdb-button-init data-mdb-ripple-init className="btn btn-primary btn-floating mx-1">
-                    <i className="fab fa-twitter"></i>
-                  </button>
-  
-                  <button type="button" data-mdb-button-init data-mdb-ripple-init className="btn btn-primary btn-floating mx-1">
-                    <i className="fab fa-linkedin-in"></i>
-                  </button>
-
-                  <button type="button" data-mdb-button-init data-mdb-ripple-init className="btn btn-primary btn-floating mx-1">
-                    <i className="fab fa-google"></i>
-                  </button>
-                </div>
-  
                 <div className="divider d-flex align-items-center my-4">
-                  <p className="text-center fw-bold mx-3 mb-0">Or</p>
+                  <p className="text-center fw-bold mx-3 mb-0 ">Admin Log In</p>
                 </div>
   
                 {/* Email input */}
                 <div data-mdb-input-init className="form-outline mb-4">
                   <input type="email" id="form3Example3" className="form-control form-control-lg" placeholder="Enter a valid email address" />
-                  <label className="form-label" htmlFor="form3Example3"> Your Email Address</label>
+                  <label className="form-label" htmlFor="form3Example3"> Email Address</label>
                 </div>
   
                 {/* Password input */}
                 <div data-mdb-input-init className="form-outline mb-3">
                   <input type="password" id="form3Example4" className="form-control form-control-lg" placeholder="Enter password" />
-                  <label className="form-label" htmlFor="form3Example4"> Your Password</label>
+                  <label className="form-label" htmlFor="form3Example4"> Password</label>
                 </div>
   
                 <div className="d-flex justify-content-between align-items-center">
@@ -98,4 +79,4 @@ const Login = () => {
     );
   };
  
-export default Login;
+export default AdminLogin;
