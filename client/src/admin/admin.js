@@ -4,10 +4,15 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import Sidebar from './Sidebar';
 import Dashboard from './dashboard';
 import Home from './home';
-import Organization from './organaiztion';
+import Organization from './organization';
 
 
 function Admin() {
+  const [toggle, setToggle] = useState(false)
+  const Toggle = () =>{
+    setToggle(!toggle)
+  }
+
   const [activePage, setActivePage] = useState('Dashboard'); // Default to Dashboard
   const [articles, setArticles] = useState([]);
 
@@ -33,13 +38,13 @@ function Admin() {
   return (
     <div className='container-fluid bg-secondary min-vh-100'>
       <div className='row'>
-        <div className='col-2 bg-white vh-100'>
+        {toggle&& <div className='col-2 bg-white vh-100'>
           <Sidebar selectPage={selectPage} />
-        </div>
+        </div>}
         <div className='col'>
-          {activePage === 'Dashboard' && <Dashboard />}
-          {activePage === 'Home' && <Home articles={articles} />}
-          {activePage === 'Organization' && <Organization />}
+          {activePage === 'Dashboard' && <Dashboard Toggle={Toggle} />}
+          {activePage === 'Home' && <Home articles={articles} Toggle={Toggle}/>}
+          {activePage === 'Organization' && <Organization Toggle={Toggle} />}
         </div>
       </div>
     </div>
