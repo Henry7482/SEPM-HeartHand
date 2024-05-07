@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import "./login.css";
+import React from "react";
+import './AdminLogin.css'
 
 import user_icon from "../assets/usericon.png";
 import password_icon from "../assets/password.png";
 import { useLogin } from '../hooks/useLogin';
 
-export default function Login() {
-  // State variables to hold username and password
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const Login = () => {
+    // State variables to hold username and password
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
   const { login, error, isLoading } = useLogin();
 
@@ -175,3 +175,5 @@ export default function Login() {
     </section>
   );
 }
+ 
+export default Login;
