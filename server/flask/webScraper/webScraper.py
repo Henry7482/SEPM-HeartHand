@@ -1,10 +1,13 @@
 import requests
-from bs4 import BeautifulSoup
 from .scraper_by_presets import scraper_by_presets
 import json
+import sys
 
 # Function scrape data tu website (demo)
 def scrape_news():
+    # Extend the recursion limit of Python
+    sys.setrecursionlimit(10000)
+
     vnexpress_preset = {
         "article": {
             "tag": "h4",
