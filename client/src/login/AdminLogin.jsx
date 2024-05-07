@@ -1,5 +1,5 @@
 import React from "react";
-import './Login.css'
+import './AdminLogin.css'
 
 import user_icon from '../assets/usericon.png';
 import password_icon from '../assets/password.png';

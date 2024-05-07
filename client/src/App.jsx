@@ -7,11 +7,11 @@ import HomePage from "./homePage/homePage.jsx";
 import Donate from "./blogPage/donatebox.jsx";
 import Blog from "./blogPage/blog.jsx";
 import React, { useState, useEffect } from "react";
-import Login from "./loginauthentication/AdminLogin.jsx";
+import Login from "./login/Login1.jsx"
 import Admin from "./admin/admin.js";
 import LogIn2 from "./loginfordonors/DonorLogin.jsx";
 import CheckoutPage from "./shipping/shipping.jsx";
-import AdminLogin from "./loginauthentication/Login.jsx";
+import AdminLogin from "./login/AdminLogin.jsx";
 function App() {
   const [blogs, setBlogs] = useState(null);
   const [error, setError] = useState(null);
@@ -58,19 +58,18 @@ function App() {
       {/* Call out function */}
       {/* {displayBlogs(blogs)} */}
         <Routes>
-          <Route path="/footerTest" element={<Footer />} />
-          <Route path="/headerTest" element={<Header />} />
-          <Route path="/homeTest" element={<HomePage blogs={blogs}/>} />
-          <Route path="/donateTest" element={<Donate />} />
+          <Route path="/footer" element={<Footer />} />
+          <Route path="/header" element={<Header />} />
+          <Route path="/home" element={<HomePage blogs={blogs}/>} />
+          <Route path="/donate" element={<Donate />} />
                                               {/* !!Pass in blogs value for Blog page to read */}
           <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
-          <Route path="/footerTest" element={<Footer />} />
-          <Route path="/authenticationTest" element={<SignUp />} />
-          <Route path="/authentication1Test" element={<Login />} />
-          <Route path="/adminTest" element={<Admin blogs={blogs} />} />
-
+          <Route path="/foote" element={<Footer />} />
+          <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/LogIn" element={<Login />} />
+          <Route path="/admin" element={<Admin blogs={blogs} />} />
           <Route path="/LogIn2" element={<LogIn2 />} />
-          <Route path="/shippingtest" element={<CheckoutPage />} />
+          <Route path="/shipping" element={<CheckoutPage />} />
           <Route path="/adminLogIn" element={<AdminLogin />} />
         </Routes>
       </BrowserRouter>
