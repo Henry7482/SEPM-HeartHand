@@ -4,6 +4,9 @@ from webScraper.webScraper import scrape_news
 from gpt.filterContent import filter_content
 from gpt.generateBlogs import generate_blog
 
+import gevent.monkey
+gevent.monkey.patch_all()
+
 
 def create_app():
     app = Flask(__name__)
