@@ -37,7 +37,11 @@ export const useLogin = () => {
         setIsLoading(false);
 
         // Redirect user to dashboard
+        if (json.user.role === "admin") {
+            window.location.href = "/adminTest";
+        } else {
         window.location.href = "/homeTest";
+        }
     }
  }
 

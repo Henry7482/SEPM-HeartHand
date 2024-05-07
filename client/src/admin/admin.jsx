@@ -7,7 +7,7 @@ import Home from './home';
 import Organization from './organization';
 
 
-function Admin() {
+const Admin = () => {
   const [toggle, setToggle] = useState(false)
   const Toggle = () =>{
     setToggle(!toggle)
@@ -49,6 +49,6 @@ function Admin() {
       </div>
     </div>
   );
-}
+};
 
 export default Admin;

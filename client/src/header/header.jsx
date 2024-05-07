@@ -64,7 +64,7 @@ const Navbar = () => {
           )}
           {!user && (
             <div>
-              <Link to="/loginTest" className="login btn btn-outline-dark py-1">
+              <Link to="/authentication1Test" className="login btn btn-outline-dark py-1">
                 Login
               </Link>
             </div>

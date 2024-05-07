@@ -2,26 +2,31 @@ import "./App.css";
 import Footer from "./footer/footer.jsx";
 import SignUp from "./signupauthentication/SignUp.jsx";
 import Header from "./header/Header.jsx";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./homePage/homePage.jsx";
 import Donate from "./blogPage/Donatebox.jsx";
 import Blog from "./blogPage/Blog.jsx";
 import React, { useState, useEffect } from "react";
 import Login from "./loginauthentication/AdminLogin.jsx";
-import Admin from "./admin/admin.js";
+import Admin from "./admin/admin.jsx";
 import LogIn2 from "./loginfordonors/DonorLogin.jsx";
 import CheckoutPage from "./shipping/shipping.jsx";
 import AdminLogin from "./loginauthentication/Login.jsx";
+import { useAuthContext } from "./hooks/useAuthContext.js";
 function App() {
   const [blogs, setBlogs] = useState(null);
   const [error, setError] = useState(null);
+  const { user } = useAuthContext();
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://hearthand.onrender.com/api/v1/blogs");
+        const response = await fetch(
+          "https://hearthand.onrender.com/api/v1/blogs"
+        );
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         const jsonData = await response.json();
         setBlogs(jsonData);
@@ -31,10 +36,9 @@ function App() {
         console.error("Error from server:", err.message);
       }
     };
-  
+
     fetchData();
   }, []);
-  
 
   // Function to display blogs
   const displayBlogs = (data) => {
@@ -76,6 +80,7 @@ function App() {
     }
   };
 
+  console.log(user && user.role === "admin");
   return (
     <div className="App">
       <BrowserRouter>
@@ -85,14 +90,36 @@ function App() {
         <Routes>
           <Route path="/footerTest" element={<Footer />} />
           <Route path="/headerTest" element={<Header />} />
-          <Route path="/homeTest" element={<HomePage blogs={blogs} />} />
+          <Route
+            path="/homeTest"
+            element={
+              user ? (
+                <HomePage blogs={blogs} />
+              ) : (
+                <Navigate to="/authentication1Test" />
+              )
+            }
+          />
           <Route path="/donateTest" element={<Donate />} />
           <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
           <Route path="/footerTest" element={<Footer />} />
-          <Route path="/authenticationTest" element={<SignUp />} />
-          <Route path="/authentication1Test" element={<Login />} />
-          <Route path="/adminTest" element={<Admin blogs={blogs} />} />
-
+          <Route
+            path="/authenticationTest"
+            element={!user ? <SignUp /> : <Navigate to="/homeTest" />}
+          />
+          <Route
+            path="/authentication1Test"
+            element={!user ? <Login /> : <Navigate to="/homeTest" />}
+          />
+          <Route
+            path="/adminTest"
+            element={
+              user && user.role === "admin" ? (
+                <Admin />
+              ) : (
+                <Navigate to="/authentication1Test" />
+              )
+            } />
           <Route path="/LogIn2" element={<LogIn2 />} />
           <Route path="/shippingtest" element={<CheckoutPage />} />
           <Route path="/adminLogIn" element={<AdminLogin />} />

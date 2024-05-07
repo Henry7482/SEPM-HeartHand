@@ -9,12 +9,13 @@ import { login,
   newRefreshToken,
   newAccessToken,
   logout, } from "../services/authenticate.js";
+import { jwtAuthAdmin, jwtAuthDonor } from "../middlewares/cookiejwtAuth.js";
 
 const userRouter = Router();
 
 
-userRouter.route("/").get(getDonors);
-userRouter.route("/:id").get(getDonorbyId);
+userRouter.route("/").get(jwtAuthAdmin, getDonors);
+userRouter.route("/:id").get(jwtAuthDonor, getDonorbyId);
 userRouter.route("/login").post(login);
 userRouter.route("/logout").delete(logout);
 userRouter.route("/signup").post(signup);
