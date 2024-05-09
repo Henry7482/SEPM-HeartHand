@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import '../admin/admin.css';
 
 function Sidebar({ selectPage }) {
+  const navigate = useNavigate(); // Instantiate navigate function
   const [activeItem, setActiveItem] = useState('Dashboard'); // Default active page
 
   const handleSelectPage = (page) => {
-    selectPage(page);
-    setActiveItem(page); // Set active item state
+    if (page === 'Logout') {
+      // Perform logout logic here (like clearing localStorage or tokens)
+      navigate('/LogIn'); // Navigate to Login page on logout
+    } else {
+      selectPage(page);
+      setActiveItem(page); // Set active item state
+    }
   };
 
   return (
