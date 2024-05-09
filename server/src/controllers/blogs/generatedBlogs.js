@@ -9,6 +9,23 @@ const getGeneratedBlogs = async (req, res) => {
       }
 }
 
+const getGeneratedBlogsById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    // Find the generated blog by its ID
+    const blog = await Blog.findById(id);
+    if (!blog) {
+      // If blog is not found, return a 404 response
+      return res.status(404).json({ message: "Generated blog not found" });
+    }
+    // If blog is found, return it in the response
+    res.status(200).json(blog);
+  } catch (error) {
+    // If an error occurs, return a 500 response with the error message
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const uploadGeneratedBlogs = async (req, res) => {
     try {
         const rawBlogsObject = req.body;
@@ -24,4 +41,4 @@ const uploadGeneratedBlogs = async (req, res) => {
       }
 }
 
-export {getGeneratedBlogs, uploadGeneratedBlogs}
+export {getGeneratedBlogs, getGeneratedBlogsById, uploadGeneratedBlogs}
