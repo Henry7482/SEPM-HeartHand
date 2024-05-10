@@ -28,10 +28,10 @@ const CheckoutPage = () => {
             </div>
           </header>
           <div className="wrapper">
-            <div className="h5 large">Billing Address</div>
+            <div className="h5 large">Shipping Address</div>
             <div className="row">
               <div className="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1">
-                <div className="mobile h5">Billing Address</div>
+                <div className="mobile h5">Shipping Address</div>
                 <div id="details" className="bg-white rounded pb-5">
                   <form>
                     <div className="form-group">
