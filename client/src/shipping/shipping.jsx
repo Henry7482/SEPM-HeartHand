@@ -36,13 +36,12 @@ const CheckoutPage = () => {
                   <form>
                     <div className="form-group">
                       <label className="text-muted">Name</label>
-                      <input type="text" value="Truong Pham Vinh Khang" className="form-control" />
+                      <input type="text" defaultValue="" className="form-control" />
                     </div>
                     <div className="form-group">
                       <label className="text-muted">Email</label>
                       <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                        <input type="email" value="studywell789@gmail.com" />
-                        <span className="fas fa-check text-success pr-sm-2 pr-0"></span>
+                        <input type="email" defaultValue="" />
                       </div>
                     </div>
                     <div className="row">
@@ -50,8 +49,7 @@ const CheckoutPage = () => {
                         <div className="form-group">
                           <label>City</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" value="SaiGon" />
-                            <span className="fas fa-check text-success pr-2"></span>
+                            <input type="text" defaultValue="" />
                           </div>
                         </div>
                       </div>
@@ -59,8 +57,7 @@ const CheckoutPage = () => {
                         <div className="form-group">
                           <label>Zip code</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" value="39830" />
-                            <span className="fas fa-check text-success pr-2"></span>
+                            <input type="text" defaultValue="" />
                           </div>
                         </div>
                       </div>
@@ -70,17 +67,15 @@ const CheckoutPage = () => {
                         <div className="form-group">
                           <label>Address</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" value="Nguyen Huu Tho street,Sunrise City" />
-                            <span className="fas fa-check text-success pr-2"></span>
+                            <input type="text" defaultValue="" />
                           </div>
                         </div>
                       </div>
                       <div className="col-lg-6">
                         <div className="form-group">
-                          <label>State</label>
+                          <label>Phone Number</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" value="NY" />
-                            <span className="fas fa-check text-success pr-2"></span>
+                            <input type="text" defaultValue="" />
                           </div>
                         </div>
                       </div>
