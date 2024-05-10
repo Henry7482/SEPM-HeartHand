@@ -94,6 +94,12 @@ const CheckoutPage = () => {
                 </div>
                 <input type="checkbox" checked />
                 <label>Shipping address is same as billing</label>
+              </div>
+              <div className="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1 pt-lg-0 pt-3">
+                <div className="text-muted pt-3" id="mobile">
+                  <span className="fas fa-lock"></span>
+                  Your information is save
+                </div>
                 <div id="address" className="bg-light rounded mt-3">
                   <div className="h5 font-weight-bold text-primary">
                     Shipping Address
@@ -111,12 +117,6 @@ const CheckoutPage = () => {
                       <p className="text-muted">Create the account to have multiple addresses saved</p>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1 pt-lg-0 pt-3">
-                <div className="text-muted pt-3" id="mobile">
-                  <span className="fas fa-lock"></span>
-                  Your information is save
                 </div>
               </div>
             </div>
