@@ -60,7 +60,7 @@ def create_app():
 
             # Upload filtered news data to MongoDB
             print("-> Uploading data to MongoDB.")
-            res = uploadData({"data": filteredNews})
+            res = requests.post('https://hearthand.onrender.com/api/v1/scraperdata', json=filteredNews)
             if res[1] != 200:
                 print(res)
             else:
