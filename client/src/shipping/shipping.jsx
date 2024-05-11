@@ -28,7 +28,7 @@ const CheckoutPage = () => {
             </div>
           </header>
           <div className="wrapper">
-            <div className="h5 large">Shipping Address</div>
+            <div className="h5 large">Shipping Cart</div>
             <div className="row">
               <div className="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1">
                 <div className="mobile h5">Shipping Address</div>
@@ -112,7 +112,27 @@ const CheckoutPage = () => {
                       <p className="text-muted">Create the account to have multiple addresses saved</p>
                     </div>
                   </div>
-                </div>
+                  <div id="address" className="bg-light rounded mt-3">
+                  <div className="h5 font-weight-bold text-primary">
+                    Product
+                  </div>
+                  <div className="form-group">
+                      <label className="text-muted">Enter product name</label>
+                      <input type="productname" defaultValue="" className="form-control" />
+                    </div>
+                    <div className="form-group">
+                      <label className="text-muted">Enter product code</label>
+                      <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                      <input type="productcode" defaultValue="" />
+                      </div>
+                    </div>
+                    <label>Quantity</label>
+                    <select name="country" id="country">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                    </select>
+                  </div>
+                  </div>
               </div>
             </div>
             <div className="text-muted">
