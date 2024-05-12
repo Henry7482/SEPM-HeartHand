@@ -28,11 +28,7 @@ function Donor({ Toggle }) {
     <div className='px-3'>
       <Nav Toggle={Toggle} />
       <div className='container-fluid'>
-<<<<<<< HEAD
-        <caption className='text-white fs-3'>RecentDonations</caption>
-=======
         <caption className='text-white fs-3'>Recent Donations</caption>
->>>>>>> 0f417647087b184c0e50179c0091855025480779
         <table className="table bg-white rounded mt-2">
           <thead>
             <tr>
@@ -60,11 +56,7 @@ function Donor({ Toggle }) {
                 <td>{donor.description}</td>
                 <td>{donor.shippingStatus}</td>
                 <td>
-<<<<<<< HEAD
-                  <img src={donor.imageUrl} alt="Product" style={{ width: '100px', height: '70px', cursor: 'pointer' }} onClick={() => openModal(donor.imageUrl)} />
-=======
                   <img src={donor.imageUrl} alt="Product" style={{ width: '50px', height: '50px', cursor: 'pointer' }} onClick={() => openModal(donor.imageUrl)} />
->>>>>>> 0f417647087b184c0e50179c0091855025480779
                 </td>
                 <td>
                   <button onClick={() => handleDelete(donor.id)} className="btn btn-danger">Delete</button>

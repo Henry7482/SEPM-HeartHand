@@ -5,15 +5,6 @@ import '../admin/admin.css';
 
 
 function Sidebar({ selectPage }) {
-<<<<<<< HEAD
-  const [activeItem, setActiveItem] = useState('Dashboard'); 
-
-
-  const handleSelectPage = (page) => {
-    selectPage(page);
-    setActiveItem(page); 
-
-=======
   const navigate = useNavigate(); // Instantiate navigate function
   const [activeItem, setActiveItem] = useState('Dashboard'); // Default active page
 
@@ -25,7 +16,6 @@ function Sidebar({ selectPage }) {
       selectPage(page);
       setActiveItem(page); // Set active item state
     }
->>>>>>> 0f417647087b184c0e50179c0091855025480779
   };
 
   return (

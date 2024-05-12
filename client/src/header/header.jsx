@@ -45,7 +45,7 @@ class Navbar extends Component {
                         <ul id="navbar" className={this.state.clicked ? "active" : ""}>
                             <li><a className="active" href="www.google.com">Latest news </a></li>
                             <li><a href="www.google.com">Organization </a></li>
-                            <li><a href="www.google.com">Our impact </a></li>
+                            <li><a href="www.google.com">Donation </a></li>
                             <li><a href="www.google.com"> About Us </a></li>
                         </ul>
                     </div>

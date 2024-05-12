@@ -23,17 +23,8 @@ function Organization({ Toggle }) {
     { name: 'HearHand', domain: 'South', logo: logo },
     { name: 'RMIT-Heart', domain: 'North', logo: rmitLogo },
     { name: 'Together', domain: 'Middle', logo: charity },
-<<<<<<< HEAD
-    { name: 'Together', domain: 'Middle', logo: charity },
-    { name: 'Together', domain: 'Middle', logo: charity },
-    { name: 'Together', domain: 'Middle', logo: charity },
-    { name: 'Together', domain: 'Middle', logo: charity },
-    { name: 'Together', domain: 'Middle', logo: charity },
-
-=======
     { name: 'RMIT-Heart', domain: 'North', logo: rmitLogo },
     { name: 'Together', domain: 'Middle', logo: charity },
->>>>>>> 0f417647087b184c0e50179c0091855025480779
   ]);
 
   const handleInputChange = (e) => {
@@ -71,16 +62,6 @@ function Organization({ Toggle }) {
   return (
 <div className='px-3'>
   <Nav Toggle={Toggle} />
-<<<<<<< HEAD
-  <div className="container-fluid" style={{ position: 'fixed'}}>
-    <div className="row mt-2"> 
-      <div className="col-12">
-        <div style={{ position: 'relative', overflowX: 'auto' }}>
-          <Draggable axis="x">
-            <div className='d-flex flex-nowrap'>
-              {organizations.map((organization, index) => (
-                <div key={index} className='p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded organization-card mx-2' style={{ minWidth: '300px' }}>
-=======
   <div className="container-fluid"style={{ position: 'fixed'}} >
     <div className="row mt-2">
       <div className="col-12">
@@ -89,7 +70,6 @@ function Organization({ Toggle }) {
             <div className='d-flex flex-nowrap'>
               {organizations.map((organization, index) => (
                 <div key={index} className='p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded organization-card mx-2' style={{ minWidth: '300px',maxWidth: '400px'  }}>
->>>>>>> 0f417647087b184c0e50179c0091855025480779
                   <div>
                     <h3 className='fs-2'>{organization.name}</h3>
                     <p className='fs-5'>{organization.domain}</p>
@@ -102,16 +82,10 @@ function Organization({ Toggle }) {
         </div>
       </div>
     </div>
-<<<<<<< HEAD
-    <div className="row">
-      <div className="col-12">
-        <div className="text-center" style={{marginTop: '40px'}}>
-=======
 
-    <div className="row" style={{marginTop:'200px', paddingRight:'300px'}}>
+    <div className="row" style={{marginTop:'200px', paddingRight:'350px'}}>
       <div className="col-12" > 
         <div className="text-center mt-3">
->>>>>>> 0f417647087b184c0e50179c0091855025480779
           <button className="btn btn-primary" onClick={() => setShowCreateForm(!showCreateForm)}>
             Create New Organization
           </button>
@@ -119,11 +93,7 @@ function Organization({ Toggle }) {
       </div>
     </div>
     {showCreateForm && (
-<<<<<<< HEAD
-      <div className='row'>
-=======
-      <div className="row" style={{ paddingRight:'300px'}}>
->>>>>>> 0f417647087b184c0e50179c0091855025480779
+      <div className="row" style={{ paddingRight:'350px'}}>
         <div className='col-12'>
           <div className='mt-3 bg-white shadow-sm p-3 rounded'>
             <div>
@@ -146,11 +116,6 @@ function Organization({ Toggle }) {
     )}
   </div>
 </div>
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 0f417647087b184c0e50179c0091855025480779
   );
 }
 
