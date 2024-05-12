@@ -1,5 +1,31 @@
 
+<<<<<<< HEAD
+.sidebar {
+  position: fixed; 
+  left: 0;
+  top: 0;
+  width: 340px; 
+  height: 100%;
+  background-color: white; 
+  z-index: 1000; 
+}
 
+#dragSpace {
+  margin-left: 350px; 
+  z-index: 1; 
+}
+
+
+.organization-card {
+  max-width: 300px; 
+}
+
+
+=======
+.sidebar{
+  width: 215px;
+}
+>>>>>>> 0f417647087b184c0e50179c0091855025480779
 .sidebar .list-group-item {
     border-bottom: 1px solid #dee2e6; 
     text-align: left; 
@@ -25,4 +51,4 @@
     background-color: blue; /* Active item background */
     color: white; /* Active item text color */
   }
-  
+

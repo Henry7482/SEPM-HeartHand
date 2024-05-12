@@ -1,12 +1,31 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import '../admin/admin.css';
 
+
+
 function Sidebar({ selectPage }) {
-  const [activeItem, setActiveItem] = useState('Dashboard'); // Default active page
+<<<<<<< HEAD
+  const [activeItem, setActiveItem] = useState('Dashboard'); 
+
 
   const handleSelectPage = (page) => {
     selectPage(page);
-    setActiveItem(page); // Set active item state
+    setActiveItem(page); 
+
+=======
+  const navigate = useNavigate(); // Instantiate navigate function
+  const [activeItem, setActiveItem] = useState('Dashboard'); // Default active page
+
+  const handleSelectPage = (page) => {
+    if (page === 'Logout') {
+      // Perform logout logic here (like clearing localStorage or tokens)
+      navigate('/LogIn'); // Navigate to Login page on logout
+    } else {
+      selectPage(page);
+      setActiveItem(page); // Set active item state
+    }
+>>>>>>> 0f417647087b184c0e50179c0091855025480779
   };
 
   return (
@@ -34,9 +53,9 @@ function Sidebar({ selectPage }) {
           <span className='fs-5'>Donation</span>
         </button>
         <button onClick={() => handleSelectPage('Logout')} className={`list-group-item py-2 ${activeItem === 'Logout' ? 'active' : ''}`}>
-          <i className='bi bi-power fs-5 me-3'></i>
-          <span className='fs-5'>Logout</span>
-        </button>
+        <i className='bi bi-power fs-5 me-3'></i>
+        <span className='fs-5'>Logout</span>
+      </button>
       </div>
     </div>
   );

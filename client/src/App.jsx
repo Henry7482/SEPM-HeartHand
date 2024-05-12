@@ -8,10 +8,11 @@ import Donate from "./blogPage/donatebox.jsx";
 import Blog from "./blogPage/blog.jsx";
 import React, { useState, useEffect } from "react";
 import Login from "./login/Login1.jsx"
-import Admin from "./admin/admin.js";
+import Admin from "./admin/admin.jsx";
 import LogIn2 from "./loginfordonors/DonorLogin.jsx";
 import CheckoutPage from "./shipping/shipping.jsx";
 import AdminLogin from "./login/AdminLogin.jsx";
+import AboutUs from "./aboutus/aboutus.jsx";
 function App() {
   const [blogs, setBlogs] = useState(null);
   const [error, setError] = useState(null);
@@ -71,6 +72,7 @@ function App() {
           <Route path="/LogIn2" element={<LogIn2 />} />
           <Route path="/shipping" element={<CheckoutPage />} />
           <Route path="/adminLogIn" element={<AdminLogin />} />
+          <Route path="/AboutUs" element={<AboutUs />} />
         </Routes>
       </BrowserRouter>
     </div>

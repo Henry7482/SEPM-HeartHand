@@ -86,7 +86,7 @@ input[type="checkbox"] + label{
     padding: 20px 50px;
     left: 50%;
     top: 160px;
-    position:fixed;
+    /* position:fixed; */
     z-index: 100;
 }
 #address .d-md-flex p.text-justify,#register p.text-muted{
