@@ -85,7 +85,7 @@ def create_app():
 
             # Upload generated blogs to MongoDB
             print('=> Sending generated blogs to MongoDB...')
-            res = requests.post('https://hearthand.onrender.com/api/v1/blogs/generatedblogs', json=generated_blogs)
+            res = requests.post('https://hearthand.onrender.com/api/v1/generatedblogs', json=generated_blogs)
             if res.status_code != 201:
                 return             {
                     "message": "Failed to generate blogs!",
