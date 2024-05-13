@@ -68,6 +68,9 @@ const CheckoutPage = () => {
               <div className="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1">
                 <div className="mobile h5">Shipping Address</div>
                 <div id="details" className="bg-white rounded pb-5">
+                <div className="h5 font-weight-bold text-primary">
+                    Sending-Receiving
+                  </div>
                   <form>
                     <div className="form-group">
                       <label className="text-muted">Name</label>
@@ -121,7 +124,7 @@ const CheckoutPage = () => {
                           </div>
                       </div>
                     </div>
-                    <label>Country</label>
+                    <label>Shipping</label>
                     <select name="country" id="country">
                     <option disabled selected value>Choose a shipping shift</option>
                       {displayShifts(shifts)}
