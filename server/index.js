@@ -7,6 +7,7 @@ import {
   scraperRouter,
   organizationsRouter,
   userRouter,
+  deliveryRouter,
 } from "./src/routes/index.js";
 
 dotenv.config();
@@ -18,13 +19,14 @@ app.use(express.json());
 app.use(cors());
 
 // App Routes
-app.get("/", (req, res) => {
+app.get("/api/v1/", (req, res) => {
   res.send("Welcome to the HeartHand API!");
 });
 app.use("/api/v1/blogs", blogRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/scraperdata", scraperRouter);
 app.use("/api/v1/organizations", organizationsRouter);
+app.use("/api/v1/delivery", deliveryRouter);
 
 // Start Function
 const start = async () => {
