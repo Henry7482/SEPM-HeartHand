@@ -1,4 +1,5 @@
 import axios from "axios";
+import Donation from "../../models/Donation.js";
 
 const createDeliveryOrder = async (req, res) => {
   const data = {
@@ -7,7 +8,7 @@ const createDeliveryOrder = async (req, res) => {
     required_note: "CHOXEMHANGKHONGTHU",
     from_name: req.body.sender.name,
     from_phone: req.body.sender.phone,
-    from_addreqs: req.body.sender.address,
+    from_address: req.body.sender.address,
     from_ward_name: req.body.sender.ward,
     from_district_name: req.body.sender.district,
     from_province_name: req.body.sender.province,
@@ -22,7 +23,7 @@ const createDeliveryOrder = async (req, res) => {
     to_ward_code: req.body.organization.ward_code,
     to_district_id: req.body.organization.district_id,
     cod_amount: 0,
-    content: `Donation from ${req.body.sender.name} to ${req.body.organization.name}`,
+    content: req.body.content,
     weight: req.body.package.weight,
     length: req.body.package.length,
     width: req.body.package.width,
@@ -40,6 +41,7 @@ const createDeliveryOrder = async (req, res) => {
   //   console.log("Data:", data);
   //   res.status(204).send("Data received");
 
+// Add headers
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -48,6 +50,7 @@ const createDeliveryOrder = async (req, res) => {
     },
   };
 
+  // Create a delivery order
   let dataCreate;
   await axios
     .post(
@@ -61,35 +64,58 @@ const createDeliveryOrder = async (req, res) => {
     })
     .catch((error) => {
       console.log(error.response.data);
-      res.status(error.response.status).send({message: "Error in creating Delivery Order", error: error.response.data});
+      res.status(error.response.status).send({
+        message: "Error in creating Delivery Order",
+        error: error.response.data,
+      });
     });
 
-  if (dataCreate && dataCreate.code === 200) {
-    let dataCancel;
-    console.log("Create Delivery Order");
-    await axios
-      .post(
-        "https://online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel",
-        { order_codes: [dataCreate.data.order_code] },
-        config
-      )
-      .then((response) => {
-        console.log("Response from cancel: ", response.data);
-        dataCancel = response;
-      
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        res.status(error.response.status).send({message: "Error in canceling Delivery Order", error: error.response.data});
-      });
+  // Update the delivery order
+  // let dataUpdate;
+  // await axios
+  //   .post(
+  //     "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/update",
+  //     {"note":"nhớ gọi 30p khi giao","order_code":"5F5NH3LN"}
 
-    if (dataCancel && dataCancel.status === 200) {
-      console.log("Cancel Delivery Order");
-      res.status(200).send("Delivery Order created and canceled");
-    } else {
-        console.log(dataCancel);
-      res.status(400).send("Error in canceling Delivery Order");
-    }
+  // // Cancel the delivery order
+  // let dataCancel;
+  // console.log("Create Delivery Order");
+  // await axios
+  //   .post(
+  //     "https://online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel",
+  //     { order_codes: [dataCreate.data.order_code] },
+  //     config
+  //   )
+  //   .then((response) => {
+  //     console.log("Response from cancel: ", response.data);
+  //     dataCancel = response;
+  //   })
+  //   .catch((error) => {
+  //     console.log(error.response.data);
+  //     res.status(error.response.status).send({
+  //       message: "Error in canceling Delivery Order",
+  //       error: error.response.data,
+  //     });
+  //   });
+
+  // Create a donation document
+  try {
+    // console.log("Cancel Delivery Order");
+    await Donation.create({
+      donor_id: req.userID,
+      order_code: dataCreate.data.order_code,
+      sender_name: req.body.sender.name,
+      product_name: req.body.items[0].name,
+      product_category: req.body.items[0].category.level1,
+      product_quantity: req.body.items[0].quantity,
+      organization_name: req.body.organization.name,
+      description: req.body.content,
+      items: req.body.items,
+    });
+    res.status(200).send({"Delivery Order created successfully": dataCreate});
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ "Error in creating Donation in database": error });
   }
 };
 

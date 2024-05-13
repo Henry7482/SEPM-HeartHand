@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const RefreshTokenSchema = new mongoose.Schema({
+const refreshTokenSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Donor",
@@ -9,5 +9,5 @@ const RefreshTokenSchema = new mongoose.Schema({
 });
 
 const usersDB = mongoose.connection.useDb("users");
-const RefreshToken = usersDB.model("refresh_tokens", RefreshTokenSchema);
+const RefreshToken = usersDB.model("refresh_tokens", refreshTokenSchema);
 export default RefreshToken;
