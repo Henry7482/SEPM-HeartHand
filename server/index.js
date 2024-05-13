@@ -7,10 +7,12 @@ import {
   scraperRouter,
   organizationsRouter,
   userRouter,
+  deliveryRouter,
+  generatedBlogsRouter
 } from "./src/routes/index.js";
 import {jwtAuthAdmin, jwtAuthDonor} from "./src/middlewares/cookiejwtAuth.js";
 import cookieParser from "cookie-parser";
-
+import { getGeneratedBlogs } from "./src/controllers/blogs/generatedBlogs.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,6 +30,8 @@ app.use("/api/v1/blogs", blogRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/scraperdata", scraperRouter);
 app.use("/api/v1/organizations", organizationsRouter);
+app.use("/api/v1/delivery", deliveryRouter);
+app.use("/api/v1/generatedblogs", generatedBlogsRouter);
 
 
 app.get("/secret", jwtAuthDonor, (req, res) => {
