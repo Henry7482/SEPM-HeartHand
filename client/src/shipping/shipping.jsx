@@ -1,7 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './shipping.css'
 
 const CheckoutPage = () => {
+  const [shifts, setShifts] = useState([]);
+
+  const fetchShifts = async () => {
+    const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shift/date',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Token': '9865968a-0e0b-11ef-bfe9-c2d25c6518ab'
+        }
+      }
+    );
+    const data = await response.json();
+    setShifts(data.data);
+  };
+
+  useEffect(() => {
+    fetchShifts();
+  }, []);
+
+  if (!shifts) {
+      console.log("No shifts found");
+  } else {
+    console.log("Shifts found", JSON.stringify(shifts));
+  }
+
+  const displayShifts = (shifts) => {
+    if (Array.isArray(shifts)) {
+      return shifts.map((item, index) => (
+        <option value={index}>{item.title}</option>
+      ));
+    } else {
+      return <h1>Loading...</h1>;
+    }
+  }
     return (
         <>
           <nav className="bg-white">
@@ -88,8 +123,8 @@ const CheckoutPage = () => {
                     </div>
                     <label>Country</label>
                     <select name="country" id="country">
-                      <option value="usa">VietNam</option>
-                      <option value="ind">England</option>
+                    <option disabled selected value>Choose a shipping shift</option>
+                      {displayShifts(shifts)}
                     </select>
                   </form>
                 </div>

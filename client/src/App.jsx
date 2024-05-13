@@ -4,7 +4,7 @@ import SignUp from "./signupauthentication/SignUp.jsx"
 import Header from "./header/header.jsx";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import HomePage from "./homePage/homePage.jsx";
-import Donate from "./blogPage/donatebox.jsx";
+import Donate from "./blogPage/Donatebox.jsx";
 import Blog from "./blogPage/blog.jsx";
 import React, { useState, useEffect } from "react";
 import Login from "./login/Login1.jsx"

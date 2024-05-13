@@ -1,6 +1,6 @@
 import React from "react";
 import "./blog.css";
-import Donate from "../blogPage/donatebox";
+import Donate from "../blogPage/Donatebox";
 import Header from "../header/header";
 import Footer from "../footer/footer";
 import { useParams } from "react-router-dom";
