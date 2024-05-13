@@ -40,7 +40,6 @@ const BlogPage = ({ blogs }) => {
         <p>{blog.content}</p>
         <p>References: {blog.references}</p>
       </div>
-
       <Footer />
     </div>
   );
