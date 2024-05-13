@@ -13,6 +13,10 @@ const AdminSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    default: "admin",
+  },
 });
 
 const usersDB = mongoose.connection.useDb("users");
