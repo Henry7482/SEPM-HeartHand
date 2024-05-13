@@ -54,7 +54,7 @@ const CheckoutPage = () => {
               <div className="px-sm-5 px-2 active">SHIPPING CART
                 <span className="fas fa-check"></span>
               </div>
-              <div className="px-sm-5 px-2">CHECKOUT</div>
+              <div className="px-sm-5 px-2">ORDER</div>
               <div className="px-sm-5 px-2">FINISH</div>
             </div>
             <div className="progress">
@@ -69,41 +69,13 @@ const CheckoutPage = () => {
                 <div className="mobile h5">Shipping Address</div>
                 <div id="details" className="bg-white rounded pb-5">
                 <div className="h5 font-weight-bold text-primary">
-                    Sending-Receiving
-                  </div>
+                    Sending
+                 </div>
                   <form>
-                    <div className="form-group">
-                      <label className="text-muted">Name</label>
-                      <input type="text" defaultValue="" className="form-control" />
-                    </div>
-                    <div className="form-group">
-                      <label className="text-muted">Email</label>
-                      <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                        <input type="email" defaultValue="" />
-                      </div>
-                    </div>
-                    <div className="row">
+                  <div className="row">
                       <div className="col-lg-6">
                         <div className="form-group">
-                          <label>City</label>
-                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" defaultValue="" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-lg-6">
-                        <div className="form-group">
-                          <label>Zip code</label>
-                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" defaultValue="" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-lg-6">
-                        <div className="form-group">
-                          <label>Address</label>
+                          <label>Name Of The Store</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
                             <input type="text" defaultValue="" />
                           </div>
@@ -118,10 +90,24 @@ const CheckoutPage = () => {
                         </div>
                       </div>
                       <div className="form-group">
-                          <label>District</label>
+                      <label className="text-muted">Address</label>
+                      <input type="text" defaultValue="" className="form-control" />
+                    </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Distinct</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
                             <input type="text" defaultValue="" />
                           </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Province</label>
+                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input type="text" defaultValue="" />
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <label>Shipping</label>
@@ -129,6 +115,70 @@ const CheckoutPage = () => {
                     <option disabled selected value>Choose a shipping shift</option>
                       {displayShifts(shifts)}
                     </select>
+                  </form>
+                  <div className="h5 font-weight-bold text-primary" style={{ marginTop: '40px', marginBottom: '10px', top: 'auto' }}>
+                    Receiving
+                 </div>
+                  <form>
+                    <div className="row">
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Name</label>
+                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input type="text" defaultValue="" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Phone Number</label>
+                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input type="text" defaultValue="" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Distinct</label>
+                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input type="text" defaultValue="" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Province</label>
+                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input type="text" defaultValue="" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <div className="h5 font-weight-bold text-primary" style={{ marginTop: '40px', marginBottom: '10px', top: 'auto' }}>
+                     Package Informations
+                  </div>
+                  <form>
+                    <div className="form-group">
+                      <label className="text-muted">Total Mass</label>
+                      <input type="text" defaultValue="" className="form-control" />
+                    </div>
+                    <div className="form-group">
+                      <label className="text-muted">Length</label>
+                      <input type="text" defaultValue="" className="form-control" />
+                    </div>
+                    <div className="form-group">
+                      <label className="text-muted">Wide</label>
+                      <input type="text" defaultValue="" className="form-control" />
+                    </div>
+                    <div className="form-group">
+                      <label className="text-muted">Height</label>
+                      <input type="text" defaultValue="" className="form-control" />
+                    </div>
+                    <div className="form-group">
+                      <label className="text-muted">Total value of goods</label>
+                      <input type="text" defaultValue="" className="form-control" />
+                    </div>
                   </form>
                 </div>
                 <input type="checkbox" checked />
@@ -145,14 +195,14 @@ const CheckoutPage = () => {
                   </div>
                   <div className="d-md-flex justify-content-md-start align-items-md-center pt-3">
                     <div className="mr-auto">
-                      <b>Home Address</b>
+                      <b>Delivery Location</b>
                       <input type="text" defaultValue="" />
                     </div>
                     <div className="rounded py-2 px-3" id="register">
                       <a href="#">
-                        <b>Register Now</b>
+                        <b>Customer Experience</b>
                       </a>
-                      <p className="text-muted">Create the account to have multiple addresses saved</p>
+                      <p className="text-muted">Ensuring a seamless shopping experience is our priority.</p>
                     </div>
                   </div>
                   <div id="address" className="bg-light rounded mt-3">
@@ -164,7 +214,7 @@ const CheckoutPage = () => {
                       <input type="productname" defaultValue="" className="form-control" />
                     </div>
                     <div className="form-group">
-                      <label className="text-muted">Enter product code</label>
+                      <label className="text-muted">Mass</label>
                       <div className="d-flex jusify-content-start align-items-center rounded p-2">
                       <input type="productcode" defaultValue="" />
                       </div>
@@ -174,6 +224,12 @@ const CheckoutPage = () => {
                       <option value="1">1</option>
                       <option value="2">2</option>
                     </select>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px', marginBottom: '10px' }}>
+                     <div className="rounded py-2 px-3" id="register" style={{ backgroundColor: '#f0f0f0' }}>
+                     <a href="#"><b>Note</b></a>
+                      <input type="Type the note here" defaultValue="" style={{ backgroundColor: '#f0f0f0', border: 'none' }} />
+                     </div>
+                    </div>
                   </div>
                   <button type="button" class="btn btn-success">Create Order</button>
                   </div>

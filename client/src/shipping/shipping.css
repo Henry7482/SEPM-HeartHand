@@ -233,3 +233,6 @@ tr.text-muted td{
         width: fit-content;
     }
 }
+.element { 
+    margin-top: 40px; 
+}
