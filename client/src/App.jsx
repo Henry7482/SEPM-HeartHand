@@ -4,7 +4,7 @@ import SignUp from "./signupauthentication/SignUp.jsx"
 import Header from "./header/header.jsx";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import HomePage from "./homePage/homePage.jsx";
-import Donate from "./blogPage/Donatebox.jsx";
+import Donatebox from "./blogPage/Donatebox.jsx";
 import Blog from "./blogPage/blog.jsx";
 import React, { useState, useEffect } from "react";
 import Login from "./login/Login1.jsx"
@@ -64,7 +64,7 @@ function App() {
           <Route path="/footer" element={<Footer />} />
           <Route path="/header" element={<Header />} />
           <Route path="/home" element={<HomePage blogs={blogs}/>} />
-          <Route path="/donate" element={<Donate />} />
+          <Route path="/donate" element={<Donatebox />} />
                                               {/* !!Pass in blogs value for Blog page to read */}
           <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
           <Route path="/foote" element={<Footer />} />
