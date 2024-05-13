@@ -79,6 +79,12 @@ const CheckoutPage = () => {
                           </div>
                         </div>
                       </div>
+                      <div className="form-group">
+                          <label>District</label>
+                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input type="text" defaultValue="" />
+                          </div>
+                      </div>
                     </div>
                     <label>Country</label>
                     <select name="country" id="country">
@@ -102,8 +108,7 @@ const CheckoutPage = () => {
                   <div className="d-md-flex justify-content-md-start align-items-md-center pt-3">
                     <div className="mr-auto">
                       <b>Home Address</b>
-                      <p className="text-justify text-muted">342P,District 7</p>
-                      <p className="text-uppercase text-muted">DALAT</p>
+                      <input type="text" defaultValue="" />
                     </div>
                     <div className="rounded py-2 px-3" id="register">
                       <a href="#">
@@ -132,6 +137,7 @@ const CheckoutPage = () => {
                       <option value="2">2</option>
                     </select>
                   </div>
+                  <button type="button" class="btn btn-success">Create Order</button>
                   </div>
               </div>
             </div>
