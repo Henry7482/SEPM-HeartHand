@@ -31,7 +31,6 @@ const Navbar = () => {
           <a href="www.google.com">FAQs </a>
           <a href="www.google.com">Contact Us </a>
         </li>
-
         <li>
           <a>
             <img src={youtubeLogo} alt="youtube" width="30" height="30" />
@@ -49,60 +48,30 @@ const Navbar = () => {
 
         <li>
           {user && (
-            <div>
-                <ul id="headbar">
-                    <li>
-                        <a href="www.google.com">FAQs </a>
-                        <a href="www.google.com">Contact Us </a>
-                    </li>
-
-                    <li>
-                        <a><img src={youtubeLogo} alt="youtube" width="30" height="30" /></a>
-                        <a><img src={facebookLogo} alt="facebook" width="30" height="30"/></a>
-                        <a><img src={instagramLogo} alt="instagram" width="30" height="30"/></a>
-                        <a><img src={twitterLogo} alt="twitter" width="30" height="30"/></a>
-                    
-                    </li>
-
-                    <li>
-                      <a className="text-center btn-md">
-                      <img src={userLogo} alt="MyAccount" width="20" height="20" />{" "}
-                      {user.username}
-                      </a>
-                      <button
-                        onClick={handleLogout}
-                        className="login btn btn-outline-dark py-1"
-                      >
-                        Logout
-                      </button>
-                    </li>
-                </ul>
-
-                <nav>
-                    <a href="www.google.com" className="logo">
-                        <img src={logo} alt="logo" />
-                    </a>
-    
-                    <div>
-                        <ul id="navbar" className={this.state.clicked ? "active" : ""}>
-                            <li><a className="active" href="www.google.com">Latest news </a></li>
-                            <li><a href="www.google.com">Organization </a></li>
-                            <li><a href="www.google.com">Donation </a></li>
-                            <li><a href="www.google.com"> About Us </a></li>
-                        </ul>
-                    </div>
-                    <div id="mobile" onClick={this.handleClick}>
-                        <i id="bar" className={this.state.clicked ? "fas fa-times" : "fas fa-bars"}></i>
-                    </div>
-                </nav>
-            </div>
+            <>
+              <li>
+                <a className="text-center btn-md">
+                  <img src={userLogo} alt="MyAccount" width="20" height="20" />{" "}
+                  {user.username}
+                </a>
+                <button
+                  onClick={handleLogout}
+                  className="login btn btn-outline-dark py-1"
+                >
+                  Logout
+                </button>
+              </li>
+            </>
           )}
           {!user && (
-            <div>
-              <Link to="/authentication1Test" className="login btn btn-outline-dark py-1">
+            <>
+              <Link
+                to="/authentication1Test"
+                className="login btn btn-outline-dark py-1"
+              >
                 Login
               </Link>
-            </div>
+            </>
           )}
           {/* <a>
             <img src={userLogo} alt="MyAccount" width="20" height="20" />{" "}
