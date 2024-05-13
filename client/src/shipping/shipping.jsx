@@ -1,7 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './shipping.css'
 
 const CheckoutPage = () => {
+  const [shifts, setShifts] = useState([]);
+
+  const fetchShifts = async () => {
+    const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shift/date',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Token': '9865968a-0e0b-11ef-bfe9-c2d25c6518ab'
+        }
+      }
+    );
+    const data = await response.json();
+    setShifts(data.data);
+  };
+
+  useEffect(() => {
+    fetchShifts();
+  }, []);
+
+  if (!shifts) {
+      console.log("No shifts found");
+  } else {
+    console.log("Shifts found", JSON.stringify(shifts));
+  }
+
+  const displayShifts = (shifts) => {
+    if (Array.isArray(shifts)) {
+      return shifts.map((item, index) => (
+        <option value={index}>{item.title}</option>
+      ));
+    } else {
+      return <h1>Loading...</h1>;
+    }
+  }
     return (
         <>
           <nav className="bg-white">
@@ -28,21 +63,23 @@ const CheckoutPage = () => {
             </div>
           </header>
           <div className="wrapper">
-            <div className="h5 large">Billing Address</div>
+            <div className="h5 large">Shipping Cart</div>
             <div className="row">
               <div className="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1">
-                <div className="mobile h5">Billing Address</div>
+                <div className="mobile h5">Shipping Address</div>
                 <div id="details" className="bg-white rounded pb-5">
+                <div className="h5 font-weight-bold text-primary">
+                    Sending-Receiving
+                  </div>
                   <form>
                     <div className="form-group">
                       <label className="text-muted">Name</label>
-                      <input type="text" value="Truong Pham Vinh Khang" className="form-control" />
+                      <input type="text" defaultValue="" className="form-control" />
                     </div>
                     <div className="form-group">
                       <label className="text-muted">Email</label>
                       <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                        <input type="email" value="studywell789@gmail.com" />
-                        <span className="fas fa-check text-success pr-sm-2 pr-0"></span>
+                        <input type="email" defaultValue="" />
                       </div>
                     </div>
                     <div className="row">
@@ -50,8 +87,7 @@ const CheckoutPage = () => {
                         <div className="form-group">
                           <label>City</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" value="SaiGon" />
-                            <span className="fas fa-check text-success pr-2"></span>
+                            <input type="text" defaultValue="" />
                           </div>
                         </div>
                       </div>
@@ -59,8 +95,7 @@ const CheckoutPage = () => {
                         <div className="form-group">
                           <label>Zip code</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" value="39830" />
-                            <span className="fas fa-check text-success pr-2"></span>
+                            <input type="text" defaultValue="" />
                           </div>
                         </div>
                       </div>
@@ -70,30 +105,40 @@ const CheckoutPage = () => {
                         <div className="form-group">
                           <label>Address</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" value="Nguyen Huu Tho street,Sunrise City" />
-                            <span className="fas fa-check text-success pr-2"></span>
+                            <input type="text" defaultValue="" />
                           </div>
                         </div>
                       </div>
                       <div className="col-lg-6">
                         <div className="form-group">
-                          <label>State</label>
+                          <label>Phone Number</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" value="NY" />
-                            <span className="fas fa-check text-success pr-2"></span>
+                            <input type="text" defaultValue="" />
                           </div>
                         </div>
                       </div>
+                      <div className="form-group">
+                          <label>District</label>
+                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input type="text" defaultValue="" />
+                          </div>
+                      </div>
                     </div>
-                    <label>Country</label>
+                    <label>Shipping</label>
                     <select name="country" id="country">
-                      <option value="usa">VietNam</option>
-                      <option value="ind">England</option>
+                    <option disabled selected value>Choose a shipping shift</option>
+                      {displayShifts(shifts)}
                     </select>
                   </form>
                 </div>
                 <input type="checkbox" checked />
                 <label>Shipping address is same as billing</label>
+              </div>
+              <div className="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1 pt-lg-0 pt-3">
+                <div className="text-muted pt-3" id="mobile">
+                  <span className="fas fa-lock"></span>
+                  Your information is save
+                </div>
                 <div id="address" className="bg-light rounded mt-3">
                   <div className="h5 font-weight-bold text-primary">
                     Shipping Address
@@ -101,8 +146,7 @@ const CheckoutPage = () => {
                   <div className="d-md-flex justify-content-md-start align-items-md-center pt-3">
                     <div className="mr-auto">
                       <b>Home Address</b>
-                      <p className="text-justify text-muted">342P,District 7</p>
-                      <p className="text-uppercase text-muted">DALAT</p>
+                      <input type="text" defaultValue="" />
                     </div>
                     <div className="rounded py-2 px-3" id="register">
                       <a href="#">
@@ -111,103 +155,28 @@ const CheckoutPage = () => {
                       <p className="text-muted">Create the account to have multiple addresses saved</p>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1 pt-lg-0 pt-3">
-                <div id="cart" className="bg-white rounded">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="h6">Cart Summary</div>
-                    <div className="h6">
-                      <a href="#">Edit</a>
+                  <div id="address" className="bg-light rounded mt-3">
+                  <div className="h5 font-weight-bold text-primary">
+                    Product
+                  </div>
+                  <div className="form-group">
+                      <label className="text-muted">Enter product name</label>
+                      <input type="productname" defaultValue="" className="form-control" />
                     </div>
-                  </div>
-                  <div className="d-flex jusitfy-content-between align-items-center pt-3 pb-2 border-bottom">
-                    <div className="item pr-2">
-                      <img src="https://images.unsplash.com/photo-1569488859134-24b2d490f23f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-                        alt="" width="80" height="80" />
-                      <div className="number">3</div>
+                    <div className="form-group">
+                      <label className="text-muted">Enter product code</label>
+                      <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                      <input type="productcode" defaultValue="" />
+                      </div>
                     </div>
-                    <div className="d-flex flex-column px-3">
-                      <b className="h5">Coffee</b>
-                      <a href="#" className="h5 text-primary">C-483</a>
-                    </div>
-                    <div className="ml-auto">
-                      <b className="h5">$79.3</b>
-                    </div>
+                    <label>Quantity</label>
+                    <select name="country" id="country">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                    </select>
                   </div>
-                  <div className="my-3">
-                    <input type="text" className="w-100 form-control text-center" placeholder="Gift Card or Promo Card" />
+                  <button type="button" class="btn btn-success">Create Order</button>
                   </div>
-                  <div className="d-flex align-items-center">
-                    <div className="display-5">Subtotal</div>
-                    <div className="ml-auto font-weight-bold">$79.3</div>
-                  </div>
-                  <div className="d-flex align-items-center py-2 border-bottom">
-                    <div className="display-5">Shipping</div>
-                    <div className="ml-auto font-weight-bold">$11.8</div>
-                  </div>
-                  <div className="d-flex align-items-center py-2">
-                    <div className="display-5">Total</div>
-                    <div className="ml-auto d-flex">
-                      <div className="text-primary text-uppercase px-3">usd</div>
-                      <div className="font-weight-bold">$90.11</div>
-                    </div>
-                  </div>
-                </div>
-                <p className="text-muted">Need help with an order?</p>
-                <p className="text-muted"><a href="#" className="text-danger">Hotline:</a>+38291942 (International)</p>
-                <div className="h4 pt-3">
-                  <span className="fas fa-shield-alt text-primary pr-2"></span>
-                  Security of your shipping</div>
-                <div id="summary" className="bg-white rounded py-2 my-4">
-                  <div className="table-responsive">
-                    <table className="table table-borderless w-75">
-                      <tbody>
-                        <tr className="text-muted">
-                          <td>Coffee</td>
-                          <td>:</td>
-                          <td>$79.3</td>
-                        </tr>
-                        <tr className="text-muted">
-                          <td>Code-483</td>
-                          <td>:</td>
-                          <td>483</td>
-                        </tr>
-                        <tr className="text-muted">
-                          <td>Quantity</td>
-                          <td>:</td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <span className="fas fa-minus btn text-muted"></span>
-                              <span>3</span>
-                              <span className="fas fa-plus btn text-muted"></span>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="border-top py-2 d-flex align-items-center ml-2 font-weight-bold">
-                    <div>Total</div>
-                    <div className="ml-auto text-primary">USD</div>
-                    <div className="px-2">$90.11</div>
-                  </div>
-                </div>
-                <div className="row pt-lg-3 pt-2 buttons mb-sm-0 mb-2">
-                  <div className="col-md-6">
-                    <div className="btn text-uppercase">Back to shipping</div>
-                  </div>
-                  <div className="col-md-6 pt-md-0 pt-3">
-                    <div className="btn text-white ml-auto">
-                      <span className="fas fa-lock"></span>
-                      Continue to Shipping
-                    </div>
-                  </div>
-                </div>
-                <div className="text-muted pt-3" id="mobile">
-                  <span className="fas fa-lock"></span>
-                  Your information is save
-                </div>
               </div>
             </div>
             <div className="text-muted">

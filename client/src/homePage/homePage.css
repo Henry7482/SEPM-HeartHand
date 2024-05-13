@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+   
 }
   
 .body-div {
@@ -9,9 +10,8 @@
     background-color: #6364d5;
 }
 
-.home-page img {
-    width: 100%; 
-}
+
+
 
 .block-link{
     width: 80%;
@@ -32,6 +32,7 @@
     max-width: 300px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
 }
 
 .blog-content {
@@ -57,22 +58,9 @@
     margin-bottom: 15px;
 }
 
-.page-name {
-    position: absolute;
-    height: 146px;
-    left: 57px;
-    background-color: black;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    top: 35rem
-    
-}
 
-.page-name h2 {
-    font-weight: bold;
-    margin-bottom: 10px;
-}
+
+
 
 .italic-line {
     font-style: italic;
@@ -92,7 +80,7 @@
 .blog-detail {
     width: 100%;
     margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-top: 5rem;
 }
 
 .latest-news-title {

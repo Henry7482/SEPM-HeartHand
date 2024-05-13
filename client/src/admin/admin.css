@@ -1,5 +1,7 @@
 
-
+.sidebar{
+  width: 215px;
+}
 .sidebar .list-group-item {
     border-bottom: 1px solid #dee2e6; 
     text-align: left; 
@@ -25,4 +27,4 @@
     background-color: blue; /* Active item background */
     color: white; /* Active item text color */
   }
-  
+

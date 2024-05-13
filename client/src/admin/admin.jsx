@@ -5,6 +5,8 @@ import Sidebar from './Sidebar';
 import Dashboard from './dashboard';
 import Home from './home';
 import Organization from './organization';
+import Donation from './donor';
+
 
 
 const Admin = () => {
@@ -45,6 +47,8 @@ const Admin = () => {
           {activePage === 'Dashboard' && <Dashboard Toggle={Toggle} />}
           {activePage === 'Home' && <Home articles={articles} Toggle={Toggle}/>}
           {activePage === 'Organization' && <Organization Toggle={Toggle} />}
+          {activePage === 'Donation' && <Donation Toggle={Toggle} />}
+
         </div>
       </div>
     </div>

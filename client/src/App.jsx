@@ -4,15 +4,17 @@ import SignUp from "./signupauthentication/SignUp.jsx";
 import Header from "./header/Header.jsx";
 import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./homePage/homePage.jsx";
-import Donate from "./blogPage/Donatebox.jsx";
-import Blog from "./blogPage/Blog.jsx";
+import Donatebox from "./blogPage/Donatebox.jsx";
+import Blog from "./blogPage/blog.jsx";
 import React, { useState, useEffect } from "react";
-import Login from "./loginauthentication/AdminLogin.jsx";
+import Login from "./login/Login1.jsx"
 import Admin from "./admin/admin.jsx";
 import LogIn2 from "./loginfordonors/DonorLogin.jsx";
 import CheckoutPage from "./shipping/shipping.jsx";
-import AdminLogin from "./loginauthentication/Login.jsx";
-import { useAuthContext } from "./hooks/useAuthContext.js";
+import AdminLogin from "./login/AdminLogin.jsx";
+import AboutUs from "./aboutus/aboutus.jsx";
+import Organization from "./Organization/organization.jsx";
+
 function App() {
   const [blogs, setBlogs] = useState(null);
   const [error, setError] = useState(null);
@@ -90,16 +92,6 @@ function App() {
         <Routes>
           <Route path="/footerTest" element={<Footer />} />
           <Route path="/headerTest" element={<Header />} />
-          <Route
-            path="/homeTest"
-            element={
-              user ? (
-                <HomePage blogs={blogs} />
-              ) : (
-                <Navigate to="/authentication1Test" />
-              )
-            }
-          />
           <Route path="/donateTest" element={<Donate />} />
           <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
           <Route path="/footerTest" element={<Footer />} />
@@ -120,9 +112,24 @@ function App() {
                 <Navigate to="/authentication1Test" />
               )
             } />
+
+            
+          <Route path="/footer" element={<Footer />} />
+          <Route path="/header" element={<Header />} />
+          <Route path="/home" element={<HomePage blogs={blogs}/>} />
+          <Route path="/donate" element={<Donatebox />} />
+                                              {/* !!Pass in blogs value for Blog page to read */}
+          <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
+          <Route path="/foote" element={<Footer />} />
+          <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/LogIn" element={<Login />} />
+          <Route path="/admin" element={<Admin blogs={blogs} />} />
           <Route path="/LogIn2" element={<LogIn2 />} />
-          <Route path="/shippingtest" element={<CheckoutPage />} />
+          <Route path="/shipping" element={<CheckoutPage />} />
           <Route path="/adminLogIn" element={<AdminLogin />} />
+          <Route path="/AboutUs" element={<AboutUs />} />
+          <Route path="/Organization" element={<Organization />} />
+
         </Routes>
       </BrowserRouter>
     </div>

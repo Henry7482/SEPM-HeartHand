@@ -24,6 +24,8 @@ nav div.ml-auto a{
 header{
     padding: 20px 0px;
 }
+
+
 header .active{
     font-weight: 700;
     position: relative;
@@ -82,6 +84,10 @@ input[type="checkbox"] + label{
 }
 #address,#cart,#summary{
     padding: 20px 50px;
+    left: 50%;
+    top: 160px;
+    /* position:fixed; */
+    z-index: 100;
 }
 #address .d-md-flex p.text-justify,#register p.text-muted{
     margin: 0;
@@ -212,6 +218,7 @@ tr.text-muted td{
     #register{
         width: 100%;
     }
+
 }
 @media(max-width: 424px){
     body{

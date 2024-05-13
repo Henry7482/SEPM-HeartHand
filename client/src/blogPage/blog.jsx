@@ -1,7 +1,7 @@
 import React from "react";
 import "./blog.css";
-import Donate from "./Donatebox";
-import Header from "../header/Header";
+import Donate from "../blogPage/Donatebox";
+import Header from "../header/header";
 import Footer from "../footer/footer";
 import { useParams } from "react-router-dom";
 import Blogdetail from "../assets/image copy.png";
@@ -42,7 +42,6 @@ const BlogPage = ({ blogs }) => {
         <p>{blog.content}</p>
         <p>References: {blog.references}</p>
       </div>
-
       <Footer />
     </div>
   );
