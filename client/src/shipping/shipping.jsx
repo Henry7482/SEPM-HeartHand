@@ -108,8 +108,8 @@ const CheckoutPage = () => {
               <div className="logo">
                 <a href="#" className="text-uppercase">ship</a>
               </div>
-              <div className="ml-auto">
-                <a href="#" className="text-uppercase">Back to shipping</a>
+              <div className="right-align" style={{ marginLeft: '1180px' }}>
+              <a href="#" className="text-uppercase">Back to shipping</a>
               </div>
             </div>
           </nav>

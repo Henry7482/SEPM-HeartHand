@@ -171,6 +171,12 @@ tr.text-muted td{
 .buttons{
     vertical-align: text-bottom;
 }
+
+.right-align {
+    margin-left: auto;
+  }
+  
+
 #register{
     width: 50%;
 }
