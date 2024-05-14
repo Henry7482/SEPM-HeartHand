@@ -1,8 +1,10 @@
+//upload image to cloudinary
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
 import fs from 'fs';
+import multer from 'multer';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -39,3 +41,11 @@ const imageFolderPath = join(__dirname, 'images');
 // Upload images from the "image" folder
 const imageFiles = readFilesFromDir(imageFolderPath);
 imageFiles.forEach(uploadImage);
+
+// Configure storage for multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, 'uploads/'),
+    filename: (req, file, cb) => cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+  });
+  
+  export const upload = multer({ storage: storage });
