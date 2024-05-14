@@ -3,6 +3,15 @@ import './shipping.css'
 
 const CheckoutPage = () => {
   const [shifts, setShifts] = useState([]);
+  const [selectedShift, setSelectedShift] = useState('default');
+
+  const handleSelectShift = (event) => {
+    const selectedId = event.target.value;
+    setSelectedShift(selectedId);
+    console.log('Selected shift:', selectedId);
+  };
+  
+  
 
   const fetchShifts = async () => {
     const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shift/date',
@@ -29,14 +38,15 @@ const CheckoutPage = () => {
   }
 
   const displayShifts = (shifts) => {
-    if (Array.isArray(shifts)) {
-      return shifts.map((item, index) => (
-        <option value={index}>{item.title}</option>
+    if (Array.isArray(shifts) && shifts.length > 0) {
+      return shifts.map((item) => (
+        <option key={item.id} value={item.id}>{item.title}</option>
       ));
     } else {
-      return <h1>Loading...</h1>;
+      return <option value="default">No shift found</option>;
     }
-  }
+  };
+    
   const [districts, setDistricts] = useState([]);
 
   const fetchDistricts = async () => {
@@ -177,8 +187,13 @@ const CheckoutPage = () => {
                       </div>
                     </div>
                     <label>Shipping</label>
-                    <select name="country" id="country">
-                    <option disabled selected value>Choose a shipping shift</option>
+                    <select
+                      name="shift"
+                      id="shift"
+                      value={selectedShift}
+                      onChange={handleSelectShift}
+                    >
+                      <option disabled value="default">Choose a shipping shift</option>
                       {displayShifts(shifts)}
                     </select>
                   </form>
