@@ -6,7 +6,7 @@ import {
   updateOrganization,
   deleteOrganizations,
 } from "../controllers/organizationsController.js";
-import { upload } from './uploadImages.js';  // Assuming middleware is correctly set up
+import { upload } from '../models/uploadImages.js';  // Assuming middleware is correctly set up
 const organizationsRouter = Router();
 
 organizationsRouter.route("/").get(getOrganizations).post(upload.single('logo'), createOrganizations);

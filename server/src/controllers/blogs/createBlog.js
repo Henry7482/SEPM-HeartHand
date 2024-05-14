@@ -1,5 +1,5 @@
 import Blog from "../../models/Blog.js";
-import uploadImagesToCloudinary from "../../models/uploadImages.js";
+import {upload} from "../../models/uploadImages.js";
 
 const createBlog = async (req, res) => {
   try {
