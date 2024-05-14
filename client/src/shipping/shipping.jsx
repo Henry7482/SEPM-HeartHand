@@ -109,7 +109,7 @@ const CheckoutPage = () => {
                 <a href="#" className="text-uppercase">ship</a>
               </div>
               <div className="right-align" style={{ marginLeft: '1180px' }}>
-              <a href="#" className="text-uppercase">Back to shipping</a>
+              <a href="#" className="text-uppercase,h5 font-weight-bold text-primary">Back to shipping</a>
               </div>
             </div>
           </nav>
