@@ -13,7 +13,11 @@ import { jwtAuthAdmin } from "../middlewares/cookiejwtAuth.js";
 const blogRouter = Router();
 
 blogRouter.route("/").get(getBlogs).post(jwtAuthAdmin, createBlog);
-blogRouter.route("/:id").get(getBlogbyId).put(jwtAuthAdmin, updateBlog).delete(jwtAuthAdmin, deleteBlog);
+blogRouter
+  .route("/:id")
+  .get(getBlogbyId)
+  .put(jwtAuthAdmin, updateBlog)
+  .delete(jwtAuthAdmin, deleteBlog);
 blogRouter
   .route("/generatedblogs")
   .get(jwtAuthAdmin, getGeneratedBlogs)

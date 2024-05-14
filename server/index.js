@@ -7,10 +7,13 @@ import {
   scraperRouter,
   organizationsRouter,
   userRouter,
+  deliveryRouter,
+  generatedBlogsRouter,
+  donationRouter
 } from "./src/routes/index.js";
 import {jwtAuthAdmin, jwtAuthDonor} from "./src/middlewares/cookiejwtAuth.js";
 import cookieParser from "cookie-parser";
-
+import { getGeneratedBlogs } from "./src/controllers/blogs/generatedBlogs.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,6 +31,9 @@ app.use("/api/v1/blogs", blogRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/scraperdata", scraperRouter);
 app.use("/api/v1/organizations", organizationsRouter);
+app.use("/api/v1/delivery", deliveryRouter);
+app.use("/api/v1/generatedblogs", generatedBlogsRouter);
+app.use("/api/v1/donations", donationRouter);
 
 
 app.get("/secret", jwtAuthDonor, (req, res) => {
@@ -39,7 +45,7 @@ const start = async () => {
   try {
     await connectDB();
     // console.log("No Mongo")
-    app.listen(8080, () => {
+    app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   } catch (err) {

@@ -8,9 +8,9 @@ const jwtAuthDonor = (req, res, next) => {
     }
     try {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        console.log(decodedToken.role);
-        console.log(decodedToken.role !== 'donor')
-        console.log(decodedToken.role !== 'admin')
+        // console.log(decodedToken.role);
+        // console.log(decodedToken.role !== 'donor')
+        // console.log(decodedToken.role !== 'admin')
 
         if (decodedToken.role !== 'donor' || decodedToken.role !== 'admin') {
             req.userID = decodedToken.userID;
