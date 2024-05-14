@@ -1,11 +1,11 @@
 
 .sidebar{
-  width: 215px;
+  width: 215 px;
 }
 .sidebar .list-group-item {
     border-bottom: 1px solid #dee2e6; 
     text-align: left; 
-    padding-left: 30px; 
+    padding-left: 20px; 
   }
   
   .sidebar .list-group-item:last-child {
