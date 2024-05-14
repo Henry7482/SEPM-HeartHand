@@ -8,7 +8,8 @@ import {
   organizationsRouter,
   userRouter,
   deliveryRouter,
-  generatedBlogsRouter
+  generatedBlogsRouter,
+  donationRouter
 } from "./src/routes/index.js";
 import {jwtAuthAdmin, jwtAuthDonor} from "./src/middlewares/cookiejwtAuth.js";
 import cookieParser from "cookie-parser";
@@ -32,6 +33,7 @@ app.use("/api/v1/scraperdata", scraperRouter);
 app.use("/api/v1/organizations", organizationsRouter);
 app.use("/api/v1/delivery", deliveryRouter);
 app.use("/api/v1/generatedblogs", generatedBlogsRouter);
+app.use("/api/v1/donations", donationRouter);
 
 
 app.get("/secret", jwtAuthDonor, (req, res) => {
