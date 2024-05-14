@@ -2,6 +2,7 @@ import re
 import requests 
 from bs4 import BeautifulSoup 
 import json
+import sys
 
 
 # Function to color text
@@ -13,6 +14,9 @@ GREEN = "92"
 def scraper_by_presets(preset, url):
     # Limit number of articles to scrape
     LIMIT = 5
+    # Extend the recursion limit of Python
+    sys.setrecursionlimit(10000)
+
 
     # Request access to the website
     try:

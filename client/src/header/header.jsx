@@ -1,106 +1,114 @@
-import React, {useState} from "react";
-import './header.css';
-import {RiMenu3Line, RiCloseLine} from 'react-icons/ri';
-import logo from "../assets/Screenshot 2024-04-10 022637.png";
+import React, { Component, useState } from "react";
+import "./header.css";
+import logo from "../assets/logo.png";
+import youtubeLogo from "../assets/youtube.png";
+import facebookLogo from "../assets/facebook.png";
+import instagramLogo from "../assets/instagram.png";
+import twitterLogo from "../assets/twitter.png";
+import userLogo from "../assets/usericon.png";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useLogout } from "../hooks/useLogout";
+import { Link } from "react-router-dom";
 
-const Header=()=>{
-    const [toggleMenu, setToggleMenu] = useState(false);
+const Navbar = () => {
+  const [clicked, setClicked] = useState(false);
 
-    return(
-       <div className= "navbar-bg">
-            <div className= "sb_navbar">
-                 <div className="sb_navbar-links">
-                    <div className="sb_navbar-links_logo">
-                        <a href="www.google.com">
-                            <img src={logo} alt="logo" />
-                         </a>
-                    </div>
-                    <div className="sb_navbar-links_container">
-                        <p>
-                            <a href="www.google.com">
-                            Latest news 
-                            </a>
-                        </p>
-                        <p>
-                            <a href="www.google.com">
-                            Organization
-                            </a>
-                        </p>
-                        <p>
-                            <a href="www.google.com">
-                            Our impact
-                            </a>
-                        </p>
-                        <p>
-                            <a href="www.google.com">
-                            About Us
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                <div className="sb_navbar-button">
-                <a href="www.google.com">
-                    <button type ="button">DONATE</button>
-                </a>    
-                </div>
-                <div className="sb_navbar-menu">
-                    {toggleMenu ? (
-                        <RiCloseLine
-                        color="#000"
-                        size={27}
-                        onClick={()=> setToggleMenu(false)}
-                        />) :(
-                            <RiMenu3Line
-                            color="#000"
-                            size={27}
-                            onClick={()=> setToggleMenu(true)}
-                        />
+  const { user } = useAuthContext();
+  const { logout } = useLogout();
 
-                    )}
+  const handleClick = () => {
+    setClicked(!clicked);
+  };
 
-                    {toggleMenu && (
-                        <div className="sb_navbar-menu_container scale-up-center">
-                            <div className ="sb_navbar-menu_container-links">
-                                <p>
-                                    <a href="www.google.com">
-                                        Latest news 
-                                    </a>
-                                </p>
-                                <p>
-                                    <a href="www.google.com">
-                                    Organization
-                                    </a>
-                                </p>
-                                <p>
-                                    <a href="www.google.com">
-                                    Our impact
-                                    </a>
-                                </p>
-                                <p>
-                                    <a href="www.google.com">
-                                    About Us
-                                    </a>
-                                </p>
-                            </div>
+  const handleLogout = async () => {
+    await logout();
+  };
 
-                            <div className="sb_navbar-menu_container-links-sign">
-                                <a href="www.google.com">
-                                     <button type ="button">DONATE</button>
-                                </a>    
-                            </div>
-                            </div>
-                    )}
+  return (
+    <div>
+      <ul id="headbar">
+        <li>
+          <a href="www.google.com">FAQs </a>
+          <a href="www.google.com">Contact Us </a>
+        </li>
+        <li>
+          <a>
+            <img src={youtubeLogo} alt="youtube" width="30" height="30" />
+          </a>
+          <a>
+            <img src={facebookLogo} alt="facebook" width="30" height="30" />
+          </a>
+          <a>
+            <img src={instagramLogo} alt="instagram" width="30" height="30" />
+          </a>
+          <a>
+            <img src={twitterLogo} alt="twitter" width="30" height="30" />
+          </a>
+        </li>
 
+        <li>
+          {user && (
+            <>
+              <li>
+                <a className="text-center btn-md">
+                  <img src={userLogo} alt="MyAccount" width="20" height="20" />{" "}
+                  {user.username}
+                </a>
+                <button
+                  onClick={handleLogout}
+                  className="login btn btn-outline-dark py-1"
+                >
+                  Logout
+                </button>
+              </li>
+            </>
+          )}
+          {!user && (
+            <>
+              <Link
+                to="/authentication1Test"
+                className="login btn btn-outline-dark py-1"
+              >
+                Login
+              </Link>
+            </>
+          )}
+          {/* <a>
+            <img src={userLogo} alt="MyAccount" width="20" height="20" />{" "}
+            {user && user.username ? user.username : "MyAccount"}
+          </a> */}
+        </li>
+      </ul>
 
-                </div>
-            </div>
+      <nav>
+        <a href="www.google.com" className="logo">
+          <img src={logo} alt="logo" />
+        </a>
+
+        <div>
+          <ul id="navbar" className={clicked ? "active" : ""}>
+            <li>
+              <a className="active" href="www.google.com">
+                Latest news{" "}
+              </a>
+            </li>
+            <li>
+              <a href="www.google.com">Organization </a>
+            </li>
+            <li>
+              <a href="www.google.com">Our impact </a>
+            </li>
+            <li>
+              <a href="www.google.com"> About Us </a>
+            </li>
+          </ul>
         </div>
-       
-    )
-}
+        <div id="mobile" onClick={handleClick}>
+          <i id="bar" className={clicked ? "fas fa-times" : "fas fa-bars"}></i>
+        </div>
+      </nav>
+    </div>
+  );
+};
 
-
-
-
-
-export default Header;
+export default Navbar;

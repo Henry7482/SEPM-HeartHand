@@ -2,7 +2,7 @@ import GeneratedBlogs from '../../models/GeneratedBlogs.js'
 
 const getGeneratedBlogs = async (req, res) => {
     try {
-        const generatedBlogs = await GeneratedBlog.find();
+        const generatedBlogs = await GeneratedBlogs.find();
         res.status(200).json(generatedBlogs);
       } catch (error) {
         res.status(500).json({ message: error.message });

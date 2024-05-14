@@ -6,10 +6,11 @@ import {
   updateOrganization,
   deleteOrganizations,
 } from "../controllers/organizationsController.js";
-import { upload } from '../models/uploadImages.js';  // Assuming middleware is correctly set up
+import { jwtAuthAdmin } from "../middlewares/cookiejwtAuth.js";
+
 const organizationsRouter = Router();
 
-organizationsRouter.route("/").get(getOrganizations).post(upload.single('logo'), createOrganizations);
-organizationsRouter.route("/:id").get(getOrganizationById).put(upload.single('logo'), updateOrganization).delete(deleteOrganizations);
+organizationsRouter.route("/").get(getOrganizations).post(jwtAuthAdmin,createOrganizations);
+organizationsRouter.route("/:id").get(getOrganizationById).put(jwtAuthAdmin, updateOrganization).delete(jwtAuthAdmin, deleteOrganizations);
 
 export default organizationsRouter;
