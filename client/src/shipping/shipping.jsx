@@ -37,6 +37,70 @@ const CheckoutPage = () => {
       return <h1>Loading...</h1>;
     }
   }
+  const [districts, setDistricts] = useState([]);
+
+  const fetchDistricts = async () => {
+    try {
+      const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Token': '9865968a-0e0b-11ef-bfe9-c2d25c6518ab'
+        }
+      });
+      const data = await response.json();
+      setDistricts(data.data);
+    } catch (error) {
+      console.error('Error fetching districts:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDistricts();
+  }, []);
+
+  const displayDistricts = (districts) => {
+    if (Array.isArray(districts)) {
+      return districts.map((district, index) => (
+        <option key={index} value={district.DistrictID}>{district.DistrictName}</option>
+      ));
+    } else {
+      return <h1>Loading...</h1>;
+    }
+  };
+  const [provinces, setProvinces] = useState([]);
+
+  const fetchProvinces = async () => {
+    try {
+      const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Token': '9865968a-0e0b-11ef-bfe9-c2d25c6518ab'
+        }
+      });
+      const data = await response.json();
+      setProvinces(data.data);
+    } catch (error) {
+      console.error('Error fetching provinces:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProvinces();
+  }, []);
+
+  const displayProvinces = () => {
+    if (!provinces || provinces.length === 0) {
+      return <option>Loading...</option>;
+    } else {
+      return provinces.map((province) => (
+        <option key={province.ProvinceID} value={province.ProvinceName}>{province.ProvinceName}</option>
+      ));
+    }
+  };
+
+
     return (
         <>
           <nav className="bg-white">
@@ -95,18 +159,20 @@ const CheckoutPage = () => {
                     </div>
                       <div className="col-lg-6">
                         <div className="form-group">
-                          <label>Distinct</label>
-                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" defaultValue="" />
-                          </div>
+                          <label>District</label>
+                          <select name="district" id="district">
+                          <option disabled selected value>Choose a district</option>
+                           {displayDistricts(districts)}
+                          </select>
                         </div>
                       </div>
                       <div className="col-lg-6">
                         <div className="form-group">
                           <label>Province</label>
-                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" defaultValue="" />
-                          </div>
+                          <select name="province" id="province">
+                          <option disabled selected value>Choose a province</option>
+                           {displayProvinces(provinces)}
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -139,18 +205,20 @@ const CheckoutPage = () => {
                       </div>
                       <div className="col-lg-6">
                         <div className="form-group">
-                          <label>Distinct</label>
-                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" defaultValue="" />
-                          </div>
+                          <label>District</label>
+                          <select name="country" id="country">
+                          <option disabled selected value>Choose a district</option>
+                           {displayDistricts(districts)}
+                          </select>
                         </div>
                       </div>
                       <div className="col-lg-6">
                         <div className="form-group">
                           <label>Province</label>
-                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" defaultValue="" />
-                          </div>
+                          <select name="province" id="province">
+                          <option disabled selected value>Choose a province</option>
+                           {displayProvinces(provinces)}
+                          </select>
                         </div>
                       </div>
                     </div>
