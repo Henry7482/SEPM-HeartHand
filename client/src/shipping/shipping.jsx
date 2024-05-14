@@ -48,7 +48,11 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     fetchShifts();
-  }, []);
+    fetchSenderWards();
+    fetchOrganizationWards();
+    fetchDistricts();
+    fetchProvinces();
+  }, [selectedSenderDistricts,selectedOrganizationDistricts ]);
 
   if (!shifts) {
       console.log("No shifts found");
@@ -94,10 +98,6 @@ const CheckoutPage = () => {
     }
   };
 
-  useEffect(() => {
-    fetchDistricts();
-  }, []);
-
   const displayDistricts = (districts) => {
     if (Array.isArray(districts)) {
       return districts.map((district, index) => (
@@ -137,20 +137,65 @@ const CheckoutPage = () => {
     }
   };
 
-  useEffect(() => {
-    fetchProvinces();
-  }, []);
-
   const displayProvinces = () => {
     if (!provinces || provinces.length === 0) {
       return <option>Loading...</option>;
     } else {
       return provinces.map((province) => (
-        <option key={province.ProvinceID} value={province.ProvinceName}>{province.ProvinceName}</option>
+        <option key={province.ProvinceID} value={province.ProvinceID}>{province.ProvinceName}</option>
       ));
     }
   };
+  const [senderwards, setSenderWards] = useState([]);
+  const [organizationwards, setOrganizationWards] = useState([]);
 
+
+  const fetchSenderWards = async () => {
+    const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Token': '9865968a-0e0b-11ef-bfe9-c2d25c6518ab'
+      },
+      body: JSON.stringify({
+        "district_id":Number(selectedSenderDistricts)
+      })
+    });
+    const data = await response.json();
+    setSenderWards(data.data);
+  };
+  const fetchOrganizationWards = async () => {
+    const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Token': '9865968a-0e0b-11ef-bfe9-c2d25c6518ab'
+      },
+      body: JSON.stringify({
+        district_id: Number(selectedOrganizationDistricts)
+      })
+    });
+
+    if (!response.ok) {
+      console.log("Failed to fetch ward ID:", response );
+      return null;
+    }
+    const data = await response.json();
+    console.log("Org Wards",data.data)
+    setOrganizationWards(data.data);
+  };
+
+    const displayWards = (wards) => {
+    if (Array.isArray(wards)) {
+      return wards.map((ward, index) => (
+        <option key={index} value={ward.WardCode}>{ward.WardName}</option>
+      ));
+    } else {
+      return <h1>Loading...</h1>;
+    }
+  };
+
+  
 
     return (
         <>
@@ -210,12 +255,16 @@ const CheckoutPage = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="form-group">
-                      <label className="text-muted">Address</label>
-                         <input type="text" defaultValue="" className="form-control" 
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                         <label>Address</label>
+                         <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                          <input type="text" defaultValue="" 
                            value={senderAddress}
                              onChange={(e) => setSenderAddress(e.target.value)}
-                      />
+                            />
+                        </div>
+                      </div>
                     </div>
                       <div className="col-lg-6">
                         <div className="form-group">
@@ -236,6 +285,17 @@ const CheckoutPage = () => {
                           onChange={handleSelectSenderProvince}>
                           <option disabled selected value>Choose a province</option>
                            {displayProvinces(provinces)}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Ward</label>
+                          <select name="province" id="province"
+                          value={selectedSenderProvince}
+                          onChange={handleSelectSenderProvince}>
+                          <option disabled selected value>Choose a province</option>
+                           {displayWards(senderwards)}
                           </select>
                         </div>
                       </div>
@@ -278,12 +338,16 @@ const CheckoutPage = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="form-group">
-                        <label className="text-muted">Address</label>
-                        <input type="text" defaultValue="" className="form-control" 
-                          value={organizationAddress}
-                               onChange={(e) => setorganizationAddress(e.target.value)}
-                        />
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                         <label>Address</label>
+                         <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                          <input type="text" defaultValue="" 
+                           value={organizationAddress}
+                             onChange={(e) => setorganizationAddress(e.target.value)}
+                            />
+                         </div>
+                        </div>
                       </div>
                       <div className="col-lg-6">
                         <div className="form-group">
@@ -304,6 +368,17 @@ const CheckoutPage = () => {
                           onChange={handleSelectOrganizationProvince}>
                           <option disabled selected value>Choose a province</option>
                            {displayProvinces(provinces)}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Ward</label>
+                          <select name="province" id="province"
+                          value={selectedSenderProvince}
+                          onChange={handleSelectSenderProvince}>
+                          <option disabled selected value>Choose a province</option>
+                           {displayWards(organizationwards)}
                           </select>
                         </div>
                       </div>
