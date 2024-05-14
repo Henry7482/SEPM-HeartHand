@@ -1,0 +1,19 @@
+.column {
+    overflow: auto;
+    height: 100vh;
+    cursor: pointer;
+  }
+  
+  .handle {
+    background-color: #f0f0f0;
+    text-align: center;
+    padding: 5px;
+    font-weight: bold;
+  }
+  
+  .organization-card img {
+    margin-top: 10px;
+  }
+  
+  /* Vertical dividers already set in inline styles for simplicity */
+  

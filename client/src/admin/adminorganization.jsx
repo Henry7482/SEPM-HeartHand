@@ -64,6 +64,7 @@ function Organization({ Toggle }) {
   <Nav Toggle={Toggle} />
   <div className="container-fluid"style={{ position: 'fixed'}} >
     <div className="row mt-2">
+      
       <div className="col-12">
         <div style={{ position: 'fixed', overflowX: 'auto' }}>
           <Draggable axis="x">

@@ -2,9 +2,10 @@ import "./App.css";
 import Footer from "./footer/footer.jsx";
 import SignUp from "./signupauthentication/SignUp.jsx";
 import Header from "./header/header.jsx";
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./homePage/homePage.jsx";
-import Donatebox from "./blogPage/Donatebox.jsx";
+import Donatebox from "./blogPage/donatebox.jsx";
 import Blog from "./blogPage/blog.jsx";
 import React, { useState, useEffect } from "react";
 import Admin from "./admin/admin.jsx";
@@ -13,8 +14,9 @@ import CheckoutPage from "./shipping/shipping.jsx";
 import AdminLogin from "./login/AdminLogin.jsx";
 import AboutUs from "./aboutus/aboutus.jsx";
 import Organization from "./Organization/organization.jsx";
+import Donation from "./Donation/donation.jsx";
+
 import { useAuthContext } from "./hooks/useAuthContext";
-import DonateBox from "./blogPage/Donatebox.jsx";
 
 function App() {
   const [blogs, setBlogs] = useState(null);
@@ -93,7 +95,7 @@ function App() {
         <Routes>
           <Route path="/footerTest" element={<Footer />} />
           <Route path="/headerTest" element={<Header />} />
-          <Route path="/donateTest" element={<DonateBox />} />
+          {/* <Route path="/donateTest" element={<DonateBox />} /> */}
           <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
           <Route path="/footerTest" element={<Footer />} />
           <Route
@@ -135,6 +137,8 @@ function App() {
           <Route path="/AdminLogin" element={<AdminLogin />} />
           <Route path="/AboutUs" element={<AboutUs />} />
           <Route path="/Organization" element={<Organization />} />
+          <Route path="/Donation" element={<Donation />} />
+
         </Routes>
       </BrowserRouter>
     </div>
