@@ -4,6 +4,11 @@ import './shipping.css'
 const CheckoutPage = () => {
   const [shifts, setShifts] = useState([]);
   const [selectedShift, setSelectedShift] = useState('default');
+  const [districts, setDistricts] = useState([]);
+  const [selectedSenderDistricts, setSelectedSenderDistricts] = useState('default');
+  const [selectedSenderProvince, setSelectedSenderProvince] = useState('default');
+  const [selectedOrganizationDistricts, setSelectedOrganizationDistricts] = useState('default');
+  const [selectedOrganizationProvince, setSelectedOrganizationProvince] = useState('default');
 
   const handleSelectShift = (event) => {
     const selectedId = event.target.value;
@@ -13,6 +18,20 @@ const CheckoutPage = () => {
   
   
 
+  const [senderName, setSenderName] = useState(null);
+  const [senderPhoneNumber, setSenderPhoneNumber] = useState(null);
+  const [senderAddress, setSenderAddress] = useState(null);
+  const [organizationName, setorganizationName] = useState(null);
+  const [organizationPhoneNumber, setorganizationPhoneNumber] = useState(null);
+  const [organizationAddress, setorganizationAddress] = useState(null);
+  const [totalmass, settotalmass] = useState(null);
+  const [length, setlength] = useState(null);
+  const [wide, setwide] = useState(null);
+  const [height, setheight] = useState(null);
+  const [totalvalueofgoods, settotalvalueofgoods] = useState(null);
+  const [productname, setproductname] = useState(null);
+  const [mass, setmass] = useState(null);
+  const [quantity, setquantity] = useState(null);
   const fetchShifts = async () => {
     const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shift/date',
       {
@@ -29,7 +48,11 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     fetchShifts();
-  }, []);
+    fetchSenderWards();
+    fetchOrganizationWards();
+    fetchDistricts();
+    fetchProvinces();
+  }, [selectedSenderDistricts,selectedOrganizationDistricts ]);
 
   if (!shifts) {
       console.log("No shifts found");
@@ -47,8 +70,18 @@ const CheckoutPage = () => {
     }
   };
     
-  const [districts, setDistricts] = useState([]);
 
+  const handleSelectSenderDistricts = (event) => {
+    const selectedId = event.target.value;
+    setSelectedSenderDistricts(selectedId);
+    console.log('Selected Senderdistrict:', selectedId);
+  };
+
+  const handleSelectOrganizationDistricts = (event) => {
+    const selectedId = event.target.value;
+    setSelectedOrganizationDistricts(selectedId);
+    console.log('Selected Organizationshift:', selectedId);
+  };
   const fetchDistricts = async () => {
     try {
       const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', {
@@ -65,10 +98,6 @@ const CheckoutPage = () => {
     }
   };
 
-  useEffect(() => {
-    fetchDistricts();
-  }, []);
-
   const displayDistricts = (districts) => {
     if (Array.isArray(districts)) {
       return districts.map((district, index) => (
@@ -79,7 +108,19 @@ const CheckoutPage = () => {
     }
   };
   const [provinces, setProvinces] = useState([]);
+  
+  const handleSelectSenderProvince = (event) => {
+    const selectedId = event.target.value;
+    setSelectedSenderProvince(selectedId);
+    console.log('Selected Senderprovince:', selectedId);
+  };
 
+  const handleSelectOrganizationProvince = (event) => {
+    const selectedId = event.target.value;
+    setSelectedOrganizationProvince(selectedId);
+    console.log('Selected Organizationprovince:', selectedId);
+  };
+  
   const fetchProvinces = async () => {
     try {
       const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', {
@@ -96,20 +137,65 @@ const CheckoutPage = () => {
     }
   };
 
-  useEffect(() => {
-    fetchProvinces();
-  }, []);
-
   const displayProvinces = () => {
     if (!provinces || provinces.length === 0) {
       return <option>Loading...</option>;
     } else {
       return provinces.map((province) => (
-        <option key={province.ProvinceID} value={province.ProvinceName}>{province.ProvinceName}</option>
+        <option key={province.ProvinceID} value={province.ProvinceID}>{province.ProvinceName}</option>
       ));
     }
   };
+  const [senderwards, setSenderWards] = useState([]);
+  const [organizationwards, setOrganizationWards] = useState([]);
 
+
+  const fetchSenderWards = async () => {
+    const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Token': '9865968a-0e0b-11ef-bfe9-c2d25c6518ab'
+      },
+      body: JSON.stringify({
+        "district_id":Number(selectedSenderDistricts)
+      })
+    });
+    const data = await response.json();
+    setSenderWards(data.data);
+  };
+  const fetchOrganizationWards = async () => {
+    const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Token': '9865968a-0e0b-11ef-bfe9-c2d25c6518ab'
+      },
+      body: JSON.stringify({
+        district_id: Number(selectedOrganizationDistricts)
+      })
+    });
+
+    if (!response.ok) {
+      console.log("Failed to fetch ward ID:", response );
+      return null;
+    }
+    const data = await response.json();
+    console.log("Org Wards",data.data)
+    setOrganizationWards(data.data);
+  };
+
+    const displayWards = (wards) => {
+    if (Array.isArray(wards)) {
+      return wards.map((ward, index) => (
+        <option key={index} value={ward.WardCode}>{ward.WardName}</option>
+      ));
+    } else {
+      return <h1>Loading...</h1>;
+    }
+  };
+
+  
 
     return (
         <>
@@ -151,7 +237,10 @@ const CheckoutPage = () => {
                         <div className="form-group">
                           <label> Your Name</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" defaultValue="" />
+                            <input type="text" defaultValue="" 
+                               value={senderName}
+                               onChange={(e) => setSenderName(e.target.value)}
+                            />
                           </div>
                         </div>
                       </div>
@@ -159,18 +248,30 @@ const CheckoutPage = () => {
                         <div className="form-group">
                           <label>Phone Number</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" defaultValue="" />
+                            <input type="text" defaultValue="" 
+                              value={senderPhoneNumber}
+                               onChange={(e) => setSenderPhoneNumber(e.target.value)}
+                            />
                           </div>
                         </div>
                       </div>
-                      <div className="form-group">
-                      <label className="text-muted">Address</label>
-                      <input type="text" defaultValue="" className="form-control" />
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                         <label>Address</label>
+                         <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                          <input type="text" defaultValue="" 
+                           value={senderAddress}
+                             onChange={(e) => setSenderAddress(e.target.value)}
+                            />
+                        </div>
+                      </div>
                     </div>
                       <div className="col-lg-6">
                         <div className="form-group">
                           <label>District</label>
-                          <select name="district" id="district">
+                          <select name="district" id="district"
+                           value={selectedSenderDistricts}
+                           onChange={handleSelectSenderDistricts}>
                           <option disabled selected value>Choose a district</option>
                            {displayDistricts(districts)}
                           </select>
@@ -179,9 +280,22 @@ const CheckoutPage = () => {
                       <div className="col-lg-6">
                         <div className="form-group">
                           <label>Province</label>
-                          <select name="province" id="province">
+                          <select name="province" id="province"
+                          value={selectedSenderProvince}
+                          onChange={handleSelectSenderProvince}>
                           <option disabled selected value>Choose a province</option>
                            {displayProvinces(provinces)}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Ward</label>
+                          <select name="province" id="province"
+                          value={selectedSenderProvince}
+                          onChange={handleSelectSenderProvince}>
+                          <option disabled selected value>Choose a province</option>
+                           {displayWards(senderwards)}
                           </select>
                         </div>
                       </div>
@@ -206,7 +320,10 @@ const CheckoutPage = () => {
                         <div className="form-group">
                           <label>Organization's Name</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" defaultValue="" />
+                            <input type="text" defaultValue="" 
+                               value={organizationName}
+                               onChange={(e) => setorganizationName(e.target.value)}
+                            />
                           </div>
                         </div>
                       </div>
@@ -214,18 +331,30 @@ const CheckoutPage = () => {
                         <div className="form-group">
                           <label>Phone Number</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                            <input type="text" defaultValue="" />
+                            <input type="text" defaultValue="" 
+                              value={organizationPhoneNumber}
+                               onChange={(e) => setorganizationPhoneNumber(e.target.value)}
+                            />
                           </div>
                         </div>
                       </div>
-                      <div className="form-group">
-                        <label className="text-muted">Address</label>
-                        <input type="text" defaultValue="" className="form-control" />
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                         <label>Address</label>
+                         <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                          <input type="text" defaultValue="" 
+                           value={organizationAddress}
+                             onChange={(e) => setorganizationAddress(e.target.value)}
+                            />
+                         </div>
+                        </div>
                       </div>
                       <div className="col-lg-6">
                         <div className="form-group">
                           <label>District</label>
-                          <select name="country" id="country">
+                          <select name="country" id="country"
+                          value={selectedOrganizationDistricts}
+                           onChange={handleSelectOrganizationDistricts}>
                           <option disabled selected value>Choose a district</option>
                            {displayDistricts(districts)}
                           </select>
@@ -234,37 +363,25 @@ const CheckoutPage = () => {
                       <div className="col-lg-6">
                         <div className="form-group">
                           <label>Province</label>
-                          <select name="province" id="province">
+                          <select name="province" id="province"
+                          value={selectedOrganizationProvince}
+                          onChange={handleSelectOrganizationProvince}>
                           <option disabled selected value>Choose a province</option>
                            {displayProvinces(provinces)}
                           </select>
                         </div>
                       </div>
-                    </div>
-                  </form>
-                  <div className="h5 font-weight-bold text-primary" style={{ marginTop: '40px', marginBottom: '10px', top: 'auto' }}>
-                     Package Informations
-                  </div>
-                  <form>
-                    <div className="form-group">
-                      <label className="text-muted">Total Mass</label>
-                      <input type="text" defaultValue="" className="form-control" />
-                    </div>
-                    <div className="form-group">
-                      <label className="text-muted">Length</label>
-                      <input type="text" defaultValue="" className="form-control" />
-                    </div>
-                    <div className="form-group">
-                      <label className="text-muted">Wide</label>
-                      <input type="text" defaultValue="" className="form-control" />
-                    </div>
-                    <div className="form-group">
-                      <label className="text-muted">Height</label>
-                      <input type="text" defaultValue="" className="form-control" />
-                    </div>
-                    <div className="form-group">
-                      <label className="text-muted">Total value of goods</label>
-                      <input type="text" defaultValue="" className="form-control" />
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Ward</label>
+                          <select name="province" id="province"
+                          value={selectedSenderProvince}
+                          onChange={handleSelectSenderProvince}>
+                          <option disabled selected value>Choose a province</option>
+                           {displayWards(organizationwards)}
+                          </select>
+                        </div>
+                      </div>
                     </div>
                   </form>
                 </div>
@@ -277,40 +394,73 @@ const CheckoutPage = () => {
                   Your information is save
                 </div>
                 <div id="address" className="bg-light rounded mt-3">
-                  <div className="h5 font-weight-bold text-primary">
-                    Shipping Address
+                <div className="h5 font-weight-bold text-primary" style={{ marginTop: '40px', marginBottom: '10px', top: 'auto' }}>
+                     Package Informations
                   </div>
-                  <div className="d-md-flex justify-content-md-start align-items-md-center pt-3">
-                    <div className="mr-auto">
-                      <b>Delivery Location</b>
-                      <input type="text" defaultValue="" />
+                  <form>
+                    <div className="form-group">
+                      <label className="text-muted">Total Mass</label>
+                      <input type="text" defaultValue="" className="form-control" 
+                        value={totalmass}
+                               onChange={(e) => settotalmass(e.target.value)}
+                      />
                     </div>
-                    <div className="rounded py-2 px-3" id="register">
-                      <a href="#">
-                        <b>Customer Experience</b>
-                      </a>
-                      <p className="text-muted">Ensuring a seamless shopping experience is our priority.</p>
+                    <div className="form-group">
+                      <label className="text-muted">Length</label>
+                      <input type="text" defaultValue="" className="form-control" 
+                        value={length}
+                               onChange={(e) => setlength(e.target.value)}
+                      />
                     </div>
-                  </div>
+                    <div className="form-group">
+                      <label className="text-muted">Wide</label>
+                      <input type="text" defaultValue="" className="form-control" 
+                        value={wide}
+                               onChange={(e) => setwide(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="text-muted">Height</label>
+                      <input type="text" defaultValue="" className="form-control" 
+                        value={height}
+                               onChange={(e) => setheight(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="text-muted">Total value of goods</label>
+                      <input type="text" defaultValue="" className="form-control" 
+                        value={totalvalueofgoods}
+                               onChange={(e) => settotalvalueofgoods(e.target.value)}
+                      />
+                    </div>
+                  </form>
                   <div id="address" className="bg-light rounded mt-3">
                   <div className="h5 font-weight-bold text-primary">
                     Product
                   </div>
-                  <div className="form-group">
+                    <div className="form-group">
                       <label className="text-muted">Enter product name</label>
-                      <input type="productname" defaultValue="" className="form-control" />
+                      <input type="productname" defaultValue="" className="form-control" 
+                        value={productname}
+                               onChange={(e) => setproductname(e.target.value)}
+                      />
                     </div>
                     <div className="form-group">
                       <label className="text-muted">Mass</label>
                       <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                      <input type="productcode" defaultValue="" />
+                      <input type="productcode" defaultValue="" 
+                        value={mass}
+                               onChange={(e) => setmass(e.target.value)}
+                      />
                       </div>
                     </div>
-                    <label>Quantity</label>
-                    <select name="country" id="country">
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                    </select>
+                    <div className="form-group">
+                      <label className="text-muted">Quantity</label>
+                      <input type="productname" defaultValue="" className="form-control" 
+                        value={quantity}
+                               onChange={(e) => setquantity(e.target.value)}
+                      />
+                    </div>
                     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px', marginBottom: '10px' }}>
                      <div className="rounded py-2 px-3" id="register" style={{ backgroundColor: '#f0f0f0' }}>
                      <a href="#"><b>Note</b></a>
