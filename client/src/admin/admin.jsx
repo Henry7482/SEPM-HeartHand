@@ -4,7 +4,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Sidebar from "./Sidebar";
 import Dashboard from "./dashboard";
 import Home from "./home";
-import Organization from "./organization";
+import Organization from "./adminorganization";
 import Donation from "./donor";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
