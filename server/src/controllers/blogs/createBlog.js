@@ -1,5 +1,5 @@
 import Blog from "../../models/Blog.js";
-import uploadImagesToCloudinary from "../../models/uploadImages.js";
+import { uploadImage } from "../../models/uploadImages.js";
 
 const newBlogInstance = async () => {
   const keywords = ["test", "blog"];
@@ -22,7 +22,7 @@ const newBlogInstance = async () => {
 
 const createBlog = async (req, res) => {
   try {
-    const imageUrls = await uploadImagesToCloudinary("../server/images");
+    const imageUrls = await uploadImage("../server/images");
     const blog = await newBlogInstance();
     const output = await Blog.create(blog);
     res.status(200).json({ message: "Successfully added blog", output });
