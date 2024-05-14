@@ -109,7 +109,7 @@ const CheckoutPage = () => {
                 <a href="#" className="text-uppercase">ship</a>
               </div>
               <div className="right-align" style={{ marginLeft: '1180px' }}>
-              <a href="#" className="text-uppercase">Back to shipping</a>
+              <a href="#" className="text-uppercase,h5 font-weight-bold text-primary">Back to shipping</a>
               </div>
             </div>
           </nav>
@@ -139,7 +139,7 @@ const CheckoutPage = () => {
                   <div className="row">
                       <div className="col-lg-6">
                         <div className="form-group">
-                          <label>Name Of The Store</label>
+                          <label> Your Name</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
                             <input type="text" defaultValue="" />
                           </div>
@@ -183,13 +183,13 @@ const CheckoutPage = () => {
                     </select>
                   </form>
                   <div className="h5 font-weight-bold text-primary" style={{ marginTop: '40px', marginBottom: '10px', top: 'auto' }}>
-                    Receiving
+                    Organization
                  </div>
                   <form>
                     <div className="row">
                       <div className="col-lg-6">
                         <div className="form-group">
-                          <label>Name</label>
+                          <label>Organization's Name</label>
                           <div className="d-flex jusify-content-start align-items-center rounded p-2">
                             <input type="text" defaultValue="" />
                           </div>
@@ -202,6 +202,10 @@ const CheckoutPage = () => {
                             <input type="text" defaultValue="" />
                           </div>
                         </div>
+                      </div>
+                      <div className="form-group">
+                        <label className="text-muted">Address</label>
+                        <input type="text" defaultValue="" className="form-control" />
                       </div>
                       <div className="col-lg-6">
                         <div className="form-group">

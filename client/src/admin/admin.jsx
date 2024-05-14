@@ -21,18 +21,18 @@ const Admin = () => {
 
   useEffect(() => {
     // Mock fetch function to simulate fetching articles from an API
-    const fetchArticles = async () => {
-      try {
-        const response = await fetch(
-          "https://hearthand.onrender.com/api/v1/blogs"
-        );
-        const data = await response.json();
-        setArticles(data);
-      } catch (error) {
-        console.error("Failed to fetch articles:", error);
-      }
-    };
-    fetchArticles();
+    // const fetchArticles = async () => {
+    //   try {
+    //     const response = await fetch(
+    //       "https://hearthand.onrender.com/api/v1/blogs"
+    //     );
+    //     const data = await response.json();
+    //     setArticles(data);
+    //   } catch (error) {
+    //     console.error("Failed to fetch articles:", error);
+    //   }
+    // };
+    // fetchArticles();
   }, []);
 
   const selectPage = (page) => {
@@ -51,7 +51,7 @@ const Admin = () => {
             <div className="col">
               {activePage === "Dashboard" && <Dashboard Toggle={Toggle} />}
               {activePage === "Home" && (
-                <Home articles={articles} Toggle={Toggle} />
+                <Home Toggle={Toggle} />
               )}
               {activePage === "Organization" && (
                 <Organization Toggle={Toggle} />
