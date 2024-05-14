@@ -70,13 +70,13 @@ const CheckoutPage = () => {
   const handleSelectSenderDistricts = (event) => {
     const selectedId = event.target.value;
     setSelectedSenderDistricts(selectedId);
-    console.log('Selected shift:', selectedId);
+    console.log('Selected Senderdistrict:', selectedId);
   };
 
   const handleSelectOrganizationDistricts = (event) => {
     const selectedId = event.target.value;
     setSelectedOrganizationDistricts(selectedId);
-    console.log('Selected shift:', selectedId);
+    console.log('Selected Organizationshift:', selectedId);
   };
   const fetchDistricts = async () => {
     try {
@@ -112,13 +112,13 @@ const CheckoutPage = () => {
   const handleSelectSenderProvince = (event) => {
     const selectedId = event.target.value;
     setSelectedSenderProvince(selectedId);
-    console.log('Selected shift:', selectedId);
+    console.log('Selected Senderprovince:', selectedId);
   };
 
   const handleSelectOrganizationProvince = (event) => {
     const selectedId = event.target.value;
     setSelectedOrganizationProvince(selectedId);
-    console.log('Selected shift:', selectedId);
+    console.log('Selected Organizationprovince:', selectedId);
   };
   
   const fetchProvinces = async () => {
