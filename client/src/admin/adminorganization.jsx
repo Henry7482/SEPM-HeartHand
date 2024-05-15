@@ -27,6 +27,35 @@ function Organization({ Toggle }) {
   const [wards, setWards] = useState([]);
   const [organizations, setOrganizations] = useState([]);
   const { user } = useAuthContext();
+  const fetchServiceId = async () => {
+    const response = await fetch(
+      "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+        },
+        body: JSON.stringify({
+          shop_id: 5047918,
+          from_district: 1447,
+          to_district: 1442,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      console.error("Failed to fetch service ID:", response);
+      return null;
+    }
+    let serviceId;
+    if (Array.isArray(response.data) && response.data.length > 0) {
+      serviceId = response.data[0].service_id;
+    }
+    console.log("Service ID:", response);
+    return serviceId;
+  };
+
   const fetchWards = async () => {
     const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id', {
       method: 'GET',
