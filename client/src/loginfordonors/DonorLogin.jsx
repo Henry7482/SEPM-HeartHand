@@ -5,7 +5,7 @@ import user_icon from '../assets/usericon.png';
 import email_icon from '../assets/email.png';
 import password_icon from '../assets/password.png';
 
-const LogIn2 = () => {
+const DonorLogin = () => {
 
     return (
         // <section className="vh-100" style={{ backgroundColor: '#eee' }}>
@@ -64,4 +64,4 @@ const LogIn2 = () => {
       );
     }
     
-    export default LogIn2;
+    export default DonorLogin;

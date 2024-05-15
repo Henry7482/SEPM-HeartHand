@@ -1,18 +1,21 @@
 import "./App.css";
 import Footer from "./footer/footer.jsx";
 import SignUp from "./signupauthentication/SignUp.jsx";
-import Header from "./header/Header.jsx";
+import Header from "./header/header.jsx";
 import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./homePage/homePage.jsx";
-import Donate from "./blogPage/Donatebox.jsx";
-import Blog from "./blogPage/Blog.jsx";
+import Donatebox from "./blogPage/Donatebox.jsx";
+import Blog from "./blogPage/blog.jsx";
 import React, { useState, useEffect } from "react";
-import Login from "./loginauthentication/AdminLogin.jsx";
 import Admin from "./admin/admin.jsx";
-import LogIn2 from "./loginfordonors/DonorLogin.jsx";
+import DonorLogin from "./loginfordonors/DonorLogin.jsx";
 import CheckoutPage from "./shipping/shipping.jsx";
-import AdminLogin from "./loginauthentication/Login.jsx";
-import { useAuthContext } from "./hooks/useAuthContext.js";
+import AdminLogin from "./login/AdminLogin.jsx";
+import AboutUs from "./aboutus/aboutus.jsx";
+import Organization from "./Organization/organization.jsx";
+import { useAuthContext } from "./hooks/useAuthContext";
+import DonateBox from "./blogPage/Donatebox.jsx";
+
 function App() {
   const [blogs, setBlogs] = useState(null);
   const [error, setError] = useState(null);
@@ -86,21 +89,11 @@ function App() {
       <BrowserRouter>
         {/* Call out function */}
         {/* {displayBlogs(blogs)} */}
-        <button onClick={handleRequest}>Request to secret page</button>
+        {/* <button onClick={handleRequest}>Request to secret page</button> */}
         <Routes>
           <Route path="/footerTest" element={<Footer />} />
           <Route path="/headerTest" element={<Header />} />
-          <Route
-            path="/homeTest"
-            element={
-              user ? (
-                <HomePage blogs={blogs} />
-              ) : (
-                <Navigate to="/authentication1Test" />
-              )
-            }
-          />
-          <Route path="/donateTest" element={<Donate />} />
+          <Route path="/donateTest" element={<DonateBox />} />
           <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
           <Route path="/footerTest" element={<Footer />} />
           <Route
@@ -109,7 +102,7 @@ function App() {
           />
           <Route
             path="/authentication1Test"
-            element={!user ? <Login /> : <Navigate to="/homeTest" />}
+            element={!user ? <DonorLogin /> : <Navigate to="/homeTest" />}
           />
           <Route
             path="/adminTest"
@@ -119,10 +112,29 @@ function App() {
               ) : (
                 <Navigate to="/authentication1Test" />
               )
-            } />
-          <Route path="/LogIn2" element={<LogIn2 />} />
-          <Route path="/shippingtest" element={<CheckoutPage />} />
-          <Route path="/adminLogIn" element={<AdminLogin />} />
+            }
+          />
+
+          <Route path="/footer" element={<Footer />} />
+          <Route path="/header" element={<Header />} />
+          <Route path="/home" element={<HomePage blogs={blogs} />} />
+          <Route path="/donate" element={<Donatebox />} />
+          {/* !!Pass in blogs value for Blog page to read */}
+          <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
+          <Route path="/footer" element={<Footer />} />
+          <Route
+            path="/SignUp"
+            element={!user ? <SignUp /> : <Navigate to="/home" />}
+          />
+          <Route path="/admin" element={<Admin />} />
+          <Route
+            path="/DonorLogin"
+            element={!user ? <DonorLogin /> : <Navigate to="/home" />}
+          />
+          <Route path="/shipping" element={<CheckoutPage />} />
+          <Route path="/AdminLogin" element={<AdminLogin />} />
+          <Route path="/AboutUs" element={<AboutUs />} />
+          <Route path="/Organization" element={<Organization />} />
         </Routes>
       </BrowserRouter>
     </div>

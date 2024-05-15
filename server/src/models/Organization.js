@@ -26,6 +26,9 @@ const organizationSchema = new mongoose.Schema({
     type: Array,
     required: true
   },
+  logo: { 
+    type: String, 
+    required: false }  // Optional field for logo URL
 });
 
 const dashboardDB = mongoose.connection.useDb("dashboard");

@@ -31,7 +31,6 @@ const Navbar = () => {
           <a href="www.google.com">FAQs </a>
           <a href="www.google.com">Contact Us </a>
         </li>
-
         <li>
           <a>
             <img src={youtubeLogo} alt="youtube" width="30" height="30" />
@@ -49,25 +48,30 @@ const Navbar = () => {
 
         <li>
           {user && (
-            <div>
-              <a className="text-center btn-md">
-                <img src={userLogo} alt="MyAccount" width="20" height="20" />{" "}
-                {user.username}
-              </a>
-              <button
-                onClick={handleLogout}
-                className="login btn btn-outline-dark py-1"
-              >
-                Logout
-              </button>
-            </div>
+            <>
+              <li>
+                <a className="text-center btn-md">
+                  <img src={userLogo} alt="MyAccount" width="20" height="20" />{" "}
+                  {user.username}
+                </a>
+                <button
+                  onClick={handleLogout}
+                  className="login btn btn-outline-dark py-1"
+                >
+                  Logout
+                </button>
+              </li>
+            </>
           )}
           {!user && (
-            <div>
-              <Link to="/authentication1Test" className="login btn btn-outline-dark py-1">
+            <>
+              <Link
+                to="/authentication1Test"
+                className="login btn btn-outline-dark py-1"
+              >
                 Login
               </Link>
-            </div>
+            </>
           )}
           {/* <a>
             <img src={userLogo} alt="MyAccount" width="20" height="20" />{" "}

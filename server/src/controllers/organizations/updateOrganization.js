@@ -5,7 +5,7 @@ const updateOrganization = async (req, res) => {
   try {
     const updatedOrganization = await Organization.findByIdAndUpdate(
       id,
-      req.body,
+      { ...req.body, logo: req.body.logo }, // Make sure that logo URL is updated
       { new: true }
     );
     if (!updatedOrganization) {
