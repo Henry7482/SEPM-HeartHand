@@ -1,18 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Nav from './Nav';
-import Image from "../assets/image.png"; // Importing the default image
+import { useAuthContext } from "../hooks/useAuthContext";
 
 function Donor({ Toggle }) {
-  const [donors, setDonors] = useState([
-    { id: 1, name: 'Mark', productName: 'Shirt', productType: 'Cloth', quantity: 2, organization: 'HearHand', description: 'I want to donate', shippingStatus: 'Yes', imageUrl: Image },
-    { id: 2, name: 'Jacob', productName: 'Shirt', productType: 'Cloth', quantity: 2, organization: 'HearHand', description: 'I want to donate', shippingStatus: 'No', imageUrl: Image },
-    { id: 3, name: 'Larry the Bird', productName: 'Shirt', productType: 'Cloth', quantity: 2, organization: 'HearHand', description: 'I want to donate', shippingStatus: 'Yes', imageUrl: Image }
-  ]);
+  const [donors, setDonors] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    const fetchDonations = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+
+      if (!accessToken) {
+        throw new Error("Access token not found");
+      }
+      try {
+        const response = await fetch(
+          "https://hearthand.onrender.com/api/v1/donations",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const jsonData = await response.json();
+        setDonors(jsonData);
+        console.log("Data from server:", JSON.stringify(jsonData));
+      } catch (err) {
+        console.error("Error from server:", err.message);
+      }
+    };
+
+    if (user && user.role === "admin") {
+      fetchDonations();
+    }
+  }, [user]);
 
   const handleDelete = (id) => {
-    setDonors(donors.filter(donor => donor.id !== id));
+    setDonors(donors.filter(donor => donor._id !== id));
   };
 
   const openModal = (imageUrl) => {
@@ -46,20 +75,20 @@ function Donor({ Toggle }) {
           </thead>
           <tbody>
             {donors.map((donor, index) => (
-              <tr key={donor.id}>
+              <tr key={donor._id}>
                 <th scope="row">{index + 1}</th>
-                <td>{donor.name}</td>
-                <td>{donor.productName}</td>
-                <td>{donor.productType}</td>
-                <td>{donor.quantity}</td>
-                <td>{donor.organization}</td>
+                <td>{donor.sender_name}</td>
+                <td>{donor.product_name}</td>
+                <td>{donor.product_category}</td>
+                <td>{donor.product_quantity}</td>
+                <td>{donor.organization_name}</td>
                 <td>{donor.description}</td>
                 <td>{donor.shippingStatus}</td>
                 <td>
-                  <img src={donor.imageUrl} alt="Product" style={{ width: '50px', height: '50px', cursor: 'pointer' }} onClick={() => openModal(donor.imageUrl)} />
+                  <img src={donor.imageUrl || Image} alt="Product" style={{ width: '50px', height: '50px', cursor: 'pointer' }} onClick={() => openModal(donor.imageUrl || Image)} />
                 </td>
                 <td>
-                  <button onClick={() => handleDelete(donor.id)} className="btn btn-danger">Delete</button>
+                  <button onClick={() => handleDelete(donor._id)} className="btn btn-danger">Delete</button>
                 </td>
               </tr>
             ))}
@@ -79,7 +108,7 @@ function Donor({ Toggle }) {
                 </div>
               </div>
             </div>
-            <div className="modal-backdrop show" onClick={closeModal} style={{ position: 'fixed', top: 0, left: 0, height: '100%', width: '100%', backgroundColor: 'rgba(0,0,0,0)' }}></div>
+            <div className="modal-backdrop show" onClick={closeModal} style={{ position: 'fixed', top: 0, left: 0, height: '100%', width: '100%', backgroundColor: 'rgba(0,0,0,0.5)' }}></div>
           </div>
         )}
       </div>

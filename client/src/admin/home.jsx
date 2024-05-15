@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from "react";
 import Nav from "./Nav";
 import { useAuthContext } from "../hooks/useAuthContext";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Home({ articles, handleAccept, handleDelete, Toggle }) {
-  const [generatedBLogs, setGeneratedBLogs] = useState([]);
+function Home({ handleAccept, handleDelete, Toggle }) {
+  const [generatedBlogs, setGeneratedBlogs] = useState([]);
   const [selectedImage, setSelectedImage] = useState({});
   const { user } = useAuthContext();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchGeneratedBlogs = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+
+      if (!accessToken) {
+        throw new Error("Access token not found");
+      }
       try {
         const response = await fetch(
           "https://hearthand.onrender.com/api/v1/generatedblogs",
           {
             headers: {
-              Authorization: `Bearer ${user.accessToken}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -22,18 +28,17 @@ function Home({ articles, handleAccept, handleDelete, Toggle }) {
           throw new Error("Network response was not ok");
         }
         const jsonData = await response.json();
-        setGeneratedBLogs(jsonData);
-        console.log("Data from server:", JSON.stringify(jsonData));
+        setGeneratedBlogs(jsonData);
+        console.log("Generated Blogs Data from server:", JSON.stringify(jsonData));
       } catch (err) {
-        // setError("Failed to load blogs: " + err.message);
         console.error("Error from server:", err.message);
       }
     };
 
     if (user && user.role === "admin") {
-      fetchData();
+      fetchGeneratedBlogs();
     }
-  }, []);
+  }, [user]);
 
   const handleImageChange = (articleId, event) => {
     const file = event.target.files[0];
@@ -45,49 +50,54 @@ function Home({ articles, handleAccept, handleDelete, Toggle }) {
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
-  return (
-    <div className="px-3">
-      <Nav Toggle={Toggle} />
-      <div className="container-fluid">
-        {articles.map((article) => (
-          <div
-            key={article._id}
-            className="article-container my-3 p-3 bg-light"
-          >
-            <h2>{article.title}</h2>
+  const displaygeneratedBlogs = (data) => {
+    if (Array.isArray(data) && data.length > 0) {
+      return data.map((item) => (
+        item.data && item.data.map((blog) => (
+          <div key={blog._id} className="article-container my-3 p-3 bg-light">
+            <h2>{blog.title}</h2>
             <p>
-              <i>{article.shortform}</i>
+              <i>{blog.shortform}</i>
             </p>
-            <p>Date Published: {formatDate(article.date)}</p>
+            <p>Date Published: {formatDate(blog.date)}</p>
             <div className="mb-3">
               <input
                 type="file"
-                onChange={(e) => handleImageChange(article._id, e)}
+                onChange={(e) => handleImageChange(blog._id, e)}
               />
-              {selectedImage[article._id] && (
+              {selectedImage[blog._id] && (
                 <img
-                  src={URL.createObjectURL(selectedImage[article._id])}
+                  src={URL.createObjectURL(selectedImage[blog._id])}
                   alt="Selected"
                   style={{ width: "100px", height: "100px" }}
                 />
               )}
             </div>
             <button
-              onClick={() =>
-                handleAccept(article._id, selectedImage[article._id])
-              }
+              onClick={() => handleAccept(blog._id, selectedImage[blog._id])}
               className="btn btn-success"
             >
               Accept
             </button>
             <button
-              onClick={() => handleDelete(article._id)}
+              onClick={() => handleDelete(blog._id)}
               className="btn btn-danger"
             >
               Delete
             </button>
           </div>
-        ))}
+        ))
+      ));
+    } else {
+      return <h1>Loading...</h1>;
+    }
+  };
+
+  return (
+    <div className="px-3">
+      <Nav Toggle={Toggle} />
+      <div className="container-fluid">
+        {displaygeneratedBlogs(generatedBlogs)}
       </div>
     </div>
   );

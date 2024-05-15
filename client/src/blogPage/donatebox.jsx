@@ -22,7 +22,7 @@ const DonateBox = () => {
                     onClick={() => handleStepClick(2)}
                 >
                     Step 2: Shipping
-                </div>
+                </div>                         
             </div>
 
             <div className="section">
