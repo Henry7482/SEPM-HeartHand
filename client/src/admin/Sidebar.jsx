@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import '../admin/admin.css';
-
-
+import { useLogout } from "../hooks/useLogout"; // Import useLogout
+import { useAuthContext } from "../hooks/useAuthContext"; // Import useAuthContext
 
 function Sidebar({ selectPage }) {
   const navigate = useNavigate(); // Instantiate navigate function
+  const { logout } = useLogout(); // Get the logout function
+  const { user } = useAuthContext(); // Get the user context
+
   const [activeItem, setActiveItem] = useState('Dashboard'); // Default active page
+
+  const handleLogout = async () => {
+    await logout(); // Perform the logout
+    navigate('/AdminLogin'); // Navigate to Login page on logout
+  };
 
   const handleSelectPage = (page) => {
     if (page === 'Logout') {
-      // Perform logout logic here (like clearing localStorage or tokens)
-      navigate('/LogIn'); // Navigate to Login page on logout
+      handleLogout(); // Call handleLogout when "Logout" is selected
     } else {
       selectPage(page);
       setActiveItem(page); // Set active item state
@@ -43,9 +50,9 @@ function Sidebar({ selectPage }) {
           <span className='fs-5'>Donation</span>
         </button>
         <button onClick={() => handleSelectPage('Logout')} className={`list-group-item py-2 ${activeItem === 'Logout' ? 'active' : ''}`}>
-        <i className='bi bi-power fs-5 me-3'></i>
-        <span className='fs-5'>Logout</span>
-      </button>
+          <i className='bi bi-power fs-5 me-3'></i>
+          <span className='fs-5'>Logout</span>
+        </button>
       </div>
     </div>
   );

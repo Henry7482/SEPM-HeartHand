@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Nav from './Nav';
-import Image from "../assets/image.png"; 
 import { useAuthContext } from "../hooks/useAuthContext";
 
 function Donor({ Toggle }) {
-  const [donors, setDonors] = useState([
-    { id: 1, name: 'Mark', productName: 'Shirt', productType: 'Cloth', quantity: 2, organization: 'HearHand', description: 'I want to donate', shippingStatus: 'Yes', imageUrl: Image },
-    { id: 2, name: 'Jacob', productName: 'Shirt', productType: 'Cloth', quantity: 2, organization: 'HearHand', description: 'I want to donate', shippingStatus: 'No', imageUrl: Image },
-    { id: 3, name: 'Larry the Bird', productName: 'Shirt', productType: 'Cloth', quantity: 2, organization: 'HearHand', description: 'I want to donate', shippingStatus: 'Yes', imageUrl: Image }
-  ]);
+  const [donors, setDonors] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const { user } = useAuthContext();
@@ -34,7 +29,7 @@ function Donor({ Toggle }) {
         }
         const jsonData = await response.json();
         setDonors(jsonData);
-        console.log("D from server:", JSON.stringify(jsonData));
+        console.log("Data from server:", JSON.stringify(jsonData));
       } catch (err) {
         console.error("Error from server:", err.message);
       }

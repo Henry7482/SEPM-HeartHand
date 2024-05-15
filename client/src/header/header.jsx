@@ -82,7 +82,7 @@ const Navbar = () => {
       </ul>
 
       <nav>
-        <a href="www.google.com" className="logo">
+        <a href="/HomePage" className="logo">
           <img src={logo} alt="logo" />
         </a>
 
@@ -94,13 +94,13 @@ const Navbar = () => {
               </a>
             </li>
             <li>
-              <a href="www.google.com">Organization </a>
+              <a href="/Organization">Organization </a>
             </li>
             <li>
-              <a href="www.google.com">Our impact </a>
+              <a href="/Donation">Donation</a>
             </li>
             <li>
-              <a href="www.google.com"> About Us </a>
+              <a href="/AboutUs"> About Us </a>
             </li>
           </ul>
         </div>

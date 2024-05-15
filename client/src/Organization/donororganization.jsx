@@ -1,24 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../header/header.jsx';
 import Footer from '../footer/footer.jsx';
 import Organizationpage from "../assets/Organization-bg.jpg";
 import Draggable from 'react-draggable';
+import { useAuthContext } from "../hooks/useAuthContext";
 import './organization.css';
-//logo
-import logo from "../assets/logo.png";
-import charity from "../assets/charity.png";
-import rmitLogo from "../assets/RMIT-LOGO-project.jpg";
 
 function Organization() {
-  const organizations = [
-    { name: 'Together', domain: 'Middle', logo: charity },
-    { name: 'HearHand', domain: 'South', logo: logo },
-    { name: 'RMIT-Heart', domain: 'North', logo: rmitLogo },
-    { name: 'Together', domain: 'Middle', logo: charity },
-    { name: 'RMIT-Heart', domain: 'North', logo: rmitLogo },
-    { name: 'Together', domain: 'Middle', logo: charity },
-  ];
+  const [organizations, setOrganizations] = useState([]);
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    const fetchOrganizations = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+
+      if (!accessToken) {
+        throw new Error("Access token not found");
+      }
+
+      try {
+        const response = await fetch(
+          "https://hearthand.onrender.com/api/v1/organizations",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const jsonData = await response.json();
+        setOrganizations(jsonData);
+        console.log("Organizations Data from server:", JSON.stringify(jsonData));
+      } catch (err) {
+        console.error("Error from server:", err.message);
+      }
+    };
+
+    if (user) {
+      fetchOrganizations();
+    }
+  }, [user]);
 
   const columns = {
     North: [],
@@ -50,7 +76,6 @@ function Organization() {
     <>
       <Header />
       <div className='container-fluid position-relative'>
-        {/* Image background */}
         <img src={Organizationpage} className="img-fluid" alt="Organization" style={{ width: "100%" }} />
 
         <div className="card text-bg position-absolute" style={{ top: "100%", left: "20%", transform: "translate(-50%, -50%)", maxWidth: "30rem", zIndex: "1" }}>
@@ -76,26 +101,26 @@ function Organization() {
         </div>
 
         <div className="row mt-3">
-          <div className="col-4" >
+          <div className="col-4">
             <h3>South</h3>
             <div style={{ width: '350px', height: '50vh', borderRight: '2px solid #ccc', overflowY: 'hidden' }}>
-            {renderColumn(columns.South)}
+              {renderColumn(columns.South)}
             </div>
           </div>
           <div className="col-4">
             <h3>Middle</h3>
             <div style={{ width: '350px', height: '50vh', borderRight: '2px solid #ccc', overflowY: 'hidden' }}>
-            {renderColumn(columns.Middle)}
+              {renderColumn(columns.Middle)}
             </div>
           </div>
           <div className="col-4">
             <h3>North</h3>
             <div style={{ width: '350px', height: '50vh', overflowY: 'hidden' }}>
-            {renderColumn(columns.North)}
+              {renderColumn(columns.North)}
             </div>
           </div>
-          
         </div>
+
         <div style={{ marginTop: '50px' }}>
           <h1>Individuals</h1>
           <p>Individuals can make a difference in the lives of the hungry. A personal donation can provide:</p>
@@ -107,10 +132,9 @@ function Organization() {
           </ul>
           <p>Individuals can also support WFP's work in other ways. <a href="learn-more" style={{ color: 'rgba(216, 92, 1, 1)', cursor: 'pointer', width: 'fit-content' }}>Learn more</a></p>
         </div>
-        <div class="d-grid gap-2 col-6 mx-auto" style={{marginBottom:"30px"}}>
-          <button class="btn btn-warning" type="button">Donate here</button>
+        <div className="d-grid gap-2 col-6 mx-auto" style={{ marginBottom: "30px" }}>
+          <button className="btn btn-warning" type="button">Donate here</button>
         </div>
-
       </div>
       <Footer />
     </>
