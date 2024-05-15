@@ -30,6 +30,25 @@ const CheckoutPage = () => {
   const [productname, setproductname] = useState(null);
   const [mass, setmass] = useState(null);
   const [quantity, setquantity] = useState(null);
+  const [wards, setWards] = useState([]);
+  
+    const fetchWards = async () => {
+      const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Token': '9865968a-0e0b-11ef-bfe9-c2d25c6518ab'
+        }
+      });
+      const data = await response.json();
+      setWards(data.data);
+    };
+  
+    useEffect(() => {
+      fetchWards();
+    }, []);
+  
+  
 
   const handleDeliveryNote = (event) => {
     const note = event.target.value;
