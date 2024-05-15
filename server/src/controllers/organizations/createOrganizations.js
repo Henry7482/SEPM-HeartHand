@@ -10,6 +10,7 @@ const createOrganizations = async (req, res) => {
       email,
       website,
       keywords,
+      imageURL
     });
     const savedOrganization = await organization.save();
     res.status(201).json(savedOrganization);
