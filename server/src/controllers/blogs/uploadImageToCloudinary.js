@@ -26,11 +26,13 @@ app.post('/upload', upload.single('image'), async (req, res) => {
         // Store image URL in MongoDB
         const imageUrl = result.secure_url;
 
+        req.files.url & req.files.fileName
+
         // Update blog with new image URL
         const newBlog = new Blog({
             title: req.body.title,
             content: req.body.content,
-            imageUrl: imageUrl
+            imageUrl: imageUrlsd
         });
         await newBlog.save();
 

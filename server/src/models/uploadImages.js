@@ -21,6 +21,7 @@ export async function uploadImage(filePath) {
     try {
         const result = await cloudinary.v2.uploader.upload(filePath);
         console.log('Image uploaded successfully:', result.url);
+        return result.url;
     } catch (error) {
         console.error('Error uploading image:', error);
     }
@@ -39,8 +40,8 @@ const __dirname = dirname(__filename);
 const imageFolderPath = join(__dirname, 'images');
 
 // Upload images from the "image" folder
-const imageFiles = readFilesFromDir(imageFolderPath);
-imageFiles.forEach(uploadImage);
+// const imageFiles = readFilesFromDir(imageFolderPath);
+// imageFiles.forEach(uploadImage);
 
 // Configure storage for multer
 const storage = multer.diskStorage({
