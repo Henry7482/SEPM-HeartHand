@@ -45,7 +45,7 @@ const start = async () => {
   try {
     await connectDB();
     // console.log("No Mongo")
-    app.listen(8080, () => {
+    app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   } catch (err) {
