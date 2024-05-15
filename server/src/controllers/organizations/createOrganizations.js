@@ -2,11 +2,14 @@ import Organization from "../../models/Organization.js";
 
 const createOrganizations = async (req, res) => {
   try {
-    const { name, phone_number, address, ward, district, provice, email, website, keywords, imageURL } = req.body;
+    const { name, phone_number, address, ward, district, province, email, website, keywords, imageURL } = req.body;
     const organization = new Organization({
       name,
       phone_number,
       address,
+      ward,
+      district,
+      province,
       email,
       website,
       keywords: keywords || [],

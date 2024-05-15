@@ -39,8 +39,8 @@ const __dirname = dirname(__filename);
 const imageFolderPath = join(__dirname, 'images');
 
 // Upload images from the "image" folder
-const imageFiles = readFilesFromDir(imageFolderPath);
-imageFiles.forEach(uploadImage);
+// const imageFiles = readFilesFromDir(imageFolderPath);
+// imageFiles.forEach(uploadImage);
 
 // Configure storage for multer
 const storage = multer.diskStorage({
