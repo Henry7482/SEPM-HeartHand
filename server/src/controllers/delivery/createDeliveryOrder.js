@@ -68,6 +68,7 @@ const createDeliveryOrder = async (req, res) => {
         message: "Error in creating Delivery Order",
         error: error.response.data,
       });
+      return;
     });
 
   // Update the delivery order

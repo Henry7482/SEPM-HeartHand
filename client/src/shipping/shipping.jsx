@@ -5,15 +5,15 @@ const CheckoutPage = () => {
   const [shifts, setShifts] = useState([]);
   const [selectedShift, setSelectedShift] = useState("default");
   const [districts, setDistricts] = useState([]);
-  const [selectedSenderDistricts, setSelectedSenderDistricts] =
-    useState("default");
+  const [selectedSenderDistrict, setSelectedSenderDistricts] = useState(0);
   const [selectedSenderProvince, setSelectedSenderProvince] =
     useState("default");
-  const [selectedOrganizationDistricts, setSelectedOrganizationDistricts] =
-    useState("default");
+  const [selectedOrganizationDistrict, setSelectedOrganizationDistricts] =
+    useState(0);
   const [selectedOrganizationProvince, setSelectedOrganizationProvince] =
     useState("default");
-
+  const [selectedSenderWards, setSelectedSenderWards] = useState(0);
+  const [selectedOrganizationWards, setSelectedOrganizationWards] = useState(0);
 
   const [deliveryNote, setDeliveryNote] = useState(null);
   const [donationContent, setDonationContent] = useState(null);
@@ -23,34 +23,21 @@ const CheckoutPage = () => {
   const [organizationName, setorganizationName] = useState(null);
   const [organizationPhoneNumber, setorganizationPhoneNumber] = useState(null);
   const [organizationAddress, setorganizationAddress] = useState(null);
-  const [totalmass, settotalmass] = useState(null);
+  const [senderwards, setSenderWards] = useState([]);
+  const [organizationwards, setOrganizationWards] = useState([]);
+  const [totalmass, settotalmass] = useState(0);
   const [length, setlength] = useState(null);
   const [wide, setwide] = useState(null);
   const [height, setheight] = useState(null);
   const [totalvalueofgoods, settotalvalueofgoods] = useState(null);
   const [productname, setproductname] = useState(null);
-  const [mass, setmass] = useState(null);
-  const [quantity, setquantity] = useState(null);
-  const [wards, setWards] = useState([]);
-  
-    const fetchWards = async () => {
-      const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Token': '9865968a-0e0b-11ef-bfe9-c2d25c6518ab'
-        }
-      });
-      const data = await response.json();
-      setWards(data.data);
-    };
+  const [mass, setmass] = useState(0);
+  const [quantity, setquantity] = useState(0);
+  const [provinces, setProvinces] = useState([]);
+  const [fee, setFee] = useState(0);
+  const [serviceId, setServiceId] = useState(null);
+  let minRequiredMass = mass * quantity;
 
-  
-    useEffect(() => {
-      fetchWards();
-    }, []);
-  
-  
 
   const handleDeliveryNote = (event) => {
     const note = event.target.value;
@@ -62,69 +49,169 @@ const CheckoutPage = () => {
     setDonationContent(content);
   };
 
-  useEffect(() => {
-    fetchServiceId();
-    fetchShifts();
-  }, []);
-
-  if (!shifts) {
-    console.log("No shifts found");
-  } else {
-    console.log("Shifts found", JSON.stringify(shifts));
-  }
-
   const fetchServiceId = async () => {
-    const response = await fetch(
-      "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
-        },
-        body: JSON.stringify({
-          shop_id: 5047918,
-          from_district: 1447,
-          to_district: 1442,
-        }),
-      }
-    );
+    try {
+      const response = await fetch(
+        "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+          },
+          body: JSON.stringify({
+            shop_id: 5047918,
+            from_district: Number(selectedSenderDistrict),
+            to_district: Number(selectedOrganizationDistrict),
+          }),
+        }
+      );
 
-    if (!response.ok) {
-      console.error("Failed to fetch service ID:", response);
-      return null;
+      if (!response.ok) {
+        console.error("Failed to fetch service ID:", response);
+        return null;
+      }
+
+      const data = await response.json();
+
+      let serviceId;
+      if (data && Array.isArray(data.data) && data.data.length > 0) {
+        serviceId = data.data[0].service_id;
+      }
+      console.log("Service ID:", serviceId);
+      setServiceId(serviceId);
+      return serviceId;
+    } catch (error) {
+      console.error("Error fetching service ID:", error);
     }
-    let serviceId;
-    if (Array.isArray(response.data) && response.data.length > 0) {
-      serviceId = response.data[0].service_id;
-    }
-    console.log("Service ID:", response);
-    return serviceId;
   };
 
-  const calculateTotalCost = (mass, length, wide, height, value) => {
+  const calculateCost = async () => {
+    try {
+      // console.log("Fee data", JSON.stringify({
+      //   from_district_id: Number(selectedSenderDistrict),
+      //   from_ward_code: String(selectedSenderWards),
+      //   service_id: Number(serviceId),
+      //   service_type_id: null,
+      //   to_district_id: Number(selectedOrganizationDistrict),
+      //   to_ward_code: String(selectedOrganizationWards),
+      //   height: Number(height),
+      //   length: Number(length),
+      //   weight: Number(totalmass),
+      //   width: Number(wide),
+      //   insurance_value: Number(totalvalueofgoods),
+      //   cod_failed_amount: null,
+      //   coupon: null,
+      // }));
+
+      const response = await fetch(
+        "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+          },
+          body: JSON.stringify({
+            from_district_id: Number(selectedSenderDistrict),
+            from_ward_code: String(selectedSenderWards),
+            service_id: Number(serviceId),
+            service_type_id: null,
+            to_district_id: Number(selectedOrganizationDistrict),
+            to_ward_code: String(selectedOrganizationWards),
+            height: Number(height),
+            length: Number(length),
+            weight: Number(mass),
+            width: Number(wide),
+            insurance_value: Number(totalvalueofgoods),
+            cod_failed_amount: null,
+            coupon: null,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Failed to fetch fee:", response);
+        return null;
+      }
+
+      const data = await response.json();
+      setFee(data.data.total);
+    } catch (error) {
+      console.error("Error fetching fee:", error);
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    createOrder();
+  };
+
+  const createOrder = async () => {
     const formData = {
       note: deliveryNote,
       sender: {
         name: senderName,
         phone: senderPhoneNumber,
         address: senderAddress,
-        district_id: selectedSenderDistricts,
+        ward: convertWardIdToName(selectedSenderWards),
+        district: convertDistrictIdToName(selectedSenderDistrict),
+        province: convertProvinceIdToName(selectedSenderProvince),
       },
-      from_district_id: selectedSenderDistricts,
-      from_ward_code: String(selectedSenderProvince),
-      service_id: 53320,
-      service_type_id: null,
-      to_district_id: 1452,
-      to_ward_code: "21012",
-      height: 50,
-      length: 20,
-      weight: 200,
-      width: 20,
-      insurance_value: 10000,
-      cod_failed_amount: 2000,
-      coupon: null,
+      organization: {
+        name: organizationName,
+        phone: organizationPhoneNumber,
+        address: organizationAddress,
+        ward_code: String(selectedOrganizationWards),
+        district_id: Number(selectedOrganizationDistrict),
+      },
+      package: {
+        weight: Number(mass),
+        length: Number(length),
+        width: Number(wide),
+        height: Number(height),
+        insurance_value: Number(totalvalueofgoods),
+      },
+      service_id: Number(serviceId),
+      pick_shift: [Number(selectedShift)],
+      content: donationContent,
+      items: [
+        {
+          name: productname,
+          code: "",
+          weight: Number(mass),
+          quantity: Number(quantity),
+          price: Number(totalvalueofgoods),
+          category: {},
+        },
+      ],
     };
+
+    console.log("Form data:", JSON.stringify(formData));
+
+    try {
+      const response = await fetch(
+        "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ShopId: 5047918,
+            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        console.error("Failed to create order:", data);
+        return null;
+      }
+      console.log("Order created:", data);
+      alert("Order created successfully");
+    } catch (error) {
+      console.error("Error creating order:", error);
+    }
   };
 
   const handleSelectShift = (event) => {
@@ -154,13 +241,58 @@ const CheckoutPage = () => {
     fetchOrganizationWards();
     fetchDistricts();
     fetchProvinces();
-  }, [selectedSenderDistricts, selectedOrganizationDistricts]);
+    calculateCost();
+    fetchServiceId();
+    minRequiredMass = mass * quantity;
+    console.log("minmass",  minRequiredMass);
+    checkTotalMass();
+    // console.log("Selected Sender district Name:", convertDistrictIdToName(selectedSenderDistricts));
+    // console.log(
+    //   "Selected Organization district:",
+    //   convertDistrictIdToName(selectedOrganizationDistricts)
+    // );
+    // console.log(
+    //   "Selected Sender ward Name:",
+    //   convertWardIdToName(selectedSenderWards,"sender")
+    // );
+    // console.log(
+    //   "Selected Organization ward Name:",
+    //   convertWardIdToName(selectedOrganizationWards,"organization")
+    // );
+    // console.log("Selected province Name:", convertProvinceIdToName(selectedSenderProvince));
+  }, [
+    selectedSenderDistrict,
+    selectedOrganizationDistrict,
+    selectedShift,
+    selectedSenderProvince,
+    selectedOrganizationProvince,
+    selectedSenderWards,
+    selectedOrganizationWards,
+    deliveryNote,
+    donationContent,
+    senderName,
+    senderPhoneNumber,
+    senderAddress,
+    organizationName,
+    organizationPhoneNumber,
+    organizationAddress,
+    totalmass,
+    length,
+    wide,
+    height,
+    totalvalueofgoods,
+    productname,
+    mass,
+    quantity,
+    selectedSenderWards,
+    selectedOrganizationWards,
+  ]);
 
-  if (!shifts) {
-    console.log("No shifts found");
-  } else {
-    console.log("Shifts found", JSON.stringify(shifts));
-  }
+  // if (!shifts) {
+  //   console.log("No shifts found");
+  // } else {
+  //   // console.log("Shifts found", JSON.stringify(shifts));
+  // }
 
   const displayShifts = (shifts) => {
     if (Array.isArray(shifts) && shifts.length > 0) {
@@ -174,16 +306,48 @@ const CheckoutPage = () => {
     }
   };
 
+  const displaySenderDistricts = (districts) => {
+    if (Array.isArray(districts) && districts.length > 0) {
+      return districts.map((district) => (
+        <option key={district.DistrictID} value={district.DistrictID}>
+          {district.DistrictName}
+        </option>
+      ));
+    } else {
+      return <option value={0}>No district found</option>;
+    }
+  };
+
+  const displayOrganizationDistricts = (districts) => {
+    if (Array.isArray(districts) && districts.length > 0) {
+      return districts.map((district) => (
+        <option key={district.DistrictID} value={district.DistrictID}>
+          {district.DistrictName}
+        </option>
+      ));
+    } else {
+      return <option value={0}>No district found</option>;
+    }
+  };
+
   const handleSelectSenderDistricts = (event) => {
     const selectedId = event.target.value;
     setSelectedSenderDistricts(selectedId);
-    console.log("Selected Senderdistrict:", selectedId);
+    console.log("Selected Sender district:", selectedId);
+  };
+
+  const convertDistrictIdToName = (districtId) => {
+    const district = districts.find((item) => item.DistrictID == districtId);
+    if (!district) {
+      return "No district found";
+    }
+    return district.DistrictName;
   };
 
   const handleSelectOrganizationDistricts = (event) => {
     const selectedId = event.target.value;
     setSelectedOrganizationDistricts(selectedId);
-    console.log("Selected Organizationshift:", selectedId);
+    console.log("Selected Organization shift:", selectedId);
   };
   const fetchDistricts = async () => {
     try {
@@ -204,18 +368,25 @@ const CheckoutPage = () => {
     }
   };
 
-  const displayDistricts = (districts) => {
-    if (Array.isArray(districts)) {
-      return districts.map((district, index) => (
-        <option key={index} value={district.DistrictID}>
-          {district.DistrictName}
+  const displayProvinces = () => {
+    if (!provinces || provinces.length === 0) {
+      return <option value={0}>No district found</option>;
+    } else {
+      return provinces.map((province) => (
+        <option key={province.ProvinceID} value={province.ProvinceID}>
+          {province.ProvinceName}
         </option>
       ));
-    } else {
-      return <h1>Loading...</h1>;
     }
   };
-  const [provinces, setProvinces] = useState([]);
+
+  const convertProvinceIdToName = (provinceId) => {
+    const province = provinces.find((item) => item.ProvinceID == provinceId);
+    if (!province) {
+      return "No province found";
+    }
+    return province.ProvinceName;
+  };
 
   const handleSelectSenderProvince = (event) => {
     const selectedId = event.target.value;
@@ -248,20 +419,6 @@ const CheckoutPage = () => {
     }
   };
 
-  const displayProvinces = () => {
-    if (!provinces || provinces.length === 0) {
-      return <option>Loading...</option>;
-    } else {
-      return provinces.map((province) => (
-        <option key={province.ProvinceID} value={province.ProvinceID}>
-          {province.ProvinceName}
-        </option>
-      ));
-    }
-  };
-  const [senderwards, setSenderWards] = useState([]);
-  const [organizationwards, setOrganizationWards] = useState([]);
-
   const fetchSenderWards = async () => {
     const response = await fetch(
       "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
@@ -272,7 +429,7 @@ const CheckoutPage = () => {
           Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
         },
         body: JSON.stringify({
-          district_id: Number(selectedSenderDistricts),
+          district_id: Number(selectedSenderDistrict),
         }),
       }
     );
@@ -289,7 +446,7 @@ const CheckoutPage = () => {
           Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
         },
         body: JSON.stringify({
-          district_id: Number(selectedOrganizationDistricts),
+          district_id: Number(selectedOrganizationDistrict),
         }),
       }
     );
@@ -299,7 +456,7 @@ const CheckoutPage = () => {
       return null;
     }
     const data = await response.json();
-    console.log("Org Wards", data.data);
+    // console.log("Org Wards", data.data);
     setOrganizationWards(data.data);
   };
 
@@ -314,6 +471,59 @@ const CheckoutPage = () => {
       return <h1>Loading...</h1>;
     }
   };
+
+  const convertWardIdToName = (wardId, role) => {
+    try {
+      if (role === "sender") {
+        const senderWard = senderwards.find((item) => item.WardCode == wardId);
+        if (senderWard) {
+          return senderWard.WardName;
+        } else {
+          return "No ward found";
+        }
+      }
+      if (role === "organization") {
+        const organizationWard = organizationwards.find(
+          (item) => item.WardCode == wardId
+        );
+        if (organizationWard) {
+          return organizationWard.WardName;
+        } else {
+          return "No ward found";
+        }
+      }
+    } catch (error) {
+      return "No ward found";
+    }
+  };
+
+  const handleSelectSenderWards = (event) => {
+    const selectedId = event.target.value;
+    setSelectedSenderWards(selectedId);
+    console.log("Selected Sender ward:", selectedId);
+  };
+
+  const handleSelectOrganizationWards = (event) => {
+    const selectedId = event.target.value;
+    setSelectedOrganizationWards(selectedId);
+    console.log("Selected Organization ward:", selectedId);
+  };
+
+  const handleSetTotalMass = (event) => {
+    const mass = event.target.value;
+    settotalmass(mass);
+    // console.log("Total mass:", mass);
+  };
+  const handleQuantityChange = (event) => setquantity(Number(event.target.value));
+  const handleMassChange = (event) => setmass(Number(event.target.value));
+
+  const checkTotalMass = () => {
+    if (totalmass < minRequiredMass) {
+      alert(`Total mass must be equal or greater than ${minRequiredMass}`);
+      settotalmass(minRequiredMass);
+      return;
+    }
+  }
 
   return (
     <>
@@ -354,7 +564,7 @@ const CheckoutPage = () => {
         </div>
       </header>
       <div className="wrapper">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="h5 large">Shipping Cart</div>
           <div className="row">
             <div className="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1">
@@ -407,13 +617,13 @@ const CheckoutPage = () => {
                       <select
                         name="district"
                         id="district"
-                        value={selectedSenderDistricts}
+                        value={selectedSenderDistrict}
                         onChange={handleSelectSenderDistricts}
                       >
-                        <option disabled selected value>
+                        <option disabled selected value={0}>
                           Choose a district
                         </option>
-                        {displayDistricts(districts)}
+                        {displaySenderDistricts(districts)}
                       </select>
                     </div>
                   </div>
@@ -426,7 +636,7 @@ const CheckoutPage = () => {
                         value={selectedSenderProvince}
                         onChange={handleSelectSenderProvince}
                       >
-                        <option disabled selected value>
+                        <option disabled selected value={0}>
                           Choose a province
                         </option>
                         {displayProvinces(provinces)}
@@ -439,11 +649,11 @@ const CheckoutPage = () => {
                       <select
                         name="province"
                         id="province"
-                        value={selectedSenderProvince}
-                        onChange={handleSelectSenderProvince}
+                        value={selectedSenderWards}
+                        onChange={handleSelectSenderWards}
                       >
                         <option disabled selected value>
-                          Choose a province
+                          Choose a ward
                         </option>
                         {displayWards(senderwards)}
                       </select>
@@ -522,13 +732,13 @@ const CheckoutPage = () => {
                       <select
                         name="country"
                         id="country"
-                        value={selectedOrganizationDistricts}
+                        value={selectedOrganizationDistrict}
                         onChange={handleSelectOrganizationDistricts}
                       >
-                        <option disabled selected value>
+                        <option disabled selected value={0}>
                           Choose a district
                         </option>
-                        {displayDistricts(districts)}
+                        {displayOrganizationDistricts(districts)}
                       </select>
                     </div>
                   </div>
@@ -541,7 +751,7 @@ const CheckoutPage = () => {
                         value={selectedOrganizationProvince}
                         onChange={handleSelectOrganizationProvince}
                       >
-                        <option disabled selected value>
+                        <option disabled selected value={0}>
                           Choose a province
                         </option>
                         {displayProvinces(provinces)}
@@ -554,11 +764,11 @@ const CheckoutPage = () => {
                       <select
                         name="province"
                         id="province"
-                        value={selectedSenderProvince}
-                        onChange={handleSelectSenderProvince}
+                        value={selectedOrganizationWards}
+                        onChange={handleSelectOrganizationWards}
                       >
                         <option disabled selected value>
-                          Choose a province
+                          Choose a ward
                         </option>
                         {displayWards(organizationwards)}
                       </select>
@@ -602,11 +812,10 @@ const CheckoutPage = () => {
                 <div className="form-group">
                   <label className="text-muted">Total Mass</label>
                   <input
-                    type="text"
-                    defaultValue=""
+                    type="number"
                     className="form-control"
                     value={totalmass}
-                    onChange={(e) => settotalmass(e.target.value)}
+                    onChange={handleSetTotalMass}
                   />
                 </div>
                 <div className="form-group">
@@ -665,23 +874,22 @@ const CheckoutPage = () => {
                   </div>
                   <div className="form-group">
                     <label className="text-muted">Mass</label>
-                    <div className="d-flex jusify-content-start align-items-center rounded p-2">
                       <input
-                        type="productcode"
+                        type="number"
                         defaultValue=""
+                        className="form-control"
                         value={mass}
-                        onChange={(e) => setmass(e.target.value)}
+                        onChange={handleMassChange}
                       />
-                    </div>
                   </div>
                   <div className="form-group">
                     <label className="text-muted">Quantity</label>
                     <input
-                      type="productname"
+                      type="number"
                       defaultValue=""
                       className="form-control"
                       value={quantity}
-                      onChange={(e) => setquantity(e.target.value)}
+                      onChange={handleQuantityChange}
                     />
                   </div>
                   <div
@@ -719,9 +927,9 @@ const CheckoutPage = () => {
                   >
                     Total cost
                   </div>
-                  <h4>0đ</h4>
+                  <h4>{fee}đ</h4>
                 </div>
-                <button type="button" class="btn btn-success">
+                <button type="submit" class="btn btn-success">
                   Create Order
                 </button>
               </div>
