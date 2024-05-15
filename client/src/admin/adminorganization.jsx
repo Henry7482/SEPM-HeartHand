@@ -12,15 +12,38 @@ function Organization({ Toggle }) {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [selectedImage, setSelectedImage] = useState({});
   const [newOrganization, setNewOrganization] = useState({
+  
     name: '',
-    domain: '',
-    city: '',
-    address: '',
-    logo: '',
-    owner: ''
+      phone_number: '',
+      ward: '',
+      address: '',
+      logo: '',
+      district: '',
+      province: '',
+      email: '',
+      website: '',
+      imageurl: ''
   });
+  const [wards, setWards] = useState([]);
   const [organizations, setOrganizations] = useState([]);
   const { user } = useAuthContext();
+  const fetchWards = async () => {
+    const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Token': '9865968a-0e0b-11ef-bfe9-c2d25c6518ab'
+      }
+    });
+    const data = await response.json();
+    setWards(data.data);
+  };
+
+  useEffect(() => {
+    fetchWards();
+  }, []);
+
+  
 
   useEffect(() => {
     const fetchOrganizations = async () => {
@@ -81,11 +104,15 @@ function Organization({ Toggle }) {
     setOrganizations([...organizations, newOrganization]);
     setNewOrganization({
       name: '',
-      domain: '',
-      city: '',
+      phone_number: '',
+      ward: '',
       address: '',
       logo: '',
-      owner: ''
+      district: '',
+      province: '',
+      email: '',
+      website: '',
+      imageurl: '',
     });
   };
 
@@ -128,16 +155,19 @@ function Organization({ Toggle }) {
               <div className='mt-3 bg-white shadow-sm p-3 rounded'>
                 <form>
                   <input type="text" name="name" placeholder="Organization Name*" value={newOrganization.name} onChange={handleInputChange} className="form-control mb-2" />
-                  <select name="domain" value={newOrganization.domain} onChange={handleInputChange} className="form-select mb-2">
-                    <option value="">Select Domain</option>
+                  <select name="domain" value={newOrganization.district} onChange={handleInputChange} className="form-select mb-2">
+                    <option value="">District</option>
                     <option value="North">North</option>
                     <option value="South">South</option>
                     <option value="Middle">Middle</option>
                   </select>
-                  <input type="text" name="city" placeholder="City*" value={newOrganization.city} onChange={handleInputChange} className="form-control mb-2" />
+                  <input type="text" name="ward" placeholder="Ward*" value={newOrganization.ward} onChange={handleInputChange} className="form-control mb-2" />
                   <input type="text" name="address" placeholder="Address*" value={newOrganization.address} onChange={handleInputChange} className="form-control mb-2" />
+                  <input type="text" name="province" placeholder="Province*" value={newOrganization.province} onChange={handleInputChange} className="form-control mb-2" />
+                  <input type="text" name="email" placeholder="Email*" value={newOrganization.email} onChange={handleInputChange} className="form-control mb-2" />
+                  <input type="text" name="province" placeholder="Province*" value={newOrganization.province} onChange={handleInputChange} className="form-control mb-2" />
                   <input type="file" name="logo" onChange={handleLogoChange} className="form-control mb-2" />
-                  <input type="text" name="owner" placeholder="Owner*" value={newOrganization.owner} onChange={handleInputChange} className="form-control mb-2" />
+                  <input type="text" name="phonenumber" placeholder="PhoneNumber*" value={newOrganization.phone_number} onChange={handleInputChange} className="form-control mb-2" />
                   <button type="submit" onClick={handleCreateOrganization} className="btn btn-success">Create</button>
                 </form>
               </div>

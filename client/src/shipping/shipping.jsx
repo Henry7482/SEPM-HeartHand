@@ -14,6 +14,7 @@ const CheckoutPage = () => {
   const [selectedOrganizationProvince, setSelectedOrganizationProvince] =
     useState("default");
 
+
   const [deliveryNote, setDeliveryNote] = useState(null);
   const [donationContent, setDonationContent] = useState(null);
   const [senderName, setSenderName] = useState(null);
@@ -43,6 +44,7 @@ const CheckoutPage = () => {
       const data = await response.json();
       setWards(data.data);
     };
+
   
     useEffect(() => {
       fetchWards();
