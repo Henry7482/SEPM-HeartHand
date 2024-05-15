@@ -126,7 +126,7 @@ function Organization({ Toggle }) {
           <div className="row" style={{ paddingRight: '350px' }}>
             <div className='col-12'>
               <div className='mt-3 bg-white shadow-sm p-3 rounded'>
-                <div>
+                <form>
                   <input type="text" name="name" placeholder="Organization Name*" value={newOrganization.name} onChange={handleInputChange} className="form-control mb-2" />
                   <select name="domain" value={newOrganization.domain} onChange={handleInputChange} className="form-select mb-2">
                     <option value="">Select Domain</option>
@@ -138,8 +138,8 @@ function Organization({ Toggle }) {
                   <input type="text" name="address" placeholder="Address*" value={newOrganization.address} onChange={handleInputChange} className="form-control mb-2" />
                   <input type="file" name="logo" onChange={handleLogoChange} className="form-control mb-2" />
                   <input type="text" name="owner" placeholder="Owner*" value={newOrganization.owner} onChange={handleInputChange} className="form-control mb-2" />
-                  <button onClick={handleCreateOrganization} className="btn btn-success">Create</button>
-                </div>
+                  <button type="submit" onClick={handleCreateOrganization} className="btn btn-success">Create</button>
+                </form>
               </div>
             </div>
           </div>

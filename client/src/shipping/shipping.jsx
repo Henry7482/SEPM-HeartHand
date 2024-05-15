@@ -89,7 +89,7 @@ const CheckoutPage = () => {
         phone: senderPhoneNumber,
         address: senderAddress,
         district_id: selectedSenderDistricts,
-      }
+      },
       from_district_id: selectedSenderDistricts,
       from_ward_code: String(selectedSenderProvince),
       service_id: 53320,
