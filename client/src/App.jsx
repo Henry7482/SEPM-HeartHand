@@ -11,7 +11,7 @@ import React, { useState, useEffect } from "react";
 import Admin from "./admin/Admin.jsx";
 import DonorLogin from "./loginfordonors/DonorLogin.jsx";
 import CheckoutPage from "./shipping/shipping.jsx";
-import AdminLogin from "./login/AdminLogin.jsx";
+import AdminLogin from "./login/AdminLogin.jsx"
 import AboutUs from "./aboutus/aboutus.jsx";
 import Organization from "./Organization/donororganization.jsx";
 import Donation from "./Donation/donation.jsx";
