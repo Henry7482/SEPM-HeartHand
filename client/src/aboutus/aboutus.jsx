@@ -2,7 +2,7 @@ import React from "react";
 import "./aboutus.css";
 import charitylogo from "../assets/charity1.png";
 import Header from "../header/header.jsx";
-import Footer from "../footer/footer";
+import Footer from "../footer/footer.jsx";
 
 const AboutUs = () => {
   return (

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Sidebar from "./Sidebar";
-import Dashboard from "./dashboard";
-import Home from "./home";
-import Organization from "./adminorganization";
-import Donation from "./donor";
+import Dashboard from "./Dashboard";
+import Home from "./Home";
+import Organization from "./Adminorganization";
+import Donation from "./Donor";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 

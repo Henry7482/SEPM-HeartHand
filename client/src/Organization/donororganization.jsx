@@ -4,7 +4,7 @@ import Header from "../header/header.jsx";
 import Footer from "../footer/footer.jsx";
 import Organizationpage from "../assets/Organization-bg.jpg";
 import Draggable from "react-draggable";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useAuthContext } from "../hooks/useAuthContext.js";
 import { Link } from "react-router-dom";
 import "./organization.css";
 
