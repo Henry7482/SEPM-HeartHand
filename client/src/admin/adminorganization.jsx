@@ -82,17 +82,22 @@ function Organization({ Toggle }) {
     }));
   };
 
-  const handleLogoChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setNewOrganization((prevState) => ({
-        ...prevState,
-        imageURL: reader.result,
-      }));
-    };
-    reader.readAsDataURL(file);
+  const handleImageChange = (organizationId, event) => {
+    const file = event.target.files[0];
+    setSelectedImage((prev) => ({ ...prev, [organizationId]: file }));
   };
+
+  // const handleLogoChange = (e) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     setNewOrganization((prevState) => ({
+  //       ...prevState,
+  //       imageURL: reader.result,
+  //     }));
+  //   };
+  //   reader.readAsDataURL(file);
+  // };
 
   const handleCreateOrganization = async (e) => {
     e.preventDefault();
@@ -104,6 +109,18 @@ function Organization({ Toggle }) {
       return;
     }
 
+    const formData = new FormData();
+    formData.append("image", selectedImage[newOrganization._id]);
+    formData.append("name", newOrganization.name);
+    formData.append("phone_number", newOrganization.phone_number);
+    formData.append("address", newOrganization.address);
+    formData.append("ward", newOrganization.ward);
+    formData.append("district", newOrganization.district);
+    formData.append("province", newOrganization.province);
+    formData.append("email", newOrganization.email);
+    formData.append("website", newOrganization.website);
+
+
     try {
       const response = await fetch(
         "https://hearthand.onrender.com/api/v1/organizations",
@@ -113,7 +130,7 @@ function Organization({ Toggle }) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-          body: JSON.stringify(newOrganization),
+          body: formData,
         }
       );
       if (response.status === 401) {
@@ -305,7 +322,7 @@ function Organization({ Toggle }) {
                 <input
                   type="file"
                   name="logo"
-                  onChange={handleLogoChange}
+                  onChange={(e) => handleImageChange(newOrganization._id, e)}
                   className="form-control mb-2"
                 />
                 <input

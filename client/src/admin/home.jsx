@@ -228,6 +228,7 @@ function Home({ Toggle }) {
               <button
                 onClick={() => handleDelete(item._id, blog._id)}
                 className="btn btn-danger"
+                disabled={deleteClicked}
               >
                 Delete
               </button>
