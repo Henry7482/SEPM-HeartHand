@@ -55,9 +55,6 @@ const BlogPage = () => {
     fecthBlog();
   }, []);
 
-  // Placeholder for background image
-  const backgroundImage = blog.image || "https://via.placeholder.com/1920x1080";
-
   if (!blog) {
     return <h1>Loading...</h1>;
   } else {
@@ -66,7 +63,13 @@ const BlogPage = () => {
         <Header />
         <div className="background-image">
           <img
-            src={Blogdetail}
+            src={
+              blog &&
+              blog.imageURL &&
+              blog.imageURL.startsWith("https://res.cloudinary.com/")
+                ? blog.imageURL
+                : Blogdetail
+            }
             alt="blog image"
             style={{ width: "100%", objectFit: "cover" }}
           />
@@ -77,11 +80,23 @@ const BlogPage = () => {
         <div style={{ position: "relative", minHeight: "100%" }}>
           <div className="article-content">
             <div className="image-container" style={{ paddingTop: "2rem" }}>
-              <img src={Blogdetail} alt="Home" className="news-picture-blog" />
+              <img
+                src={
+                  blog &&
+                  blog.imageURL &&
+                  blog.imageURL.startsWith("https://res.cloudinary.com/")
+                    ? blog.imageURL
+                    : Blogdetail
+                }
+                alt="Home"
+                className="news-picture-blog"
+              />
             </div>
             <p>{blog.content}</p>
             <div className="organizations" style={{ marginTop: "5rem" }}>
-              <h3><strong>Who can help:</strong></h3>
+              <h3>
+                <strong>Who can help:</strong>
+              </h3>
               <Draggable axis="x">
                 <div className="d-flex flex-nowrap">
                   {organizations.map((organization, index) => (

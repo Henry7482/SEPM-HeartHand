@@ -1,26 +1,24 @@
 import Blog from "../../models/Blog.js";
-import { uploadImage } from "../../models/uploadImages.js";
-
-const newBlogInstance = async () => {
-  const keywords = ["test", "blog"];
-  const references = ["test", "blog"];
-  const imageURL = null;
-  const defaultImageURL = "https://www.defaultURL.com";
-  const rawBlogs =  {};
-
-  const blog = new Blog({
-    title: rawBlogs.title,
-    shortform: rawBlogs.shortform,
-    content: rawBlogs.content,
-    date: new Date(),
-    keywords: keywords,
-    references: references,
-    imageURL: imageURL || defaultImageURL,
-  });
-  return blog;
-};
+import { uploadImageToCloudinary } from "../../services/uploadImages.js";
 
 const createBlog = async (req, res) => {
+
+  try {
+    const file = req.file;
+    if (!file) {
+      console.log('No file uploaded.');
+      req.body.imageURL = '';
+    }
+
+    const imageUrl = await uploadImageToCloudinary(file.buffer);
+    // console.log('Image URL:', imageUrl);
+    req.body.imageURL = imageUrl;
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    req.body.imageURL = '';
+  }
+
+
   try {    
     const output = await Blog.create({
       title: req.body.title,

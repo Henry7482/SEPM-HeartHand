@@ -79,6 +79,14 @@ function Home({ Toggle }) {
       alert("Access token not found. Please login again.");
       return;
     }
+    const formData = new FormData();
+    formData.append("image", selectedImage[blog._id]);
+    formData.append("title", blog.title);
+    formData.append("shortform", blog.shortform);
+    formData.append("content", blog.content);
+    formData.append("date", blog.date);
+    formData.append("tags", blog.tags);
+    formData.append("references", blog.references);
     try {
       const response = await fetch(
         "https://hearthand.onrender.com/api/v1/blogs",
@@ -88,15 +96,7 @@ function Home({ Toggle }) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-          body: JSON.stringify({
-            title: blog.title,
-            shortform: blog.shortform,
-            content: blog.content,
-            date: blog.date,
-            tags: blog.tags,
-            references: blog.references,
-            imageURL: image,
-          }),
+          body: formData,
         }
       );
 

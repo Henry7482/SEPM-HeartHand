@@ -23,7 +23,7 @@
     width: 35rem;
     height:20rem;
     justify-content: end;
-    object-fit: cover;
+    object-fit: contain;
     margin: 20px;
 }
 
