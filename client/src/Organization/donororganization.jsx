@@ -10,7 +10,7 @@ import './organization.css';
 function Organization() {
   const [organizations, setOrganizations] = useState([]);
   const { user } = useAuthContext();
-
+  
   useEffect(() => {
     const fetchOrganizations = async () => {
       const accessToken = localStorage.getItem("accessToken");
