@@ -19,38 +19,38 @@ export default function Footer() {
             </div>
             <div className="sb_footer-links_div">
               <h4>Navigation</h4>
-              <a href="/home">
+              <a href="/home" style={{ textDecoration: "none" }}>
                 <p>Latest news</p>
               </a>
-              <a href="/Our Impact">
+              <a href="/Our Impact" style={{ textDecoration: "none" }}>
                 <p>Our impact</p>
               </a>
-              <a href="/AboutUs">
+              <a href="/AboutUs" style={{ textDecoration: "none" }}>
                 <p>About Us</p>
               </a>
             </div>
             <div className="sb_footer-links_div">
               <h4>Organization</h4>
-              <a href="/Organization">
+              <a href="/Organization" style={{ textDecoration: "none" }}>
                 <p>Corporations</p>
               </a>
             </div>
             <div className="sb_footer-links_div">
               <h4>Company</h4>
-              <a href="/AboutUs">
+              <a href="/AboutUs" style={{ textDecoration: "none" }}>
                 <p>About</p>
               </a>
-              <a href="/contact">
+              <a href="/contact" style={{ textDecoration: "none" }}>
                 <p>Contact</p>
               </a>
             </div>
             <div className="sb_footer-links_div">
               <h4>Follow Us </h4>
               <div className="socialmedia">
-                <a>
+                <a style={{ textDecoration: "none" }}>
                   <img src={youtubeLogo} alt="youtube" width="30" height="30" />
                 </a>
-                <a>
+                <a style={{ textDecoration: "none" }}>
                   <img
                     src={facebookLogo}
                     alt="facebook"
@@ -58,7 +58,7 @@ export default function Footer() {
                     height="30"
                   />
                 </a>
-                <a>
+                <a style={{ textDecoration: "none" }}>
                   <img
                     src={instagramLogo}
                     alt="instagram"
@@ -66,7 +66,7 @@ export default function Footer() {
                     height="30"
                   />
                 </a>
-                <a>
+                <a style={{ textDecoration: "none" }}>
                   <img src={twitterLogo} alt="twitter" width="30" height="30" />
                 </a>
               </div>

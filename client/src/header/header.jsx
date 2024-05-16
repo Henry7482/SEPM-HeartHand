@@ -30,9 +30,9 @@ const Navbar = () => {
   return (
     <div>
       <ul id="headbar">
-        <li style={{ textDecoration: "none" }}>
-          <a href="#">FAQs </a>
-          <a href="#">Contact Us </a>
+        <li>
+          <a href="#" style={{ textDecoration: "none" }}>FAQs </a>
+          <a href="#" style={{ textDecoration: "none" }}>Contact Us </a>
         </li>
         <li>
           <a>
