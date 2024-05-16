@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./shipping.css";
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const CheckoutPage = () => {
+  const {user} = useAuthContext();
   const [shifts, setShifts] = useState([]);
   const [selectedShift, setSelectedShift] = useState("default");
   const [districts, setDistricts] = useState([]);
   const [selectedSenderDistrict, setSelectedSenderDistricts] = useState(0);
-  const [selectedSenderProvince, setSelectedSenderProvince] =
-    useState("default");
+  const [selectedSenderProvince, setSelectedSenderProvince] = useState(0);
   const [selectedOrganizationDistrict, setSelectedOrganizationDistricts] =
     useState(0);
   const [selectedOrganizationProvince, setSelectedOrganizationProvince] =
-    useState("default");
+    useState(0);
   const [selectedSenderWards, setSelectedSenderWards] = useState(0);
   const [selectedOrganizationWards, setSelectedOrganizationWards] = useState(0);
 
@@ -25,19 +26,18 @@ const CheckoutPage = () => {
   const [organizationAddress, setorganizationAddress] = useState(null);
   const [senderwards, setSenderWards] = useState([]);
   const [organizationwards, setOrganizationWards] = useState([]);
-  const [totalmass, settotalmass] = useState(0);
+  const [totalmass, settotalmass] = useState("");
   const [length, setlength] = useState(null);
   const [wide, setwide] = useState(null);
   const [height, setheight] = useState(null);
   const [totalvalueofgoods, settotalvalueofgoods] = useState(null);
   const [productname, setproductname] = useState(null);
-  const [mass, setmass] = useState(0);
-  const [quantity, setquantity] = useState(0);
+  const [mass, setmass] = useState("");
+  const [quantity, setquantity] = useState("");
   const [provinces, setProvinces] = useState([]);
   const [fee, setFee] = useState(0);
   const [serviceId, setServiceId] = useState(null);
-  let minRequiredMass = mass * quantity;
-
+  let minRequiredMass = 0;
 
   const handleDeliveryNote = (event) => {
     const note = event.target.value;
@@ -130,12 +130,12 @@ const CheckoutPage = () => {
         }
       );
 
+      const data = await response.json();
+
       if (!response.ok) {
-        console.error("Failed to fetch fee:", response);
+        console.error("Failed to fetch fee:", data);
         return null;
       }
-
-      const data = await response.json();
       setFee(data.data.total);
     } catch (error) {
       console.error("Error fetching fee:", error);
@@ -154,7 +154,7 @@ const CheckoutPage = () => {
         name: senderName,
         phone: senderPhoneNumber,
         address: senderAddress,
-        ward: convertWardIdToName(selectedSenderWards),
+        ward: convertWardIdToName(selectedSenderWards, "sender"),
         district: convertDistrictIdToName(selectedSenderDistrict),
         province: convertProvinceIdToName(selectedSenderProvince),
       },
@@ -166,7 +166,7 @@ const CheckoutPage = () => {
         district_id: Number(selectedOrganizationDistrict),
       },
       package: {
-        weight: Number(mass),
+        weight: Number(totalmass),
         length: Number(length),
         width: Number(wide),
         height: Number(height),
@@ -182,22 +182,27 @@ const CheckoutPage = () => {
           weight: Number(mass),
           quantity: Number(quantity),
           price: Number(totalvalueofgoods),
-          category: {},
+          category: {
+            level1: "donation",
+          },
         },
       ],
     };
 
     console.log("Form data:", JSON.stringify(formData));
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      alert("Access token not found. Please login again.");
+    }
 
     try {
       const response = await fetch(
-        "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create",
+        "https://hearthand.onrender.com/api/v1/delivery/create",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            ShopId: 5047918,
-            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify(formData),
         }
@@ -205,12 +210,15 @@ const CheckoutPage = () => {
       const data = await response.json();
       if (!response.ok) {
         console.error("Failed to create order:", data);
+        alert("Failed to create order ", data.message);
         return null;
       }
       console.log("Order created:", data);
       alert("Order created successfully");
+      window.location.href = "/donation"+ `/${user.id}`;
     } catch (error) {
       console.error("Error creating order:", error);
+      alert("Failed to create order ", error.message)
     }
   };
 
@@ -244,7 +252,7 @@ const CheckoutPage = () => {
     calculateCost();
     fetchServiceId();
     minRequiredMass = mass * quantity;
-    console.log("minmass",  minRequiredMass);
+    // console.log("minmass", minRequiredMass);
     checkTotalMass();
     // console.log("Selected Sender district Name:", convertDistrictIdToName(selectedSenderDistricts));
     // console.log(
@@ -369,14 +377,14 @@ const CheckoutPage = () => {
   };
 
   const displayProvinces = () => {
-    if (!provinces || provinces.length === 0) {
-      return <option value={0}>No district found</option>;
-    } else {
+    if (Array.isArray(provinces) && provinces.length > 0) {
       return provinces.map((province) => (
         <option key={province.ProvinceID} value={province.ProvinceID}>
           {province.ProvinceName}
         </option>
       ));
+    } else {
+      return <option value={0}>No province found</option>;
     }
   };
 
@@ -420,55 +428,63 @@ const CheckoutPage = () => {
   };
 
   const fetchSenderWards = async () => {
-    const response = await fetch(
-      "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
-        },
-        body: JSON.stringify({
-          district_id: Number(selectedSenderDistrict),
-        }),
-      }
-    );
-    const data = await response.json();
-    setSenderWards(data.data);
+    try {
+      const response = await fetch(
+        "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+          },
+          body: JSON.stringify({
+            district_id: Number(selectedSenderDistrict),
+          }),
+        }
+      );
+      const data = await response.json();
+      setSenderWards(data.data);
+    } catch {
+      console.log("Error fetching sender wards");
+    }
   };
   const fetchOrganizationWards = async () => {
-    const response = await fetch(
-      "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
-        },
-        body: JSON.stringify({
-          district_id: Number(selectedOrganizationDistrict),
-        }),
-      }
-    );
+    try {
+      const response = await fetch(
+        "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+          },
+          body: JSON.stringify({
+            district_id: Number(selectedOrganizationDistrict),
+          }),
+        }
+      );
 
-    if (!response.ok) {
-      console.log("Failed to fetch ward ID:", response);
-      return null;
+      if (!response.ok) {
+        console.log("Failed to fetch ward ID:", response);
+        return null;
+      }
+      const data = await response.json();
+      // console.log("Org Wards", data.data);
+      setOrganizationWards(data.data);
+    } catch (error) {
+      console.error("Error fetching organization wards:", error);
     }
-    const data = await response.json();
-    // console.log("Org Wards", data.data);
-    setOrganizationWards(data.data);
   };
 
   const displayWards = (wards) => {
-    if (Array.isArray(wards)) {
-      return wards.map((ward, index) => (
-        <option key={index} value={ward.WardCode}>
+    if (Array.isArray(wards) && wards.length > 0) {
+      return wards.map((ward) => (
+        <option key={ward.WardCode} value={ward.WardCode}>
           {ward.WardName}
         </option>
       ));
     } else {
-      return <h1>Loading...</h1>;
+      return <option value={0}>No ward found</option>;
     }
   };
 
@@ -514,7 +530,8 @@ const CheckoutPage = () => {
     settotalmass(mass);
     // console.log("Total mass:", mass);
   };
-  const handleQuantityChange = (event) => setquantity(Number(event.target.value));
+  const handleQuantityChange = (event) =>
+    setquantity(Number(event.target.value));
   const handleMassChange = (event) => setmass(Number(event.target.value));
 
   const checkTotalMass = () => {
@@ -523,7 +540,7 @@ const CheckoutPage = () => {
       settotalmass(minRequiredMass);
       return;
     }
-  }
+  };
 
   return (
     <>
@@ -652,7 +669,7 @@ const CheckoutPage = () => {
                         value={selectedSenderWards}
                         onChange={handleSelectSenderWards}
                       >
-                        <option disabled selected value>
+                        <option disabled selected value={0}>
                           Choose a ward
                         </option>
                         {displayWards(senderwards)}
@@ -767,7 +784,7 @@ const CheckoutPage = () => {
                         value={selectedOrganizationWards}
                         onChange={handleSelectOrganizationWards}
                       >
-                        <option disabled selected value>
+                        <option disabled selected value={0}>
                           Choose a ward
                         </option>
                         {displayWards(organizationwards)}
@@ -777,18 +794,23 @@ const CheckoutPage = () => {
                 </div>
                 <div
                   className="rounded py-2 px-3"
-                  id="register"
+                  id="form-group"
                   style={{ backgroundColor: "#f0f0f0" }}
                 >
-                  <a href="#">
+                  <div className="h5 text-primary">
                     <b>Donation content</b>
-                  </a>
-                  <input
-                    type="Type the note here"
+                  </div>
+                  <textarea
+                    className="form-control input-lg"
                     defaultValue=""
                     value={donationContent}
                     onChange={handleDonationContent}
-                    style={{ backgroundColor: "#f0f0f0", border: "none" }}
+                    style={{
+                      backgroundColor: "#f0f0f0",
+                      border: "none",
+                      height: "5rem",
+                      overflow: "auto",
+                    }}
                   />
                 </div>
               </div>
@@ -874,13 +896,13 @@ const CheckoutPage = () => {
                   </div>
                   <div className="form-group">
                     <label className="text-muted">Mass</label>
-                      <input
-                        type="number"
-                        defaultValue=""
-                        className="form-control"
-                        value={mass}
-                        onChange={handleMassChange}
-                      />
+                    <input
+                      type="number"
+                      defaultValue=""
+                      className="form-control"
+                      value={mass}
+                      onChange={handleMassChange}
+                    />
                   </div>
                   <div className="form-group">
                     <label className="text-muted">Quantity</label>
@@ -892,31 +914,27 @@ const CheckoutPage = () => {
                       onChange={handleQuantityChange}
                     />
                   </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      marginTop: "40px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    <div
-                      className="rounded py-2 px-3"
-                      id="register"
-                      style={{ backgroundColor: "#f0f0f0" }}
-                    >
-                      <a href="#">
-                        <b>Note for delivery</b>
-                      </a>
-                      <input
-                        type="Type the note here"
-                        defaultValue=""
-                        value={deliveryNote}
-                        onChange={handleDeliveryNote}
-                        style={{ backgroundColor: "#f0f0f0", border: "none" }}
-                      />
-                    </div>
+                <div
+                  className="rounded py-2 px-3"
+                  id="form-group"
+                  style={{ backgroundColor: "#f0f0f0" }}
+                >
+                  <div className="h5 text-primary">
+                    <b>Notes for delivery</b>
                   </div>
+                  <textarea
+                    className="form-control input-lg"
+                    defaultValue=""
+                    value={deliveryNote}
+                    onChange={handleDeliveryNote}
+                    style={{
+                      backgroundColor: "#f0f0f0",
+                      border: "none",
+                      height: "5rem",
+                      overflow: "auto",
+                    }}
+                  />
+                </div>
                   <div
                     className="h5 font-weight-bold text-primary"
                     style={{

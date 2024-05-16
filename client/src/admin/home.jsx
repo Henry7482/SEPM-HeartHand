@@ -24,10 +24,10 @@ function Home({ handleDelete, Toggle }) {
             },
           }
         );
+        const jsonData = await response.json();
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const jsonData = await response.json();
         setGeneratedBlogs(jsonData);
         console.log("Generated Blogs Data from server:", JSON.stringify(jsonData));
       } catch (err) {
