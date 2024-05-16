@@ -22,26 +22,26 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
-// app.use(
-//   cors({
-//     origin: "*", // Replace with your frontend URL
-//     methods: "GET,POST,PUT,DELETE",
-//     allowedHeaders: "Content-Type,Authorization",
-//     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-//   })
-// );
+app.use(
+  cors({
+    origin: "*", // Replace with your frontend URL
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  })
+);
 app.use(cookieParser());
 
 // Allow preflight requests for all routes
-// app.options(
-//   "*",
-//   cors({
-//     origin: "*", // Replace with your frontend URL
-//     methods: "GET,POST,PUT,DELETE",
-//     allowedHeaders: "Content-Type,Authorization",
-//     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-//   })
-// );
+app.options(
+  "*",
+  cors({
+    origin: "*", // Replace with your frontend URL
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  })
+);
 
 // App Routes
 app.get("/api/v1/", (req, res) => {
