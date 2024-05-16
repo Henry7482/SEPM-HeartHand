@@ -14,11 +14,13 @@ const Navbar = () => {
   const [clicked, setClicked] = useState(false);
 
   const { user } = useAuthContext();
-  
+
   const { logout } = useLogout();
 
-  const handleClick = () => {
-    setClicked(!clicked);
+  const [activeLink, setActiveLink] = useState('/home');
+
+  const handleClick = (path) => {
+    setActiveLink(path);
   };
 
   const handleLogout = async () => {
@@ -28,9 +30,9 @@ const Navbar = () => {
   return (
     <div>
       <ul id="headbar">
-        <li>
-          <a href="www.google.com">FAQs </a>
-          <a href="www.google.com">Contact Us </a>
+        <li style={{ textDecoration: "none" }}>
+          <a href="#">FAQs </a>
+          <a href="#">Contact Us </a>
         </li>
         <li>
           <a>
@@ -87,26 +89,32 @@ const Navbar = () => {
         </a>
 
         <div>
-          <ul id="navbar" className={clicked ? "active" : ""}>
-            <li>
-              <a className="active" href="www.google.com">
-                Latest news{" "}
-              </a>
-            </li>
-            <li>
-              <a href="/Organization">Organization </a>
-            </li>
-            <li>
-              <a href="/Donation">Donation</a>
-            </li>
-            <li>
-              <a href="/AboutUs"> About Us </a>
-            </li>
-          </ul>
-        </div>
-        <div id="mobile" onClick={handleClick}>
-          <i id="bar" className={clicked ? "fas fa-times" : "fas fa-bars"}></i>
-        </div>
+      <ul id="navbar" >
+        <li onClick={() => handleClick('/home')}>
+          <a className={activeLink === '/home' ? "active" : ""} href="/home">
+            Latest news{" "}
+          </a>
+        </li>
+        <li onClick={() => handleClick('/Organization')}>
+          <a className={activeLink === '/Organization' ? "active" : ""} href="/Organization">
+            Organization
+          </a>
+        </li>
+        <li onClick={() => handleClick('/Donation')}>
+          <a className={activeLink === '/Donation' ? "active" : ""} href="/Donation">
+            Donation
+          </a>
+        </li>
+        <li onClick={() => handleClick('/AboutUs')}>
+          <a className={activeLink === '/AboutUs' ? "active" : ""} href="/AboutUs">
+            About Us
+          </a>
+        </li>
+      </ul>
+      <div id="mobile" onClick={handleClick}>
+        <i id="bar" className={clicked ? "fas fa-times" : "fas fa-bars"}></i>
+      </div>
+    </div>
       </nav>
     </div>
   );

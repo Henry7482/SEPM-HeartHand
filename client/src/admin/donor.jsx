@@ -1,12 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import Nav from './Nav';
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useSessionReset } from '../hooks/useSessionReset';
 
 function Donor({ Toggle }) {
   const [donors, setDonors] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const { user } = useAuthContext();
+  const { resetSession } = useSessionReset();
+
+
+  const getDonationStatus = async (donations) => {
+    console.log("Getting donation status");
+    const updatedDonors = [];
+  
+    for (let i = 0; i < donations.length; i++) {
+      const donor = donations[i];
+      // console.log("Donor:", donor);
+      try {
+        const response = await fetch("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/detail", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+          },
+          body: JSON.stringify({order_code: donor.order_code})
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          updatedDonors.push({...donor, shippingStatus: "Error"});
+        } else {
+          updatedDonors.push({...donor, shippingStatus: data.data.status});
+        }
+      } catch (error) {
+        console.log("Error fetching status:", error);
+        updatedDonors.push({...donor, shippingStatus: "Error"});
+      }
+      await new Promise(resolve => setTimeout(resolve, 1)); // Wait for 1ms
+    }
+  
+    // Replace the old donors array with the updated one
+    setDonors(updatedDonors);
+  };
+
 
   useEffect(() => {
     const fetchDonations = async () => {
@@ -24,11 +61,18 @@ function Donor({ Toggle }) {
             },
           }
         );
+
+        if (response.status === 401) {
+          resetSession();
+        }
+
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const jsonData = await response.json();
         setDonors(jsonData);
+        getDonationStatus(jsonData);
+        // console.log("Data from server:", JSON.stringify(jsonData));
         console.log("Data from server:", JSON.stringify(jsonData));
       } catch (err) {
         console.error("Error from server:", err.message);
@@ -64,13 +108,10 @@ function Donor({ Toggle }) {
               <th scope="col">#</th>
               <th scope="col">Name</th>
               <th scope="col">ProductName</th>
-              <th scope="col">ProductType</th>
-              <th scope="col">Quantity/Status</th>
+              <th scope="col">Quantity</th>
               <th scope="col">Organization</th>
               <th scope="col">Description</th>
               <th scope="col">Shipping Status</th>
-              <th scope="col">Product Image</th>
-              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -79,17 +120,10 @@ function Donor({ Toggle }) {
                 <th scope="row">{index + 1}</th>
                 <td>{donor.sender_name}</td>
                 <td>{donor.product_name}</td>
-                <td>{donor.product_category}</td>
                 <td>{donor.product_quantity}</td>
                 <td>{donor.organization_name}</td>
                 <td>{donor.description}</td>
                 <td>{donor.shippingStatus}</td>
-                <td>
-                  <img src={donor.imageUrl || Image} alt="Product" style={{ width: '50px', height: '50px', cursor: 'pointer' }} onClick={() => openModal(donor.imageUrl || Image)} />
-                </td>
-                <td>
-                  <button onClick={() => handleDelete(donor._id)} className="btn btn-danger">Delete</button>
-                </td>
               </tr>
             ))}
           </tbody>

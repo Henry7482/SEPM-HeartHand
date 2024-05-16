@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "./shipping.css";
+import { useAuthContext } from "../hooks/useAuthContext";
+import Header from "../header/header";
+import { Link } from "react-router-dom";
+import Footer from "../footer/footer";
+import { useSessionReset } from "../hooks/useSessionReset";
 
 const CheckoutPage = () => {
+  const { user } = useAuthContext();
+  const { resetSession } = useSessionReset();
   const [shifts, setShifts] = useState([]);
   const [selectedShift, setSelectedShift] = useState("default");
   const [districts, setDistricts] = useState([]);
   const [selectedSenderDistrict, setSelectedSenderDistricts] = useState(0);
-  const [selectedSenderProvince, setSelectedSenderProvince] =
-    useState("default");
+  const [selectedSenderProvince, setSelectedSenderProvince] = useState(0);
   const [selectedOrganizationDistrict, setSelectedOrganizationDistricts] =
     useState(0);
   const [selectedOrganizationProvince, setSelectedOrganizationProvince] =
-    useState("default");
+    useState(0);
   const [selectedSenderWards, setSelectedSenderWards] = useState(0);
   const [selectedOrganizationWards, setSelectedOrganizationWards] = useState(0);
 
@@ -25,19 +31,19 @@ const CheckoutPage = () => {
   const [organizationAddress, setorganizationAddress] = useState(null);
   const [senderwards, setSenderWards] = useState([]);
   const [organizationwards, setOrganizationWards] = useState([]);
-  const [totalmass, settotalmass] = useState(0);
+  const [totalmass, settotalmass] = useState("");
   const [length, setlength] = useState(null);
   const [wide, setwide] = useState(null);
   const [height, setheight] = useState(null);
   const [totalvalueofgoods, settotalvalueofgoods] = useState(null);
   const [productname, setproductname] = useState(null);
-  const [mass, setmass] = useState(0);
-  const [quantity, setquantity] = useState(0);
+  const [mass, setmass] = useState("");
+  const [quantity, setquantity] = useState("");
   const [provinces, setProvinces] = useState([]);
   const [fee, setFee] = useState(0);
   const [serviceId, setServiceId] = useState(null);
-  let minRequiredMass = mass * quantity;
-
+  let minRequiredMass = 0;
+  const [creatingOrder, setCreatingOrder] = useState(false);
 
   const handleDeliveryNote = (event) => {
     const note = event.target.value;
@@ -130,12 +136,12 @@ const CheckoutPage = () => {
         }
       );
 
+      const data = await response.json();
+
       if (!response.ok) {
-        console.error("Failed to fetch fee:", response);
+        console.error("Failed to fetch fee:", data);
         return null;
       }
-
-      const data = await response.json();
       setFee(data.data.total);
     } catch (error) {
       console.error("Error fetching fee:", error);
@@ -143,6 +149,7 @@ const CheckoutPage = () => {
   };
 
   const handleSubmit = (event) => {
+    setCreatingOrder(true);
     event.preventDefault();
     createOrder();
   };
@@ -154,7 +161,7 @@ const CheckoutPage = () => {
         name: senderName,
         phone: senderPhoneNumber,
         address: senderAddress,
-        ward: convertWardIdToName(selectedSenderWards),
+        ward: convertWardIdToName(selectedSenderWards, "sender"),
         district: convertDistrictIdToName(selectedSenderDistrict),
         province: convertProvinceIdToName(selectedSenderProvince),
       },
@@ -166,7 +173,7 @@ const CheckoutPage = () => {
         district_id: Number(selectedOrganizationDistrict),
       },
       package: {
-        weight: Number(mass),
+        weight: Number(totalmass),
         length: Number(length),
         width: Number(wide),
         height: Number(height),
@@ -182,35 +189,62 @@ const CheckoutPage = () => {
           weight: Number(mass),
           quantity: Number(quantity),
           price: Number(totalvalueofgoods),
-          category: {},
+          category: {
+            level1: "donation",
+          },
         },
       ],
     };
 
     console.log("Form data:", JSON.stringify(formData));
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      alert("Access token not found. Please login again.");
+      setCreatingOrder(false);
+      return;
+    }
 
     try {
       const response = await fetch(
-        "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create",
+        "https://hearthand.onrender.com/api/v1/delivery/create",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            ShopId: 5047918,
-            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify(formData),
         }
       );
       const data = await response.json();
+
+      if (response.status === 401) {
+        resetSession();
+      }
+
       if (!response.ok) {
-        console.error("Failed to create order:", data);
+        console.error(
+          "Failed to create order. Please check all information:",
+          data
+        );
+        alert(
+          "Failed to create order. Please check all information ",
+          data.message
+        );
+        setCreatingOrder(false);
         return null;
       }
       console.log("Order created:", data);
       alert("Order created successfully");
+      setCreatingOrder(false);
+      window.location.href = "/Donation";
     } catch (error) {
       console.error("Error creating order:", error);
+      alert(
+        "Failed to create order. Please check all information ",
+        error.message
+      );
+      setCreatingOrder(false);
     }
   };
 
@@ -221,18 +255,22 @@ const CheckoutPage = () => {
   };
 
   const fetchShifts = async () => {
-    const response = await fetch(
-      "https://online-gateway.ghn.vn/shiip/public-api/v2/shift/date",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
-        },
-      }
-    );
-    const data = await response.json();
-    setShifts(data.data);
+    try {
+      const response = await fetch(
+        "https://online-gateway.ghn.vn/shiip/public-api/v2/shift/date",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+          },
+        }
+      );
+      const data = await response.json();
+      setShifts(data.data);
+    } catch (e) {
+      console.error("Error fetching shifts:", e);
+    }
   };
 
   useEffect(() => {
@@ -244,7 +282,7 @@ const CheckoutPage = () => {
     calculateCost();
     fetchServiceId();
     minRequiredMass = mass * quantity;
-    console.log("minmass",  minRequiredMass);
+    // console.log("minmass", minRequiredMass);
     checkTotalMass();
     // console.log("Selected Sender district Name:", convertDistrictIdToName(selectedSenderDistricts));
     // console.log(
@@ -337,7 +375,7 @@ const CheckoutPage = () => {
   };
 
   const convertDistrictIdToName = (districtId) => {
-    const district = districts.find((item) => item.DistrictID == districtId);
+    const district = districts.find((item) => item.DistrictID === districtId);
     if (!district) {
       return "No district found";
     }
@@ -369,19 +407,19 @@ const CheckoutPage = () => {
   };
 
   const displayProvinces = () => {
-    if (!provinces || provinces.length === 0) {
-      return <option value={0}>No district found</option>;
-    } else {
+    if (Array.isArray(provinces) && provinces.length > 0) {
       return provinces.map((province) => (
         <option key={province.ProvinceID} value={province.ProvinceID}>
           {province.ProvinceName}
         </option>
       ));
+    } else {
+      return <option value={0}>No province found</option>;
     }
   };
 
   const convertProvinceIdToName = (provinceId) => {
-    const province = provinces.find((item) => item.ProvinceID == provinceId);
+    const province = provinces.find((item) => item.ProvinceID === provinceId);
     if (!province) {
       return "No province found";
     }
@@ -420,62 +458,70 @@ const CheckoutPage = () => {
   };
 
   const fetchSenderWards = async () => {
-    const response = await fetch(
-      "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
-        },
-        body: JSON.stringify({
-          district_id: Number(selectedSenderDistrict),
-        }),
-      }
-    );
-    const data = await response.json();
-    setSenderWards(data.data);
+    try {
+      const response = await fetch(
+        "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+          },
+          body: JSON.stringify({
+            district_id: Number(selectedSenderDistrict),
+          }),
+        }
+      );
+      const data = await response.json();
+      setSenderWards(data.data);
+    } catch {
+      console.log("Error fetching sender wards");
+    }
   };
   const fetchOrganizationWards = async () => {
-    const response = await fetch(
-      "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
-        },
-        body: JSON.stringify({
-          district_id: Number(selectedOrganizationDistrict),
-        }),
-      }
-    );
+    try {
+      const response = await fetch(
+        "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+          },
+          body: JSON.stringify({
+            district_id: Number(selectedOrganizationDistrict),
+          }),
+        }
+      );
 
-    if (!response.ok) {
-      console.log("Failed to fetch ward ID:", response);
-      return null;
+      if (!response.ok) {
+        console.log("Failed to fetch ward ID:", response);
+        return null;
+      }
+      const data = await response.json();
+      // console.log("Org Wards", data.data);
+      setOrganizationWards(data.data);
+    } catch (error) {
+      console.error("Error fetching organization wards:", error);
     }
-    const data = await response.json();
-    // console.log("Org Wards", data.data);
-    setOrganizationWards(data.data);
   };
 
   const displayWards = (wards) => {
-    if (Array.isArray(wards)) {
-      return wards.map((ward, index) => (
-        <option key={index} value={ward.WardCode}>
+    if (Array.isArray(wards) && wards.length > 0) {
+      return wards.map((ward) => (
+        <option key={ward.WardCode} value={ward.WardCode}>
           {ward.WardName}
         </option>
       ));
     } else {
-      return <h1>Loading...</h1>;
+      return <option value={0}>No ward found</option>;
     }
   };
 
   const convertWardIdToName = (wardId, role) => {
     try {
       if (role === "sender") {
-        const senderWard = senderwards.find((item) => item.WardCode == wardId);
+        const senderWard = senderwards.find((item) => item.WardCode === wardId);
         if (senderWard) {
           return senderWard.WardName;
         } else {
@@ -484,7 +530,7 @@ const CheckoutPage = () => {
       }
       if (role === "organization") {
         const organizationWard = organizationwards.find(
-          (item) => item.WardCode == wardId
+          (item) => item.WardCode === wardId
         );
         if (organizationWard) {
           return organizationWard.WardName;
@@ -514,7 +560,8 @@ const CheckoutPage = () => {
     settotalmass(mass);
     // console.log("Total mass:", mass);
   };
-  const handleQuantityChange = (event) => setquantity(Number(event.target.value));
+  const handleQuantityChange = (event) =>
+    setquantity(Number(event.target.value));
   const handleMassChange = (event) => setmass(Number(event.target.value));
 
   const checkTotalMass = () => {
@@ -523,426 +570,420 @@ const CheckoutPage = () => {
       settotalmass(minRequiredMass);
       return;
     }
-  }
+  };
 
-  return (
-    <>
-      <nav className="bg-white">
-        <div className="d-flex align-items-center">
-          <div className="logo">
-            <a href="#" className="text-uppercase">
-              ship
-            </a>
-          </div>
-          <div className="right-align" style={{ marginLeft: "1180px" }}>
-            <a
-              href="#"
-              className="text-uppercase,h5 font-weight-bold text-primary"
-            >
-              Back to shipping
-            </a>
-          </div>
-        </div>
-      </nav>
-      <header>
-        <div className="d-flex justify-content-center align-items-center pb-3">
-          <div className="px-sm-5 px-2 active">
-            SHIPPING CART
-            <span className="fas fa-check"></span>
-          </div>
-          <div className="px-sm-5 px-2">ORDER</div>
-          <div className="px-sm-5 px-2">FINISH</div>
-        </div>
-        <div className="progress">
-          <div
-            className="progress-bar bg-success"
-            role="progressbar"
-            aria-valuenow="25"
-            aria-valuemin="0"
-            aria-valuemax="100"
-          ></div>
-        </div>
-      </header>
-      <div className="wrapper">
-        <form onSubmit={handleSubmit}>
-          <div className="h5 large">Shipping Cart</div>
-          <div className="row">
-            <div className="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1">
-              <div className="mobile h5">Shipping Address</div>
-              <div id="details" className="bg-white rounded pb-5">
-                <div className="h5 font-weight-bold text-primary">Sending</div>
-                <div className="row">
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label> Your Name</label>
-                      <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                        <input
-                          type="text"
-                          defaultValue=""
-                          value={senderName}
-                          onChange={(e) => setSenderName(e.target.value)}
-                        />
+  const checkAuth = () => {
+    if (user) {
+      return (
+        <>
+          <Header />
+          <div className="wrapper">
+            <form onSubmit={handleSubmit}>
+              <div className="h2 large my-3">Donation Form</div>
+              <div className="row">
+                <div className="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1">
+                  <div className="mobile h5">Shipping Address</div>
+                  <div id="details" className="bg-white rounded pb-5">
+                    <div className="h5 font-weight-bold text-primary">
+                      Sending
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label> Your Name</label>
+                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input
+                              type="text"
+                              defaultValue=""
+                              value={senderName}
+                              onChange={(e) => setSenderName(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Phone Number</label>
+                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input
+                              type="text"
+                              defaultValue=""
+                              value={senderPhoneNumber}
+                              onChange={(e) =>
+                                setSenderPhoneNumber(e.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Address</label>
+                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input
+                              type="text"
+                              defaultValue=""
+                              value={senderAddress}
+                              onChange={(e) => setSenderAddress(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Province</label>
+                          <select
+                            name="province"
+                            id="province"
+                            value={selectedSenderProvince}
+                            onChange={handleSelectSenderProvince}
+                          >
+                            <option disabled selected value={0}>
+                              Choose a province
+                            </option>
+                            {displayProvinces(provinces)}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>District</label>
+                          <select
+                            name="district"
+                            id="district"
+                            value={selectedSenderDistrict}
+                            onChange={handleSelectSenderDistricts}
+                          >
+                            <option disabled selected value={0}>
+                              Choose a district
+                            </option>
+                            {displaySenderDistricts(districts)}
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Ward</label>
+                          <select
+                            name="province"
+                            id="province"
+                            value={selectedSenderWards}
+                            onChange={handleSelectSenderWards}
+                          >
+                            <option disabled selected value={0}>
+                              Choose a ward
+                            </option>
+                            {displayWards(senderwards)}
+                          </select>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label>Phone Number</label>
-                      <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                        <input
-                          type="text"
-                          defaultValue=""
-                          value={senderPhoneNumber}
-                          onChange={(e) => setSenderPhoneNumber(e.target.value)}
-                        />
+                    <label>Shipping</label>
+                    <select
+                      name="shift"
+                      id="shift"
+                      value={selectedShift}
+                      onChange={handleSelectShift}
+                    >
+                      <option disabled value="default">
+                        Choose a shipping shift
+                      </option>
+                      {displayShifts(shifts)}
+                    </select>
+                    <div
+                      className="h5 font-weight-bold text-primary"
+                      style={{
+                        marginTop: "40px",
+                        marginBottom: "10px",
+                        top: "auto",
+                      }}
+                    >
+                      Organization
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Organization's Name</label>
+                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input
+                              type="text"
+                              defaultValue=""
+                              value={organizationName}
+                              onChange={(e) =>
+                                setorganizationName(e.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Phone Number</label>
+                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input
+                              type="text"
+                              defaultValue=""
+                              value={organizationPhoneNumber}
+                              onChange={(e) =>
+                                setorganizationPhoneNumber(e.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Address</label>
+                          <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input
+                              type="text"
+                              defaultValue=""
+                              value={organizationAddress}
+                              onChange={(e) =>
+                                setorganizationAddress(e.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Province</label>
+                          <select
+                            name="province"
+                            id="province"
+                            value={selectedOrganizationProvince}
+                            onChange={handleSelectOrganizationProvince}
+                          >
+                            <option disabled selected value={0}>
+                              Choose a province
+                            </option>
+                            {displayProvinces(provinces)}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>District</label>
+                          <select
+                            name="country"
+                            id="country"
+                            value={selectedOrganizationDistrict}
+                            onChange={handleSelectOrganizationDistricts}
+                          >
+                            <option disabled selected value={0}>
+                              Choose a district
+                            </option>
+                            {displayOrganizationDistricts(districts)}
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label>Ward</label>
+                          <select
+                            name="province"
+                            id="province"
+                            value={selectedOrganizationWards}
+                            onChange={handleSelectOrganizationWards}
+                          >
+                            <option disabled selected value={0}>
+                              Choose a ward
+                            </option>
+                            {displayWards(organizationwards)}
+                          </select>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label>Address</label>
-                      <div className="d-flex jusify-content-start align-items-center rounded p-2">
-                        <input
-                          type="text"
-                          defaultValue=""
-                          value={senderAddress}
-                          onChange={(e) => setSenderAddress(e.target.value)}
-                        />
+                    <div
+                      className="rounded py-2 px-3"
+                      id="form-group"
+                      style={{ backgroundColor: "#f0f0f0" }}
+                    >
+                      <div className="h5 text-primary">
+                        <b>Donation content</b>
                       </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label>District</label>
-                      <select
-                        name="district"
-                        id="district"
-                        value={selectedSenderDistrict}
-                        onChange={handleSelectSenderDistricts}
-                      >
-                        <option disabled selected value={0}>
-                          Choose a district
-                        </option>
-                        {displaySenderDistricts(districts)}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label>Province</label>
-                      <select
-                        name="province"
-                        id="province"
-                        value={selectedSenderProvince}
-                        onChange={handleSelectSenderProvince}
-                      >
-                        <option disabled selected value={0}>
-                          Choose a province
-                        </option>
-                        {displayProvinces(provinces)}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label>Ward</label>
-                      <select
-                        name="province"
-                        id="province"
-                        value={selectedSenderWards}
-                        onChange={handleSelectSenderWards}
-                      >
-                        <option disabled selected value>
-                          Choose a ward
-                        </option>
-                        {displayWards(senderwards)}
-                      </select>
+                      <textarea
+                        className="form-control input-lg"
+                        defaultValue=""
+                        value={donationContent}
+                        onChange={handleDonationContent}
+                        style={{
+                          backgroundColor: "#f0f0f0",
+                          border: "none",
+                          height: "5rem",
+                          overflow: "auto",
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
-                <label>Shipping</label>
-                <select
-                  name="shift"
-                  id="shift"
-                  value={selectedShift}
-                  onChange={handleSelectShift}
-                >
-                  <option disabled value="default">
-                    Choose a shipping shift
-                  </option>
-                  {displayShifts(shifts)}
-                </select>
-                <div
-                  className="h5 font-weight-bold text-primary"
-                  style={{
-                    marginTop: "40px",
-                    marginBottom: "10px",
-                    top: "auto",
-                  }}
-                >
-                  Organization
-                </div>
-                <div className="row">
-                  <div className="col-lg-6">
+                <div className="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1 pt-lg-0 pt-3">
+                  <div className="text-muted pt-3" id="mobile">
+                    <span className="fas fa-lock"></span>
+                    Your information is save
+                  </div>
+                  <div id="address" className="bg-light rounded">
+                    <div
+                      className="h5 font-weight-bold text-primary"
+                      style={{
+                        marginTop: "40px",
+                        marginBottom: "10px",
+                        top: "auto",
+                      }}
+                    >
+                      Package Informations
+                    </div>
                     <div className="form-group">
-                      <label>Organization's Name</label>
-                      <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                      <label className="text-muted">Total Mass</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={totalmass}
+                        onChange={handleSetTotalMass}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="text-muted">Length</label>
+                      <input
+                        type="text"
+                        defaultValue=""
+                        className="form-control"
+                        value={length}
+                        onChange={(e) => setlength(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="text-muted">Wide</label>
+                      <input
+                        type="text"
+                        defaultValue=""
+                        className="form-control"
+                        value={wide}
+                        onChange={(e) => setwide(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="text-muted">Height</label>
+                      <input
+                        type="text"
+                        defaultValue=""
+                        className="form-control"
+                        value={height}
+                        onChange={(e) => setheight(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="text-muted">Total value of goods</label>
+                      <input
+                        type="text"
+                        defaultValue=""
+                        className="form-control"
+                        value={totalvalueofgoods}
+                        onChange={(e) => settotalvalueofgoods(e.target.value)}
+                      />
+                    </div>
+                    <div id="address" className="bg-light rounded mt-3">
+                      <div className="h5 font-weight-bold text-primary">
+                        Product
+                      </div>
+                      <div className="form-group">
+                        <label className="text-muted">Enter product name</label>
                         <input
-                          type="text"
+                          type="productname"
                           defaultValue=""
-                          value={organizationName}
-                          onChange={(e) => setorganizationName(e.target.value)}
+                          className="form-control"
+                          value={productname}
+                          onChange={(e) => setproductname(e.target.value)}
                         />
                       </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label>Phone Number</label>
-                      <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                      <div className="form-group">
+                        <label className="text-muted">Mass</label>
                         <input
-                          type="text"
+                          type="number"
                           defaultValue=""
-                          value={organizationPhoneNumber}
-                          onChange={(e) =>
-                            setorganizationPhoneNumber(e.target.value)
-                          }
+                          className="form-control"
+                          value={mass}
+                          onChange={handleMassChange}
                         />
                       </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label>Address</label>
-                      <div className="d-flex jusify-content-start align-items-center rounded p-2">
+                      <div className="form-group">
+                        <label className="text-muted">Quantity</label>
                         <input
-                          type="text"
+                          type="number"
                           defaultValue=""
-                          value={organizationAddress}
-                          onChange={(e) =>
-                            setorganizationAddress(e.target.value)
-                          }
+                          className="form-control"
+                          value={quantity}
+                          onChange={handleQuantityChange}
                         />
                       </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label>District</label>
-                      <select
-                        name="country"
-                        id="country"
-                        value={selectedOrganizationDistrict}
-                        onChange={handleSelectOrganizationDistricts}
+                      <div
+                        className="rounded py-2 px-3"
+                        id="form-group"
+                        style={{ backgroundColor: "#f0f0f0" }}
                       >
-                        <option disabled selected value={0}>
-                          Choose a district
-                        </option>
-                        {displayOrganizationDistricts(districts)}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label>Province</label>
-                      <select
-                        name="province"
-                        id="province"
-                        value={selectedOrganizationProvince}
-                        onChange={handleSelectOrganizationProvince}
+                        <div className="h5 text-primary">
+                          <b>Notes for delivery</b>
+                        </div>
+                        <textarea
+                          className="form-control input-lg"
+                          defaultValue=""
+                          value={deliveryNote}
+                          onChange={handleDeliveryNote}
+                          style={{
+                            backgroundColor: "#f0f0f0",
+                            border: "none",
+                            height: "5rem",
+                            overflow: "auto",
+                          }}
+                        />
+                      </div>
+                      <div
+                        className="h5 font-weight-bold text-primary"
+                        style={{
+                          marginTop: "40px",
+                          marginBottom: "10px",
+                          top: "auto",
+                        }}
                       >
-                        <option disabled selected value={0}>
-                          Choose a province
-                        </option>
-                        {displayProvinces(provinces)}
-                      </select>
+                        Total cost
+                      </div>
+                      <h4>{fee}đ</h4>
                     </div>
+                    <button
+                      type="submit"
+                      class="btn btn-success"
+                      disabled={creatingOrder}
+                    >
+                      Create Order
+                    </button>
                   </div>
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label>Ward</label>
-                      <select
-                        name="province"
-                        id="province"
-                        value={selectedOrganizationWards}
-                        onChange={handleSelectOrganizationWards}
-                      >
-                        <option disabled selected value>
-                          Choose a ward
-                        </option>
-                        {displayWards(organizationwards)}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="rounded py-2 px-3"
-                  id="register"
-                  style={{ backgroundColor: "#f0f0f0" }}
-                >
-                  <a href="#">
-                    <b>Donation content</b>
-                  </a>
-                  <input
-                    type="Type the note here"
-                    defaultValue=""
-                    value={donationContent}
-                    onChange={handleDonationContent}
-                    style={{ backgroundColor: "#f0f0f0", border: "none" }}
-                  />
                 </div>
               </div>
-            </div>
-            <div className="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1 pt-lg-0 pt-3">
-              <div className="text-muted pt-3" id="mobile">
+              <div className="text-muted">
                 <span className="fas fa-lock"></span>
                 Your information is save
               </div>
-              <div id="address" className="bg-light rounded mt-3">
-                <div
-                  className="h5 font-weight-bold text-primary"
-                  style={{
-                    marginTop: "40px",
-                    marginBottom: "10px",
-                    top: "auto",
-                  }}
-                >
-                  Package Informations
-                </div>
-                <div className="form-group">
-                  <label className="text-muted">Total Mass</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    value={totalmass}
-                    onChange={handleSetTotalMass}
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="text-muted">Length</label>
-                  <input
-                    type="text"
-                    defaultValue=""
-                    className="form-control"
-                    value={length}
-                    onChange={(e) => setlength(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="text-muted">Wide</label>
-                  <input
-                    type="text"
-                    defaultValue=""
-                    className="form-control"
-                    value={wide}
-                    onChange={(e) => setwide(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="text-muted">Height</label>
-                  <input
-                    type="text"
-                    defaultValue=""
-                    className="form-control"
-                    value={height}
-                    onChange={(e) => setheight(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="text-muted">Total value of goods</label>
-                  <input
-                    type="text"
-                    defaultValue=""
-                    className="form-control"
-                    value={totalvalueofgoods}
-                    onChange={(e) => settotalvalueofgoods(e.target.value)}
-                  />
-                </div>
-                <div id="address" className="bg-light rounded mt-3">
-                  <div className="h5 font-weight-bold text-primary">
-                    Product
-                  </div>
-                  <div className="form-group">
-                    <label className="text-muted">Enter product name</label>
-                    <input
-                      type="productname"
-                      defaultValue=""
-                      className="form-control"
-                      value={productname}
-                      onChange={(e) => setproductname(e.target.value)}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="text-muted">Mass</label>
-                      <input
-                        type="number"
-                        defaultValue=""
-                        className="form-control"
-                        value={mass}
-                        onChange={handleMassChange}
-                      />
-                  </div>
-                  <div className="form-group">
-                    <label className="text-muted">Quantity</label>
-                    <input
-                      type="number"
-                      defaultValue=""
-                      className="form-control"
-                      value={quantity}
-                      onChange={handleQuantityChange}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      marginTop: "40px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    <div
-                      className="rounded py-2 px-3"
-                      id="register"
-                      style={{ backgroundColor: "#f0f0f0" }}
-                    >
-                      <a href="#">
-                        <b>Note for delivery</b>
-                      </a>
-                      <input
-                        type="Type the note here"
-                        defaultValue=""
-                        value={deliveryNote}
-                        onChange={handleDeliveryNote}
-                        style={{ backgroundColor: "#f0f0f0", border: "none" }}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className="h5 font-weight-bold text-primary"
-                    style={{
-                      marginTop: "40px",
-                      marginBottom: "10px",
-                      top: "auto",
-                    }}
-                  >
-                    Total cost
-                  </div>
-                  <h4>{fee}đ</h4>
-                </div>
-                <button type="submit" class="btn btn-success">
-                  Create Order
-                </button>
-              </div>
-            </div>
+            </form>
           </div>
-          <div className="text-muted">
-            <span className="fas fa-lock"></span>
-            Your information is save
-          </div>
-        </form>
-      </div>
-    </>
-  );
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Header />
+          <Link to="/DonorLogin" style={{ textDecoration: "none" }}>
+            <h1>Please login before accessing this page.</h1>
+          </Link>
+          <Footer />
+        </>
+      );
+    }
+  };
+
+  return <>{checkAuth()}</>;
 };
 
 export default CheckoutPage;
