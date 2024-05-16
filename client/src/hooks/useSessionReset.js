@@ -6,7 +6,7 @@ export const useSessionReset = () => {
             localStorage.removeItem("user");
             localStorage.removeItem("accessToken");
         }
-        if (user.role === "admin") {
+        if (user.role == "admin") {
             window.location.href = "/AdminLogin";
         } else {
             window.location.href = "/DonorLogin";
