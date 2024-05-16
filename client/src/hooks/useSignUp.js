@@ -37,7 +37,7 @@ export const useSignUp = () => {
       setIsLoading(false);
 
       // Redirect user to dashboard
-      window.location.href = "/homeTest";
+      window.location.href = "/home";
     }
   };
 

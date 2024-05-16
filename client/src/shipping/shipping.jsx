@@ -21,8 +21,8 @@ const CheckoutPage = () => {
   const [selectedSenderWards, setSelectedSenderWards] = useState(0);
   const [selectedOrganizationWards, setSelectedOrganizationWards] = useState(0);
 
-  const [deliveryNote, setDeliveryNote] = useState(null);
-  const [donationContent, setDonationContent] = useState(null);
+  const [deliveryNote, setDeliveryNote] = useState("");
+  const [donationContent, setDonationContent] = useState("");
   const [senderName, setSenderName] = useState(null);
   const [senderPhoneNumber, setSenderPhoneNumber] = useState(null);
   const [senderAddress, setSenderAddress] = useState(null);
@@ -216,16 +216,17 @@ const CheckoutPage = () => {
           body: JSON.stringify(formData),
         }
       );
-      const data = await response.json();
 
       if (response.status === 401) {
         resetSession();
       }
 
+      const data = await response.json();
+
       if (!response.ok) {
         console.error(
           "Failed to create order. Please check all information:",
-          data
+          data.message
         );
         alert(
           "Failed to create order. Please check all information ",

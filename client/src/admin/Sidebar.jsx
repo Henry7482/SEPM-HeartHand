@@ -8,7 +8,6 @@ function Sidebar({ selectPage }) {
   const navigate = useNavigate(); // Instantiate navigate function
   const { logout } = useLogout(); // Get the logout function
   const { user } = useAuthContext(); // Get the user context
-
   const [activeItem, setActiveItem] = useState('Dashboard'); // Default active page
 
   const handleLogout = async () => {

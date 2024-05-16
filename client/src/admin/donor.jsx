@@ -66,10 +66,12 @@ function Donor({ Toggle }) {
           resetSession();
         }
 
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
         const jsonData = await response.json();
+
+        if (!response.ok) {
+          console.log("Failed to fetch data from server");
+          return;
+        }
         setDonors(jsonData);
         getDonationStatus(jsonData);
         // console.log("Data from server:", JSON.stringify(jsonData));

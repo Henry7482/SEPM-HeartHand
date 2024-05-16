@@ -52,12 +52,13 @@ function Organization({ Toggle }) {
           resetSession();
         }
 
+        const jsonData = await response.json();
 
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          console.log("Network response was not ok", jsonData.message);
+          return;
         }
 
-        const jsonData = await response.json();
         setOrganizations(jsonData);
         console.log(
           "Organizations Data from server:",
@@ -115,10 +116,12 @@ function Organization({ Toggle }) {
           body: JSON.stringify(newOrganization),
         }
       );
-      const jsonData = await response.json();
       if (response.status === 401) {
         resetSession();
       }
+
+      const jsonData = await response.json();
+
       if (!response.ok) {
         console.log("Error from server:", jsonData);
         setAddingOrganization(false);
@@ -153,12 +156,13 @@ function Organization({ Toggle }) {
             },
           }
         );
-        const jsonData = await response.json();
 
         if (response.status === 401) {
           resetSession();
         }
         
+        const jsonData = await response.json();
+
         if (!response.ok) {
           console.log("Error from server:", jsonData);
           setDeleteClicked(false);

@@ -29,14 +29,16 @@ function Home({ Toggle }) {
             },
           }
         );
-        const jsonData = await response.json();
 
         if (response.status === 401) {
           resetSession();
         }
 
+        const jsonData = await response.json();
+
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          console.log("Failed to fetch data from server");
+          return;
         }
         setGeneratedBlogs(jsonData);
         console.log(
@@ -97,11 +99,12 @@ function Home({ Toggle }) {
           }),
         }
       );
-      const jsonData = await response.json();
 
       if (response.status === 401) {
         resetSession();
       }
+  
+      const jsonData = await response.json();
     
       if (!response.ok) {
         console.log("Network response was not ok", jsonData.message);
@@ -134,11 +137,12 @@ function Home({ Toggle }) {
           },
         }
       );
-      const jsonData = await response.json();
 
       if (response.status === 401) {
         resetSession();
       }
+
+      const jsonData = await response.json();
       
       if (!response.ok) {
         console.log("Network response was not ok", jsonData.message);
