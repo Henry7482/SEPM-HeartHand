@@ -173,8 +173,6 @@ function Donation() {
             className="container"
             style={{ width: "60%", marginTop: "100px" }}
           >
-            <ul className="nav nav-tabs" id="myTab" role="tablist">
-              <li className="nav-item" role="presentation">
                 <button
                   className="nav-link active btn btn-outline-warning"
                   id="your-donate-tab"
@@ -185,7 +183,6 @@ function Donation() {
                   aria-controls="your-donate"
                   aria-selected="false"
                   style={{
-                    width: "100vh",
                     color: "black",
                     fontFamily: "Arial",
                     height: "7vh",
@@ -195,8 +192,6 @@ function Donation() {
                 >
                   YOUR DONATION
                 </button>
-              </li>
-            </ul>
             <div className="tab-content" id="myTabContent">
               <div
                 className="tab-pane fade show active"

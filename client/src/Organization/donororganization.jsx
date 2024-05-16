@@ -122,7 +122,7 @@ function Organization() {
           <p>
             Through corporate-giving programmes, individual companies can make a
             vital contribution to fighting hunger. Corporate donations of cash,
-            product or services can help free up scarce resources to help WFP
+            product or services can help free up scarce resources to help HeartHand
             feed more hungry people. In turn, corporations engage their
             employees, customers and other stakeholders in a vital, life-saving
             mission.
@@ -131,7 +131,7 @@ function Organization() {
             <p>
               Recent donations from private and not-for-profit entities have
               included frontline support to several emergency operations;
-              expertise to enhance WFP's logistics and fundraising capacities;
+              expertise to enhance HeartHand's logistics and fundraising capacities;
               and critical cash for school feeding.
             </p>
           </div>
