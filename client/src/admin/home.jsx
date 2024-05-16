@@ -92,6 +92,7 @@ function Home({ Toggle }) {
         "https://hearthand.onrender.com/api/v1/blogs",
         {
           method: "POST",
+          mode: "no-cors", // Set mode to 'no-cors'
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
@@ -103,9 +104,9 @@ function Home({ Toggle }) {
       if (response.status === 401) {
         resetSession();
       }
-  
-      const jsonData = await response.json();
-    
+
+      const jsonData = await response.json(); // Note: Limited data access with 'no-cors' mode
+
       if (!response.ok) {
         console.log("Network response was not ok", jsonData.message);
         return;
@@ -143,7 +144,7 @@ function Home({ Toggle }) {
       }
 
       const jsonData = await response.json();
-      
+
       if (!response.ok) {
         console.log("Network response was not ok", jsonData.message);
         setDeleteClicked(false);
@@ -155,7 +156,6 @@ function Home({ Toggle }) {
       );
       alert("Blog deleted successfully");
       setDeleteClicked(false);
-
     } catch (err) {
       console.error("Error from server:", err.message);
       alert("Error in deleting blog ", err.message);
@@ -246,7 +246,11 @@ function Home({ Toggle }) {
       <Nav Toggle={Toggle} />
       <div className="col-12">
         <div className="text-center mt-3">
-          <button className="btn btn-primary" onClick={handleGenerateBlogs} disabled={generating}>
+          <button
+            className="btn btn-primary"
+            onClick={handleGenerateBlogs}
+            disabled={generating}
+          >
             Generate new blogs
           </button>
           {generating && (
