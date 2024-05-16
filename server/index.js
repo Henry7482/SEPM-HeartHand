@@ -20,10 +20,25 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const corsOptions = {
+  origin: 'https://sepm-heart-hand.vercel.app', // Your frontend application URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Enable credentials (cookies, authorization headers, etc.)
+  optionsSuccessStatus: 204 // Some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+
+
+
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser());
+
+// Handle preflight requests for all routes
+app.options('*', cors(corsOptions));
+app.options('/api/v1/blogs', cors(corsOptions)); // Enable pre-flight for this route
+
 
 // App Routes
 app.get("/api/v1/", (req, res) => {
