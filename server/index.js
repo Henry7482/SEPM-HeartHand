@@ -25,8 +25,12 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
-app.use(cors());
-app.use(cookieParser());
+app.use(cors({
+  origin: '*', // Replace with your frontend URL
+  methods: 'GET,POST,PUT,DELETE',
+  allowedHeaders: 'Content-Type,Authorization',
+  credentials: true // Allow credentials (cookies, authorization headers, etc.)
+}));app.use(cookieParser());
 
 // Allow preflight requests for all routes
 app.options('*', cors());
