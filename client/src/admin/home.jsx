@@ -96,7 +96,6 @@ function Home({ Toggle }) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-          credentials: 'include', // Ensure credentials are included in the request
           body: formData,
         }
       );
