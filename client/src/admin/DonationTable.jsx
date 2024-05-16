@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useSessionReset } from '../hooks/useSessionReset';
 
 function DonationTable() {
   const [donors, setDonors] = useState([]);
   const { user } = useAuthContext();
+  const { resetSession } = useSessionReset();
 
   const getDonationStatus = async (donations) => {
     console.log("Getting donation status");
@@ -54,6 +56,11 @@ function DonationTable() {
             },
           }
         );
+
+        if (response.status === 401) {
+          resetSession();
+        }
+
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

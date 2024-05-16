@@ -1,49 +1,58 @@
-import React, {useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Header from '../header/header.jsx';
-import Footer from '../footer/footer.jsx';
+import React, { useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Header from "../header/header.jsx";
+import Footer from "../footer/footer.jsx";
 import Donate from "../assets/donate.jpg";
 import Children from "../assets/children.jpg";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Link } from "react-router-dom";
-
+import { useSessionReset } from "../hooks/useSessionReset";
 function Donation() {
   const [donations, setDonations] = useState([]);
   const { user } = useAuthContext();
+  const [isDeleting, setIsDeleting] = useState(true);
+  const { resetSession } = useSessionReset();
 
   const getDonationStatus = async (donations) => {
     console.log("Getting donation status");
     const updatedDonors = [];
-  
+
     for (let i = 0; i < donations.length; i++) {
       const donor = donations[i];
       // console.log("Donor:", donor);
       try {
-        const response = await fetch("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/detail", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
-          },
-          body: JSON.stringify({order_code: donor.order_code})
-        });
+        const response = await fetch(
+          "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/detail",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+            },
+            body: JSON.stringify({ order_code: donor.order_code }),
+          }
+        );
         const data = await response.json();
+
+        if (response.status === 401) {
+          resetSession();
+        }
+
         if (!response.ok) {
-          updatedDonors.push({...donor, shippingStatus: "Error"});
+          updatedDonors.push({ ...donor, shippingStatus: "Error" });
         } else {
-          updatedDonors.push({...donor, shippingStatus: data.data.status});
+          updatedDonors.push({ ...donor, shippingStatus: data.data.status });
         }
       } catch (error) {
         console.log("Error fetching status:", error);
-        updatedDonors.push({...donor, shippingStatus: "Error"});
+        updatedDonors.push({ ...donor, shippingStatus: "Error" });
       }
-      await new Promise(resolve => setTimeout(resolve, 1)); // Wait for 1ms
+      await new Promise((resolve) => setTimeout(resolve, 1)); // Wait for 1ms
     }
-  
+
     // Replace the old donors array with the updated one
     setDonations(updatedDonors);
   };
-
 
   useEffect(() => {
     const fetchUserDonations = async () => {
@@ -61,6 +70,11 @@ function Donation() {
             },
           }
         );
+
+        if (response.status === 401) {
+          resetSession();
+        }
+
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -76,68 +90,173 @@ function Donation() {
     if (user) {
       fetchUserDonations();
     }
-  }, [user]);
-  
-  
+  }, [user, isDeleting]);
 
-  return (
-    <>
-      <Header />
-      <div className='container-fluid position-relative'>
-        {/* Image background */}
-        <img src={Donate} className="img-fluid" alt="Donate" style={{ width: "100%", height: "60vh" }} />
-        <Link to="/shipping">
-        <div className="card text-bg position-absolute" style={{ top: "100%", left: "20%", transform: "translate(-50%, -50%)", maxWidth: "30rem", zIndex: "1" }}>
-          <div className="bg-black p-2 text-white" style={{ fontSize: "40px", fontStyle: "italic" }}>DONATE NOW</div>
-          <div className="bg-black p-2 text-white" style={{ opacity: "0.7" }}>
-            <p className="card-text" style={{ fontSize: "17px", fontStyle: "italic" }}>Every donation provides nutritious food and items for children and families.</p>
+  const handleDelete = (order_code) => async () => {
+    setIsDeleting(true);
+    try {
+      const response = await fetch(
+        "https://online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+          },
+          body: JSON.stringify({ order_codes: [order_code] }),
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        console.log("Error cancelling order:", data);
+        setIsDeleting(false);
+        return;
+      }
+      alert("Order cancelled successfully");
+      setIsDeleting(false);
+    } catch (error) {
+      console.log("Error cancelling order:", error);
+      alert("Error cancelling order ", error.message);
+      setIsDeleting(false);
+    }
+  };
+
+  const checkAuth = () => {
+    if (user) {
+      return (
+        <>
+          <Header />
+          <div className="container-fluid position-relative">
+            {/* Image background */}
+            <img
+              src={Donate}
+              className="img-fluid"
+              alt="Donate"
+              style={{ width: "100%", height: "60vh" }}
+            />
+            <Link to="/shipping">
+              <div
+                className="card text-bg position-absolute"
+                style={{
+                  top: "100%",
+                  left: "20%",
+                  transform: "translate(-50%, -50%)",
+                  maxWidth: "30rem",
+                  zIndex: "1",
+                }}
+              >
+                <div
+                  className="bg-black p-2 text-white"
+                  style={{ fontSize: "40px", fontStyle: "italic" }}
+                >
+                  DONATE NOW
+                </div>
+                <div
+                  className="bg-black p-2 text-white"
+                  style={{ opacity: "0.7" }}
+                >
+                  <p
+                    className="card-text"
+                    style={{ fontSize: "17px", fontStyle: "italic" }}
+                  >
+                    Every donation provides nutritious food and items for
+                    children and families.
+                  </p>
+                </div>
+              </div>
+            </Link>
           </div>
-        </div>
-        </Link>
-
-      </div>
-      <div className="container" style={{ width: "60%", marginTop: "100px" }}>
-        <ul className="nav nav-tabs" id="myTab" role="tablist">
-
-          <li className="nav-item" role="presentation">
-            <button className="nav-link active btn btn-outline-warning" id="your-donate-tab" data-bs-toggle="tab" data-bs-target="#your-donate" type="button" role="tab" aria-controls="your-donate" aria-selected="false"
-             style={{width:"100vh", color:"black", fontFamily:"Arial",height:"7vh",fontSize:"20px", pointerEvents:"none"}}>YOUR DONATION</button>
-          </li>
-        </ul>
-        <div className="tab-content" id="myTabContent">
-
-          <div className="tab-pane fade show active" id="your-donate" role="tabpanel" aria-labelledby="your-donate-tab">
-            <table className="table mt-3">
-            <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Product Name</th>
-                  <th>Quantity</th>
-                  <th>Organization</th>
-                  <th>Description</th>
-                  <th>Shipping Status</th>
-                  
-                </tr>
-              </thead>
-              <tbody>
-                {donations.map((donation, index) => (
-                  <tr key={donation._id}>
-                    <td>{index + 1}</td>
-                    <td>{donation.product_name}</td>
-                    <td>{donation.product_quantity}</td>
-                    <td>{donation.organization_name}</td>
-                    <td>{donation.description}</td>
-                    <td>{donation.shippingStatus}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div
+            className="container"
+            style={{ width: "60%", marginTop: "100px" }}
+          >
+            <ul className="nav nav-tabs" id="myTab" role="tablist">
+              <li className="nav-item" role="presentation">
+                <button
+                  className="nav-link active btn btn-outline-warning"
+                  id="your-donate-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#your-donate"
+                  type="button"
+                  role="tab"
+                  aria-controls="your-donate"
+                  aria-selected="false"
+                  style={{
+                    width: "100vh",
+                    color: "black",
+                    fontFamily: "Arial",
+                    height: "7vh",
+                    fontSize: "20px",
+                    pointerEvents: "none",
+                  }}
+                >
+                  YOUR DONATION
+                </button>
+              </li>
+            </ul>
+            <div className="tab-content" id="myTabContent">
+              <div
+                className="tab-pane fade show active"
+                id="your-donate"
+                role="tabpanel"
+                aria-labelledby="your-donate-tab"
+              >
+                <table className="table mt-3">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Product Name</th>
+                      <th>Quantity</th>
+                      <th>Organization</th>
+                      <th>Description</th>
+                      <th>Shipping Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {donations.map((donation, index) => (
+                      <tr key={donation._id}>
+                        <td>{index + 1}</td>
+                        <td>{donation.product_name}</td>
+                        <td>{donation.product_quantity}</td>
+                        <td>{donation.organization_name}</td>
+                        <td>{donation.description}</td>
+                        <td>{donation.shippingStatus}</td>
+                        <td>
+                          {donation.shippingStatus !== "cancel" &&
+                          donation.shippingStatus !== "Error" ? (
+                            <button
+                              className="btn btn-danger btn-sm"
+                              onClick={handleDelete(donation.order_code)}
+                            >
+                              Cancel
+                            </button>
+                          ) : null}{" "}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <Footer />
-    </>
-  );
+          <Footer />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Header />
+          <Link to="/DonorLogin" style={{ textDecoration: "none" }}>
+            <h1>Please login before accessing this page.</h1>
+          </Link>
+          <Footer />
+        </>
+      );
+    }
+  };
+
+  return <>{checkAuth()}</>;
 }
 
 export default Donation;

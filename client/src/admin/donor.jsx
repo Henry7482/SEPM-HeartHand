@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Nav from './Nav';
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useSessionReset } from '../hooks/useSessionReset';
 
 function Donor({ Toggle }) {
   const [donors, setDonors] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const { user } = useAuthContext();
+  const { resetSession } = useSessionReset();
 
 
   const getDonationStatus = async (donations) => {
@@ -59,6 +61,11 @@ function Donor({ Toggle }) {
             },
           }
         );
+
+        if (response.status === 401) {
+          resetSession();
+        }
+
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

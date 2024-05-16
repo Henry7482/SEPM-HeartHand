@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import hearthand from "../assets/logo.png";
 import charity from "../assets/charity.png";
 import rmitLogo from "../assets/RMIT-LOGO-project.jpg";
+import { useSessionReset } from "../hooks/useSessionReset";
 
 function Organization({ Toggle }) {
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -27,6 +28,7 @@ function Organization({ Toggle }) {
   });
   const [organizations, setOrganizations] = useState([]);
   const { user } = useAuthContext();
+  const { resetSession} = useSessionReset();
 
   useEffect(() => {
     const fetchOrganizations = async () => {
@@ -45,6 +47,11 @@ function Organization({ Toggle }) {
             },
           }
         );
+
+        if (response.status === 401) {
+          resetSession();
+        }
+
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -109,6 +116,9 @@ function Organization({ Toggle }) {
         }
       );
       const jsonData = await response.json();
+      if (response.status === 401) {
+        resetSession();
+      }
       if (!response.ok) {
         console.log("Error from server:", jsonData);
         setAddingOrganization(false);
@@ -144,6 +154,11 @@ function Organization({ Toggle }) {
           }
         );
         const jsonData = await response.json();
+
+        if (response.status === 401) {
+          resetSession();
+        }
+        
         if (!response.ok) {
           console.log("Error from server:", jsonData);
           setDeleteClicked(false);

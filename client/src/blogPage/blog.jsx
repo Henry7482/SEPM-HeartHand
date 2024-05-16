@@ -18,6 +18,7 @@ const BlogPage = () => {
         "https://hearthand.onrender.com/api/v1/blogs/" + blogId
       );
       const jsonData = await response.json();
+
       if (!response.ok) {
         console.log("Network response was not ok", jsonData.message);
         return;
@@ -111,7 +112,7 @@ const BlogPage = () => {
                         <Link to="/shipping" target="_blank">
                           <button
                             className="btn btn-success"
-                            style={{ marginRight: "0,5rem" }}
+                            style={{ marginRight: "0.5rem" }}
                           >
                             Donate now
                           </button>

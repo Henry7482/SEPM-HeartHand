@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Nav from "./Nav";
 import { useAuthContext } from "../hooks/useAuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useSessionReset } from "../hooks/useSessionReset";
 
 function Home({ Toggle }) {
   const [generatedBlogs, setGeneratedBlogs] = useState([]);
@@ -9,6 +10,7 @@ function Home({ Toggle }) {
   const [deleteClicked, setDeleteClicked] = useState(false);
   const [generating, setGenerating] = useState(false);
   const { user } = useAuthContext();
+  const { resetSession } = useSessionReset();
 
   useEffect(() => {
     const fetchGeneratedBlogs = async () => {
@@ -28,6 +30,11 @@ function Home({ Toggle }) {
           }
         );
         const jsonData = await response.json();
+
+        if (response.status === 401) {
+          resetSession();
+        }
+
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -91,6 +98,11 @@ function Home({ Toggle }) {
         }
       );
       const jsonData = await response.json();
+
+      if (response.status === 401) {
+        resetSession();
+      }
+    
       if (!response.ok) {
         console.log("Network response was not ok", jsonData.message);
         return;
@@ -105,6 +117,7 @@ function Home({ Toggle }) {
   };
 
   const handleDelete = async (blogListId, blogId) => {
+    setDeleteClicked(true);
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
       alert("Access token not found. Please login again.");
@@ -122,8 +135,14 @@ function Home({ Toggle }) {
         }
       );
       const jsonData = await response.json();
+
+      if (response.status === 401) {
+        resetSession();
+      }
+      
       if (!response.ok) {
         console.log("Network response was not ok", jsonData.message);
+        setDeleteClicked(false);
         return;
       }
       console.log(
@@ -131,11 +150,13 @@ function Home({ Toggle }) {
         JSON.stringify(jsonData)
       );
       alert("Blog deleted successfully");
+      setDeleteClicked(false);
+
     } catch (err) {
       console.error("Error from server:", err.message);
       alert("Error in deleting blog ", err.message);
+      setDeleteClicked(false);
     }
-    setDeleteClicked(true);
   };
 
   const handleGenerateBlogs = async () => {

@@ -10,7 +10,7 @@ import React, { useState, useEffect } from "react";
 import Admin from "./admin/Admin.jsx";
 import DonorLogin from "./loginfordonors/DonorLogin.jsx";
 import CheckoutPage from "./shipping/shipping.jsx";
-import AdminLogin from "./login/AdminLogin.jsx"
+import AdminLogin from "./login/AdminLogin.jsx";
 import AboutUs from "./aboutus/aboutus.jsx";
 import Organization from "./Organization/donororganization.jsx";
 import Donation from "./Donation/Donation.jsx";
@@ -30,7 +30,8 @@ function App() {
           "https://hearthand.onrender.com/api/v1/blogs"
         );
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          console.error("Failed to fetch data from server");
+          return;
         }
         const jsonData = await response.json();
         setBlogs(jsonData);
@@ -88,40 +89,13 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        {/* Call out function */}
-        {/* {displayBlogs(blogs)} */}
-        {/* <button onClick={handleRequest}>Request to secret page</button> */}
         <Routes>
-          <Route path="/footerTest" element={<Footer />} />
-          <Route path="/headerTest" element={<Header />} />
-          {/* <Route path="/donateTest" element={<DonateBox />} /> */}
-          <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
-          <Route path="/footerTest" element={<Footer />} />
-          <Route
-            path="/authenticationTest"
-            element={!user ? <SignUp /> : <Navigate to="/homeTest" />}
-          />
-          <Route
-            path="/authentication1Test"
-            element={!user ? <DonorLogin /> : <Navigate to="/homeTest" />}
-          />
-          <Route
-            path="/adminTest"
-            element={
-              user && user.role === "admin" ? (
-                <Admin />
-              ) : (
-                <Navigate to="/authentication1Test" />
-              )
-            }
-          />
-
+          <Route path="/" element={<Navigate to="/home"/>} />
           <Route path="/footer" element={<Footer />} />
           <Route path="/header" element={<Header />} />
           <Route path="/home" element={<HomePage blogs={blogs} />} />
           <Route path="/donate" element={<Donatebox />} />
-          {/* !!Pass in blogs value for Blog page to read */}
-          <Route path="/blogTest/:blogId" element={<Blog blogs={blogs} />} />
+          <Route path="/blogTest/:blogId" element={<Blog />} />
           <Route path="/footer" element={<Footer />} />
           <Route
             path="/SignUp"
@@ -131,13 +105,15 @@ function App() {
           <Route
             path="/DonorLogin"
             element={!user ? <DonorLogin /> : <Navigate to="/home" />}
-          />
+        />
           <Route path="/shipping" element={<CheckoutPage />} />
           <Route path="/AdminLogin" element={<AdminLogin />} />
           <Route path="/AboutUs" element={<AboutUs />} />
           <Route path="/Organization" element={<Organization />} />
-          <Route path="/Donation" element={<Donation />} />
-
+          <Route
+            path="/Donation"
+            element={<Donation />}
+          />
         </Routes>
       </BrowserRouter>
     </div>

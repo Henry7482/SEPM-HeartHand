@@ -1,6 +1,6 @@
 import { useAuthContext } from './useAuthContext';
 
-const BASE_URL = "http://localhost:8080/api/v1";
+const BASE_URL = "https://hearthand.onrender.com/api/v1";
 
 export const useLogout= () => {
     const { dispatch } = useAuthContext();
