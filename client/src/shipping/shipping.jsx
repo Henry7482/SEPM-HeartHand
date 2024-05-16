@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./shipping.css";
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useAuthContext } from "../hooks/useAuthContext";
+import Header from "../header/header";
 
 const CheckoutPage = () => {
-  const {user} = useAuthContext();
+  const { user } = useAuthContext();
   const [shifts, setShifts] = useState([]);
   const [selectedShift, setSelectedShift] = useState("default");
   const [districts, setDistricts] = useState([]);
@@ -38,6 +39,7 @@ const CheckoutPage = () => {
   const [fee, setFee] = useState(0);
   const [serviceId, setServiceId] = useState(null);
   let minRequiredMass = 0;
+  const [creatingOrder, setCreatingOrder] = useState(false);
 
   const handleDeliveryNote = (event) => {
     const note = event.target.value;
@@ -143,6 +145,7 @@ const CheckoutPage = () => {
   };
 
   const handleSubmit = (event) => {
+    setCreatingOrder(true);
     event.preventDefault();
     createOrder();
   };
@@ -193,6 +196,8 @@ const CheckoutPage = () => {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
       alert("Access token not found. Please login again.");
+      setCreatingOrder(false);
+      return;
     }
 
     try {
@@ -211,14 +216,17 @@ const CheckoutPage = () => {
       if (!response.ok) {
         console.error("Failed to create order:", data);
         alert("Failed to create order ", data.message);
+        setCreatingOrder(false);
         return null;
       }
       console.log("Order created:", data);
       alert("Order created successfully");
+      setCreatingOrder(false);
       window.location.href = `/donation"/${user.id}`;
     } catch (error) {
       console.error("Error creating order:", error);
-      alert("Failed to create order ", error.message)
+      alert("Failed to create order ", error.message);
+      setCreatingOrder(false);
     }
   };
 
@@ -229,18 +237,22 @@ const CheckoutPage = () => {
   };
 
   const fetchShifts = async () => {
-    const response = await fetch(
-      "https://online-gateway.ghn.vn/shiip/public-api/v2/shift/date",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
-        },
-      }
-    );
-    const data = await response.json();
-    setShifts(data.data);
+    try {
+      const response = await fetch(
+        "https://online-gateway.ghn.vn/shiip/public-api/v2/shift/date",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+          },
+        }
+      );
+      const data = await response.json();
+      setShifts(data.data);
+    } catch (e) {
+      console.error("Error fetching shifts:", e);
+    }
   };
 
   useEffect(() => {
@@ -544,42 +556,7 @@ const CheckoutPage = () => {
 
   return (
     <>
-      <nav className="bg-white">
-        <div className="d-flex align-items-center">
-          <div className="logo">
-            <a href="#" className="text-uppercase">
-              ship
-            </a>
-          </div>
-          <div className="right-align" style={{ marginLeft: "1180px" }}>
-            <a
-              href="#"
-              className="text-uppercase,h5 font-weight-bold text-primary"
-            >
-              Back to shipping
-            </a>
-          </div>
-        </div>
-      </nav>
-      <header>
-        <div className="d-flex justify-content-center align-items-center pb-3">
-          <div className="px-sm-5 px-2 active">
-            SHIPPING CART
-            <span className="fas fa-check"></span>
-          </div>
-          <div className="px-sm-5 px-2">ORDER</div>
-          <div className="px-sm-5 px-2">FINISH</div>
-        </div>
-        <div className="progress">
-          <div
-            className="progress-bar bg-success"
-            role="progressbar"
-            aria-valuenow="25"
-            aria-valuemin="0"
-            aria-valuemax="100"
-          ></div>
-        </div>
-      </header>
+      <Header />
       <div className="wrapper">
         <form onSubmit={handleSubmit}>
           <div className="h5 large">Shipping Cart</div>
@@ -914,27 +891,27 @@ const CheckoutPage = () => {
                       onChange={handleQuantityChange}
                     />
                   </div>
-                <div
-                  className="rounded py-2 px-3"
-                  id="form-group"
-                  style={{ backgroundColor: "#f0f0f0" }}
-                >
-                  <div className="h5 text-primary">
-                    <b>Notes for delivery</b>
+                  <div
+                    className="rounded py-2 px-3"
+                    id="form-group"
+                    style={{ backgroundColor: "#f0f0f0" }}
+                  >
+                    <div className="h5 text-primary">
+                      <b>Notes for delivery</b>
+                    </div>
+                    <textarea
+                      className="form-control input-lg"
+                      defaultValue=""
+                      value={deliveryNote}
+                      onChange={handleDeliveryNote}
+                      style={{
+                        backgroundColor: "#f0f0f0",
+                        border: "none",
+                        height: "5rem",
+                        overflow: "auto",
+                      }}
+                    />
                   </div>
-                  <textarea
-                    className="form-control input-lg"
-                    defaultValue=""
-                    value={deliveryNote}
-                    onChange={handleDeliveryNote}
-                    style={{
-                      backgroundColor: "#f0f0f0",
-                      border: "none",
-                      height: "5rem",
-                      overflow: "auto",
-                    }}
-                  />
-                </div>
                   <div
                     className="h5 font-weight-bold text-primary"
                     style={{
@@ -947,7 +924,11 @@ const CheckoutPage = () => {
                   </div>
                   <h4>{fee}đ</h4>
                 </div>
-                <button type="submit" class="btn btn-success">
+                <button
+                  type="submit"
+                  class="btn btn-success"
+                  disabled={creatingOrder}
+                >
                   Create Order
                 </button>
               </div>

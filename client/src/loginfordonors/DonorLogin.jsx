@@ -94,6 +94,7 @@ const DonorLogin = () => {
                         >
                           Log In
                         </button>
+                        {isLoading && <div className="spinner-border text-primary" role="status"></div>}
                       </div>
                       {error && (
                           <div className="error alert alert-danger text-center mt-4">

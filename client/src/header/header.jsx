@@ -28,7 +28,7 @@ const Navbar = () => {
   return (
     <div>
       <ul id="headbar">
-        <li>
+        <li style={{textDecoration: "none"}}>
           <a href="www.google.com">FAQs </a>
           <a href="www.google.com">Contact Us </a>
         </li>

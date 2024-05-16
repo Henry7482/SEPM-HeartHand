@@ -221,7 +221,7 @@ function Home({ Toggle }) {
       <Nav Toggle={Toggle} />
       <div className="col-12">
         <div className="text-center mt-3">
-          <button className="btn btn-primary" onClick={handleGenerateBlogs}>
+          <button className="btn btn-primary" onClick={handleGenerateBlogs} disabled={generating}>
             Generate new blogs
           </button>
           {generating && (

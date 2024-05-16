@@ -10,7 +10,7 @@ export default function Footer() {
     <footer className="footer">
         <div className="sb_footer-top">
             <div className="sb_footer section_padding">
-                <div className="sb_footer-links">
+                <div className="sb_footer-links" style={{textDecoration: "none"}}>
                     <div className="sb_footer-links_div">
                         <h4>Contact Us</h4>
                         <a href="/location">

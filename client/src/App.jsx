@@ -2,7 +2,6 @@ import "./App.css";
 import Footer from "./footer/footer.jsx";
 import SignUp from "./signupauthentication/SignUp.jsx";
 import Header from "./header/header.jsx";
-import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./homePage/HomePage.jsx";
 import Donatebox from "./blogPage/donatebox.jsx";
@@ -14,7 +13,7 @@ import CheckoutPage from "./shipping/shipping.jsx";
 import AdminLogin from "./login/AdminLogin.jsx"
 import AboutUs from "./aboutus/aboutus.jsx";
 import Organization from "./Organization/donororganization.jsx";
-import Donation from "./Donation/donation.jsx";
+import Donation from "./Donation/Donation.jsx";
 
 import { useAuthContext } from "./hooks/useAuthContext";
 

@@ -16,7 +16,8 @@ const HomePage = ({ blogs = [] }) => {
 
   const displayBlogs = (data) => {
     if (Array.isArray(data)) {
-      return data.map((item, index) => (
+      const reversedData = [...data].reverse();
+      return reversedData.map((item, index) => (
         <Link
           to={`/blogTest/${item._id}`}
           key={index}

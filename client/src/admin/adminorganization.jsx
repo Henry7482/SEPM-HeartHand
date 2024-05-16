@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import Nav from './Nav';
-import Draggable from 'react-draggable';
+import React, { useEffect, useState } from "react";
+import Nav from "./Nav";
+import Draggable from "react-draggable";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { Link } from "react-router-dom";
 
 // Import logos if still needed for some default state
 import hearthand from "../assets/logo.png";
@@ -10,23 +11,22 @@ import rmitLogo from "../assets/RMIT-LOGO-project.jpg";
 
 function Organization({ Toggle }) {
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [addingOrganization, setAddingOrganization] = useState(false);
   const [selectedImage, setSelectedImage] = useState({});
+  const [deleteClicked, setDeleteClicked] = useState(false);
   const [newOrganization, setNewOrganization] = useState({
-  
-    name: '',
-      phone_number: '',
-      ward: '',
-      address: '',
-      logo: '',
-      district: '',
-      province: '',
-      email: '',
-      website: '',
-      imageurl: ''
+    name: "",
+    phone_number: "",
+    address: "",
+    ward: "",
+    district: "",
+    province: "",
+    email: "",
+    website: "",
+    imageURL: "",
   });
   const [organizations, setOrganizations] = useState([]);
   const { user } = useAuthContext();
-  
 
   useEffect(() => {
     const fetchOrganizations = async () => {
@@ -52,7 +52,10 @@ function Organization({ Toggle }) {
 
         const jsonData = await response.json();
         setOrganizations(jsonData);
-        console.log("Organizations Data from server:", JSON.stringify(jsonData));
+        console.log(
+          "Organizations Data from server:",
+          JSON.stringify(jsonData)
+        );
       } catch (err) {
         console.error("Error from server:", err.message);
       }
@@ -61,13 +64,13 @@ function Organization({ Toggle }) {
     if (user && user.role === "admin") {
       fetchOrganizations();
     }
-  }, [user]);
+  }, [user, addingOrganization, deleteClicked]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewOrganization(prevState => ({
+    setNewOrganization((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -75,89 +78,237 @@ function Organization({ Toggle }) {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      setNewOrganization(prevState => ({
+      setNewOrganization((prevState) => ({
         ...prevState,
-        logo: reader.result
+        imageURL: reader.result,
       }));
     };
     reader.readAsDataURL(file);
   };
 
-  const handleCreateOrganization = () => {
-    setOrganizations([...organizations, newOrganization]);
-    setNewOrganization({
-      name: '',
-      phone_number: '',
-      ward: '',
-      address: '',
-      logo: '',
-      district: '',
-      province: '',
-      email: '',
-      website: '',
-      imageurl: '',
-    });
+  const handleCreateOrganization = async (e) => {
+    e.preventDefault();
+    setAddingOrganization(true);
+    console.log(newOrganization);
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      alert("Access token not found. Please login again.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "https://hearthand.onrender.com/api/v1/organizations",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(newOrganization),
+        }
+      );
+      const jsonData = await response.json();
+      if (!response.ok) {
+        console.log("Error from server:", jsonData);
+        setAddingOrganization(false);
+        return;
+      }
+      console.log("Organization created:", JSON.stringify(jsonData));
+      alert("Organization created successfully");
+      setAddingOrganization(false);
+    } catch (err) {
+      console.error("Error from server:", err.message);
+      alert("Error in creating organization ", err.message);
+      setAddingOrganization(false);
+    }
+  };
+
+  const handleDelete = (organizationId) => {
+    return async () => {
+      setDeleteClicked(true);
+      const accessToken = localStorage.getItem("accessToken");
+      if (!accessToken) {
+        alert("Access token not found. Please login again.");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://hearthand.onrender.com/api/v1/organizations/${organizationId}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        const jsonData = await response.json();
+        if (!response.ok) {
+          console.log("Error from server:", jsonData);
+          setDeleteClicked(false);
+          return;
+        }
+        console.log("Organization deleted:", JSON.stringify(jsonData));
+        alert("Organization deleted successfully");
+        setDeleteClicked(false);
+      } catch (err) {
+        console.error("Error from server:", err.message);
+        alert("Error in deleting organization ", err.message);
+        setDeleteClicked(false);
+      }
+    };
   };
 
   return (
-    <div className='px-3'>
+    <div className="px-3">
       <Nav Toggle={Toggle} />
-      <div className="container-fluid" style={{ position: 'fixed' }}>
+      <div className="container-fluid" style={{ position: "absolute" }}>
         <div className="row mt-2">
           <div className="col-12">
-            <div style={{ position: 'fixed', overflowX: 'auto' }}>
+            <div style={{ overflowX: "auto" }}>
               <Draggable axis="x">
-                <div className='d-flex flex-nowrap'>
+                <div className="d-flex flex-nowrap">
                   {organizations.map((organization, index) => (
-                    <div key={index} className='p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded organization-card mx-2' style={{ minWidth: '300px', maxWidth: '400px' }}>
-                      <div>
-                        <h3 className='fs-2'>{organization.name}</h3>
-                        <p className='fs-5'>{organization.domain}</p>
+                    <a href={organization.website.startsWith('http://') || organization.website.startsWith('https://') ? organization.website : `http://${organization.website}`} style={{textDecoration: "none"}} target="_blank">                      <div
+                        key={index}
+                        className="card shadow-sm bg-white rounded m-2"
+                        style={{
+                          minWidth: "300px",
+                          maxWidth: "400px",
+                          height: "310px",
+                        }}
+                      >
+                        <img
+                          src={organization.imageURL}
+                          alt={organization.name}
+                          width="100"
+                          height="100"
+                          className="card-img-top"
+                          style={{ objectFit: "contain" }}
+                        />
+
+                        <div className="card-body">
+                          <h5 className="card-title fs-4">{organization.name}</h5>
+                          <p class="card-text">
+                            {`${organization.ward} - ${organization.district} - ${organization.province}`}
+                          </p>
+                          <p class="card-text">{organization.email}</p>
+                          <button
+                            className="btn btn-danger"
+                            onClick={handleDelete(organization._id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
-                      <img src={organization.imageURL} alt={organization.name} width="100" height="100" />
-                    </div>
+                    </a>
                   ))}
                 </div>
               </Draggable>
             </div>
           </div>
         </div>
-
-        <div className="row" style={{ marginTop: '200px', paddingRight: '350px' }}>
+      </div>
+      <div className="row" style={{ marginTop: "350px" }}>
+        <div className="col-12">
+          <div className="text-center mt-3">
+            <button
+              className="btn btn-primary"
+              onClick={() => setShowCreateForm(!showCreateForm)}
+            >
+              Create New Organization
+            </button>
+          </div>
+        </div>
+      </div>
+      {showCreateForm && (
+        <div className="row">
           <div className="col-12">
-            <div className="text-center mt-3">
-              <button className="btn btn-primary" onClick={() => setShowCreateForm(!showCreateForm)}>
-                Create New Organization
-              </button>
+            <div className="mt-3 bg-white shadow-sm p-3 rounded">
+              <form onSubmit={handleCreateOrganization}>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Organization Name*"
+                  value={newOrganization.name}
+                  onChange={handleInputChange}
+                  className="form-control mb-2"
+                />
+                <input
+                  type="text"
+                  name="address"
+                  placeholder="Address*"
+                  value={newOrganization.address}
+                  onChange={handleInputChange}
+                  className="form-control mb-2"
+                />
+                <input
+                  type="text"
+                  name="ward"
+                  placeholder="Ward*"
+                  value={newOrganization.ward}
+                  onChange={handleInputChange}
+                  className="form-control mb-2"
+                />
+                <input
+                  type="text"
+                  name="district"
+                  placeholder="District*"
+                  value={newOrganization.district}
+                  onChange={handleInputChange}
+                  className="form-control mb-2"
+                />
+                <input
+                  type="text"
+                  name="province"
+                  placeholder="Province*"
+                  value={newOrganization.province}
+                  onChange={handleInputChange}
+                  className="form-control mb-2"
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email*"
+                  value={newOrganization.email}
+                  onChange={handleInputChange}
+                  className="form-control mb-2"
+                />
+                <input
+                  type="text"
+                  name="website"
+                  placeholder="Website*"
+                  value={newOrganization.website}
+                  onChange={handleInputChange}
+                  className="form-control mb-2"
+                />
+                <input
+                  type="file"
+                  name="logo"
+                  onChange={handleLogoChange}
+                  className="form-control mb-2"
+                />
+                <input
+                  type="text"
+                  name="phone_number"
+                  placeholder="PhoneNumber*"
+                  value={newOrganization.phone_number}
+                  onChange={handleInputChange}
+                  className="form-control mb-2"
+                />
+                <button
+                  type="submit"
+                  className="btn btn-success"
+                  disabled={addingOrganization}
+                >
+                  Create
+                </button>
+              </form>
             </div>
           </div>
         </div>
-        {showCreateForm && (
-          <div className="row" style={{ paddingRight: '350px' }}>
-            <div className='col-12'>
-              <div className='mt-3 bg-white shadow-sm p-3 rounded'>
-                <form>
-                  <input type="text" name="name" placeholder="Organization Name*" value={newOrganization.name} onChange={handleInputChange} className="form-control mb-2" />
-                  <select name="domain" value={newOrganization.district} onChange={handleInputChange} className="form-select mb-2">
-                    <option value="">District</option>
-                    <option value="North">North</option>
-                    <option value="South">South</option>
-                    <option value="Middle">Middle</option>
-                  </select>
-                  <input type="text" name="ward" placeholder="Ward*" value={newOrganization.ward} onChange={handleInputChange} className="form-control mb-2" />
-                  <input type="text" name="address" placeholder="Address*" value={newOrganization.address} onChange={handleInputChange} className="form-control mb-2" />
-                  <input type="text" name="province" placeholder="Province*" value={newOrganization.province} onChange={handleInputChange} className="form-control mb-2" />
-                  <input type="text" name="email" placeholder="Email*" value={newOrganization.email} onChange={handleInputChange} className="form-control mb-2" />
-                  <input type="text" name="province" placeholder="Province*" value={newOrganization.province} onChange={handleInputChange} className="form-control mb-2" />
-                  <input type="file" name="logo" onChange={handleLogoChange} className="form-control mb-2" />
-                  <input type="text" name="phonenumber" placeholder="PhoneNumber*" value={newOrganization.phone_number} onChange={handleInputChange} className="form-control mb-2" />
-                  <button type="submit" onClick={handleCreateOrganization} className="btn btn-success">Create</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 }
