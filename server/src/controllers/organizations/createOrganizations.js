@@ -1,4 +1,5 @@
 import Organization from "../../models/Organization.js";
+import uploadImageToCloudinary from "../../utils/uploadImageToCloudinary.js";
 
 const createOrganizations = async (req, res) => {
 
