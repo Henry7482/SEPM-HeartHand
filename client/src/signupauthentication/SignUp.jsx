@@ -9,11 +9,16 @@ import password_icon from "../assets/password.png";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [repeatedPassword, setRepeatedPassword] = useState("");
   const [username, setUsername] = useState("");
   const { signup, error, isLoading } = useSignUp();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (password !== repeatedPassword) {
+      alert("Passwords do not match");
+      return;
+    }
     await signup(username, email, password);
   };
 
@@ -95,6 +100,8 @@ const SignUp = () => {
                           type="password"
                           id="form3Example4cd"
                           className="form-control"
+                          onChange={(e) => setRepeatedPassword(e.target.value)}
+                          value={repeatedPassword}
                         />
                         <label className="form-label" htmlFor="form3Example4cd">
                           Repeat your password
