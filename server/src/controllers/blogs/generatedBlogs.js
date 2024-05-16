@@ -41,4 +41,22 @@ const uploadGeneratedBlogs = async (req, res) => {
       }
 }
 
-export {getGeneratedBlogs, getGeneratedBlogsById, uploadGeneratedBlogs}
+const deleteGeneratedBlogs = async (req, res) => {
+  const { id } = req.params;
+  const blogListId  = id.split("-")[0]
+  const blogId = id.split("-")[1]
+
+  try {
+    const blogList = await GeneratedBlogs.findById(blogListId);
+    if (!blogList) {
+      return res.status(404).json({ message: "Blog list not found" });
+  } 
+  const filteredBlogs = blogList.data.filter(blog => blog._id != blogId)
+  await GeneratedBlogs.findByIdAndUpdate(blogListId, {data: filteredBlogs})
+  res.status(200).json({message: "Blog deleted successfully"});
+} catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export {getGeneratedBlogs, uploadGeneratedBlogs, deleteGeneratedBlogs}
