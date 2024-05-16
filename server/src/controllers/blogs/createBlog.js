@@ -21,10 +21,16 @@ const newBlogInstance = async () => {
 };
 
 const createBlog = async (req, res) => {
-  try {
-    const imageUrls = await uploadImage("../server/images");
-    const blog = await newBlogInstance();
-    const output = await Blog.create(blog);
+  try {    
+    const output = await Blog.create({
+      title: req.body.title,
+      shortform: req.body.shortform,
+      content: req.body.content,
+      date: new Date(),
+      tags: req.body.tags,
+      references: req.body.references,
+      imageURL: req.body.imageURL,
+    });
     res.status(200).json({ message: "Successfully added blog", output });
   } catch (error) {
     res.status(500).json({ message: error.message });

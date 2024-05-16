@@ -20,7 +20,7 @@ const blogSchema = new mongoose.Schema({
   },
   tags: {
     type: Array,
-    required: true,
+    required: false,
   },
   references: {
     type: Array,
