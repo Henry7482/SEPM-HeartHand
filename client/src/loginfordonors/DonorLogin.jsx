@@ -5,6 +5,7 @@ import user_icon from "../assets/usericon.png";
 import email_icon from "../assets/email.png";
 import password_icon from "../assets/password.png";
 import { useLogin } from "../hooks/useLogin";
+import { Link } from "react-router-dom";
 
 const DonorLogin = () => {
   // State variables to hold username and password
@@ -79,10 +80,7 @@ const DonorLogin = () => {
                         </div>
                       </div>
                       <div className="form-check d-flex justify-content-center mb-5">
-                        <label>
-                          <input type="checkbox" name="remember" /> I agree all
-                          statements in <a href="#!">Terms of service</a>
-                        </label>
+                        <Link to="/SignUp" style={{textDecoration: "none"}}>Don't have an account? Sign Up</Link>
                       </div>
                       <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                         <button

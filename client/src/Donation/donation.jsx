@@ -32,11 +32,12 @@ function Donation() {
             body: JSON.stringify({ order_code: donor.order_code }),
           }
         );
-        const data = await response.json();
 
         if (response.status === 401) {
           resetSession();
         }
+
+        const data = await response.json();
 
         if (!response.ok) {
           updatedDonors.push({ ...donor, shippingStatus: "Error" });
@@ -75,10 +76,12 @@ function Donation() {
           resetSession();
         }
 
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
         const jsonData = await response.json();
+
+        if (!response.ok) {
+          console.log("Failed to fetch data from server");
+          return;
+        }
         setDonations(jsonData);
         getDonationStatus(jsonData);
         console.log("User Donations from server:", JSON.stringify(jsonData));
@@ -214,9 +217,9 @@ function Donation() {
                     </tr>
                   </thead>
                   <tbody>
-                    {donations.map((donation, index) => (
+                    {[...donations].reverse().map((donation, index) => (
                       <tr key={donation._id}>
-                        <td>{index + 1}</td>
+                        <td>{donations.length - index}</td>
                         <td>{donation.product_name}</td>
                         <td>{donation.product_quantity}</td>
                         <td>{donation.organization_name}</td>
@@ -227,7 +230,7 @@ function Donation() {
                           donation.shippingStatus !== "Error" ? (
                             <button
                               className="btn btn-danger btn-sm"
-                              onClick={handleDelete(donation.order_code)}
+                              onClick={() => handleDelete(donation.order_code)}
                             >
                               Cancel
                             </button>
