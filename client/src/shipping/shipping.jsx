@@ -215,7 +215,7 @@ const CheckoutPage = () => {
       }
       console.log("Order created:", data);
       alert("Order created successfully");
-      window.location.href = "/donation"+ `/${user.id}`;
+      window.location.href = `/donation"/${user.id}`;
     } catch (error) {
       console.error("Error creating order:", error);
       alert("Failed to create order ", error.message)
@@ -345,7 +345,7 @@ const CheckoutPage = () => {
   };
 
   const convertDistrictIdToName = (districtId) => {
-    const district = districts.find((item) => item.DistrictID == districtId);
+    const district = districts.find((item) => item.DistrictID === districtId);
     if (!district) {
       return "No district found";
     }
@@ -389,7 +389,7 @@ const CheckoutPage = () => {
   };
 
   const convertProvinceIdToName = (provinceId) => {
-    const province = provinces.find((item) => item.ProvinceID == provinceId);
+    const province = provinces.find((item) => item.ProvinceID === provinceId);
     if (!province) {
       return "No province found";
     }
@@ -491,7 +491,7 @@ const CheckoutPage = () => {
   const convertWardIdToName = (wardId, role) => {
     try {
       if (role === "sender") {
-        const senderWard = senderwards.find((item) => item.WardCode == wardId);
+        const senderWard = senderwards.find((item) => item.WardCode === wardId);
         if (senderWard) {
           return senderWard.WardName;
         } else {
@@ -500,7 +500,7 @@ const CheckoutPage = () => {
       }
       if (role === "organization") {
         const organizationWard = organizationwards.find(
-          (item) => item.WardCode == wardId
+          (item) => item.WardCode === wardId
         );
         if (organizationWard) {
           return organizationWard.WardName;
