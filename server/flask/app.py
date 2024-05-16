@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS 
 import requests
 from webScraper.webScraper import scrape_news
 from gpt.filterContent import filter_content
@@ -10,6 +11,7 @@ gevent.monkey.patch_all()
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
 
     @app.route("/")
     def hello():
