@@ -18,17 +18,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const corsOptions = {
-  origin: 'http://localhost:3000', // Your frontend origin
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Allow credentials to be sent
-  optionsSuccessStatus: 204 // For legacy browsers
-};
-
 // Middleware
 app.use(express.json());
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.use(cors());
 app.use(cookieParser());
 
 // App Routes

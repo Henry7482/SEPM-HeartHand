@@ -4,9 +4,9 @@ import Header from "../header/header.jsx";
 import Footer from "../footer/footer.jsx";
 import Donate from "../assets/donate.jpg";
 import Children from "../assets/children.jpg";
-import { useAuthContext } from "../hooks/useAuthContext.js";
+import { useAuthContext } from "../hooks/useAuthContext";
 import { Link } from "react-router-dom";
-import { useSessionReset } from "../hooks/useSessionReset.js";
+import { useSessionReset } from "../hooks/useSessionReset";
 function Donation() {
   const [donations, setDonations] = useState([]);
   const { user } = useAuthContext();
