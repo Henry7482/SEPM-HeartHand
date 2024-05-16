@@ -3,7 +3,7 @@ import Nav from "./Nav";
 import { useAuthContext } from "../hooks/useAuthContext";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Home({ handleAccept, handleDelete, Toggle }) {
+function Home({ handleDelete, Toggle }) {
   const [generatedBlogs, setGeneratedBlogs] = useState([]);
   const [selectedImage, setSelectedImage] = useState({});
   const { user } = useAuthContext();
@@ -49,6 +49,37 @@ function Home({ handleAccept, handleDelete, Toggle }) {
     const options = { day: "2-digit", month: "long", year: "numeric" };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
+
+  const handleAccept = async (blog, image) => {
+    if (!image) {
+      image ="";    
+    }
+    const fetchGeneratedBlogs = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+
+      if (!accessToken) {
+        throw new Error("Access token not found");
+      }
+    try {
+      const response = await fetch("https://hearthand.onrender.com/api/v1/blogs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ blog, image }),
+      });
+
+      if (!response.ok) {
+        console.log("Network response was not ok");
+      }
+      const jsonData = await response.json();
+      console.log("Created blog successfully:", JSON.stringify(jsonData));
+    } catch (err) {
+      console.error("Error from server:", err.message);
+      alert("Error in creating blog ", err.message);
+    }
+  }
 
   const displaygeneratedBlogs = (data) => {
     if (Array.isArray(data) && data.length > 0) {

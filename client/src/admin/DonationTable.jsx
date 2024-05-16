@@ -48,12 +48,10 @@ function DonationTable() {
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">ProductName</th>
-            <th scope="col">ProductType</th>
-            <th scope="col">Quantity/Status</th>
+            <th scope="col">Quantity</th>
             <th scope="col">Organization</th>
             <th scope="col">Description</th>
             <th scope="col">Shipping Status</th>
-            <th scope="col">Product Image</th>
           </tr>
         </thead>
         <tbody>
@@ -62,15 +60,10 @@ function DonationTable() {
               <th scope="row">{index + 1}</th>
               <td>{donor.sender_name}</td>
               <td>{donor.product_name}</td>
-              <td>{donor.product_category}</td>
               <td>{donor.product_quantity}</td>
               <td>{donor.organization_name}</td>
               <td>{donor.description}</td>
               <td>{donor.shippingStatus}</td>
-              <td>
-                <img src={donor.imageUrl || Image} alt="Product" style={{ width: '90px', height: '70px', cursor: 'pointer' }} />
-              </td>
-              
             </tr>
           ))}
         </tbody>
