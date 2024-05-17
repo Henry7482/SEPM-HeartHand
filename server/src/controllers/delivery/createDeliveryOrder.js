@@ -2,6 +2,7 @@ import axios from "axios";
 import Donation from "../../models/Donation.js";
 
 const createDeliveryOrder = async (req, res) => {
+  try {
   const data = {
     payment_type_id: 1,
     note: req.body.note,
@@ -100,7 +101,6 @@ const createDeliveryOrder = async (req, res) => {
   //   });
 
   // Create a donation document
-  try {
     // console.log("Cancel Delivery Order");
     await Donation.create({
       donor_id: req.userID,
