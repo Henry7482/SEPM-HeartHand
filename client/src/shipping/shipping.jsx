@@ -149,8 +149,46 @@ const CheckoutPage = () => {
   };
 
   const handleSubmit = (event) => {
-    setCreatingOrder(true);
     event.preventDefault();
+    
+    if (isNaN(senderPhoneNumber) || isNaN(organizationPhoneNumber)) {
+      alert("Phone numbers must be numeric");
+      return;
+    }
+    
+    if (senderPhoneNumber.length !== 10 || organizationPhoneNumber.length !== 10) {
+      alert("Phone number must have 10 digits");
+      return;
+    }
+
+    if (selectedSenderProvince === 0) {
+      alert("Please select sender province");
+      return;
+    }
+
+    if (selectedSenderDistrict === 0) {
+      alert("Please select sender district");
+      return;
+    }
+
+    if (selectedOrganizationProvince === 0) {
+      alert("Please select organization province");
+      return;
+    }      
+
+    if (selectedOrganizationDistrict === 0) {
+      alert("Please select organization district");
+      return;
+    }
+
+    if (selectedShift === "default") {
+      alert("Please select a shift");
+      return;
+    }
+
+
+    setCreatingOrder(true);
+
     createOrder();
   };
 
@@ -602,6 +640,7 @@ const CheckoutPage = () => {
                               defaultValue=""
                               value={senderName}
                               onChange={(e) => setSenderName(e.target.value)}
+                              required
                             />
                           </div>
                         </div>
@@ -617,6 +656,7 @@ const CheckoutPage = () => {
                               onChange={(e) =>
                                 setSenderPhoneNumber(e.target.value)
                               }
+                              required
                             />
                           </div>
                         </div>
@@ -630,6 +670,7 @@ const CheckoutPage = () => {
                               defaultValue=""
                               value={senderAddress}
                               onChange={(e) => setSenderAddress(e.target.value)}
+                              required
                             />
                           </div>
                         </div>
@@ -642,6 +683,7 @@ const CheckoutPage = () => {
                             id="province"
                             value={selectedSenderProvince}
                             onChange={handleSelectSenderProvince}
+                            required
                           >
                             <option disabled selected value={0}>
                               Choose a province
@@ -658,6 +700,7 @@ const CheckoutPage = () => {
                             id="district"
                             value={selectedSenderDistrict}
                             onChange={handleSelectSenderDistricts}
+                            required
                           >
                             <option disabled selected value={0}>
                               Choose a district
@@ -675,6 +718,7 @@ const CheckoutPage = () => {
                             id="province"
                             value={selectedSenderWards}
                             onChange={handleSelectSenderWards}
+                            required
                           >
                             <option disabled selected value={0}>
                               Choose a ward
@@ -690,6 +734,7 @@ const CheckoutPage = () => {
                       id="shift"
                       value={selectedShift}
                       onChange={handleSelectShift}
+                      required
                     >
                       <option disabled value="default">
                         Choose a shipping shift
@@ -718,6 +763,7 @@ const CheckoutPage = () => {
                               onChange={(e) =>
                                 setorganizationName(e.target.value)
                               }
+                              required
                             />
                           </div>
                         </div>
@@ -733,6 +779,7 @@ const CheckoutPage = () => {
                               onChange={(e) =>
                                 setorganizationPhoneNumber(e.target.value)
                               }
+                              required
                             />
                           </div>
                         </div>
@@ -748,7 +795,9 @@ const CheckoutPage = () => {
                               onChange={(e) =>
                                 setorganizationAddress(e.target.value)
                               }
+                              required
                             />
+                            
                           </div>
                         </div>
                       </div>
@@ -760,6 +809,7 @@ const CheckoutPage = () => {
                             id="province"
                             value={selectedOrganizationProvince}
                             onChange={handleSelectOrganizationProvince}
+                            required
                           >
                             <option disabled selected value={0}>
                               Choose a province
@@ -776,6 +826,7 @@ const CheckoutPage = () => {
                             id="country"
                             value={selectedOrganizationDistrict}
                             onChange={handleSelectOrganizationDistricts}
+                            required
                           >
                             <option disabled selected value={0}>
                               Choose a district
@@ -793,6 +844,7 @@ const CheckoutPage = () => {
                             id="province"
                             value={selectedOrganizationWards}
                             onChange={handleSelectOrganizationWards}
+                            required
                           >
                             <option disabled selected value={0}>
                               Choose a ward
@@ -842,16 +894,17 @@ const CheckoutPage = () => {
                       Package Informations
                     </div>
                     <div className="form-group">
-                      <label className="text-muted">Total Mass</label>
+                      <label className="text-muted">Total Mass - kg</label>
                       <input
                         type="number"
                         className="form-control"
                         value={totalmass}
                         onChange={handleSetTotalMass}
+                        required
                       />
                     </div>
                     <div className="form-group">
-                      <label className="text-muted">Length</label>
+                      <label className="text-muted">Length - cm</label>
                       <input
                         type="text"
                         defaultValue=""
@@ -861,7 +914,7 @@ const CheckoutPage = () => {
                       />
                     </div>
                     <div className="form-group">
-                      <label className="text-muted">Wide</label>
+                      <label className="text-muted">Wide - cm</label>
                       <input
                         type="text"
                         defaultValue=""
@@ -871,7 +924,7 @@ const CheckoutPage = () => {
                       />
                     </div>
                     <div className="form-group">
-                      <label className="text-muted">Height</label>
+                      <label className="text-muted">Height - cm</label>
                       <input
                         type="text"
                         defaultValue=""
@@ -881,7 +934,7 @@ const CheckoutPage = () => {
                       />
                     </div>
                     <div className="form-group">
-                      <label className="text-muted">Total value of goods</label>
+                      <label className="text-muted">Total value of goods - VND</label>
                       <input
                         type="text"
                         defaultValue=""
@@ -902,16 +955,18 @@ const CheckoutPage = () => {
                           className="form-control"
                           value={productname}
                           onChange={(e) => setproductname(e.target.value)}
+                          required
                         />
                       </div>
                       <div className="form-group">
-                        <label className="text-muted">Mass</label>
+                        <label className="text-muted">Mass - kg</label>
                         <input
                           type="number"
                           defaultValue=""
                           className="form-control"
                           value={mass}
                           onChange={handleMassChange}
+                          required
                         />
                       </div>
                       <div className="form-group">
@@ -922,6 +977,7 @@ const CheckoutPage = () => {
                           className="form-control"
                           value={quantity}
                           onChange={handleQuantityChange}
+                          required
                         />
                       </div>
                       <div
