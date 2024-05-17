@@ -210,8 +210,8 @@ const CheckoutPage = () => {
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(formData),
         }

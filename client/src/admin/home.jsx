@@ -101,9 +101,9 @@ function Home({ Toggle }) {
       if (response.status === 401) {
         resetSession();
       }
-  
+
       const jsonData = await response.json();
-    
+
       if (!response.ok) {
         console.log("Network response was not ok", jsonData.message);
         return;
@@ -141,7 +141,7 @@ function Home({ Toggle }) {
       }
 
       const jsonData = await response.json();
-      
+
       if (!response.ok) {
         console.log("Network response was not ok", jsonData.message);
         setDeleteClicked(false);
@@ -153,7 +153,6 @@ function Home({ Toggle }) {
       );
       alert("Blog deleted successfully");
       setDeleteClicked(false);
-
     } catch (err) {
       console.error("Error from server:", err.message);
       alert("Error in deleting blog ", err.message);
@@ -200,7 +199,7 @@ function Home({ Toggle }) {
             <div key={blog._id} className="article-container my-3 p-3 bg-light">
               <h2>{blog.title}</h2>
               <p>
-                <i>{blog.shortform}</i>
+                <i>{blog.content}</i>
               </p>
               <p>Date Published: {formatDate(blog.date)}</p>
               <p>Tags: {blog.tags.join(", ")}</p>
@@ -245,13 +244,22 @@ function Home({ Toggle }) {
       <Nav Toggle={Toggle} />
       <div className="col-12">
         <div className="text-center mt-3">
-          <button className="btn btn-primary" onClick={handleGenerateBlogs} disabled={generating}>
+          <button
+            className="btn btn-primary"
+            onClick={handleGenerateBlogs}
+            disabled={generating}
+          >
             Generate new blogs
           </button>
-          {generating && (
-            <div className="spinner-border text-primary" role="status"></div>
-          )}
         </div>
+        {generating && (
+          <>
+            <div className="text-center mt-3">
+              Generating blogs...Please wait for a minute
+              <div className="spinner-border text-primary" role="status"></div>
+            </div>
+          </>
+        )}
       </div>
       <div className="container-fluid">
         {displaygeneratedBlogs(generatedBlogs)}

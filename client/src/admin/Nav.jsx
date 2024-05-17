@@ -27,7 +27,7 @@ function Nav({ Toggle }) {
                   {user.username}
                 </a>
                 <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Profile</a></li>
+                  <li><a className="dropdown-item" href="/home">Home</a></li>
                   <li><a className="dropdown-item" href="#">Setting</a></li>
                   <li>
                     <button className="dropdown-item" onClick={handleLogout}>
