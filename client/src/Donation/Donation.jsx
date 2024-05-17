@@ -95,34 +95,34 @@ function Donation() {
     }
   }, [user, isDeleting]);
 
-  const handleDelete = (order_code) => async () => {
-    setIsDeleting(true);
-    try {
-      const response = await fetch(
-        "https://online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
-          },
-          body: JSON.stringify({ order_codes: [order_code] }),
-        }
-      );
-      const data = await response.json();
-      if (!response.ok) {
-        console.log("Error cancelling order:", data);
-        setIsDeleting(false);
-        return;
+  const handleDelete = async (order_code) => {
+  setIsDeleting(true);
+  try {
+    const response = await fetch(
+      "https://online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
+        },
+        body: JSON.stringify({ order_codes: [order_code] }),
       }
-      alert("Order cancelled successfully");
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      console.log("Error cancelling order:", data);
       setIsDeleting(false);
-    } catch (error) {
-      console.log("Error cancelling order:", error);
-      alert("Error cancelling order ", error.message);
-      setIsDeleting(false);
+      return;
     }
-  };
+    alert("Order cancelled successfully");
+    setIsDeleting(false);
+  } catch (error) {
+    console.log("Error cancelling order:", error);
+    alert("Error cancelling order ", error.message);
+    setIsDeleting(false);
+  }
+};
 
   const checkAuth = () => {
     if (user) {
@@ -231,7 +231,7 @@ function Donation() {
                             <button
                               className="btn btn-danger btn-sm"
                               onClick={() => handleDelete(donation.order_code)}
-                            >
+                              >
                               Cancel
                             </button>
                           ) : null}{" "}

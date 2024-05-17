@@ -85,7 +85,6 @@ function App() {
     }
   };
 
-  console.log(user && user.role === "admin");
   return (
     <div className="App">
       <BrowserRouter>

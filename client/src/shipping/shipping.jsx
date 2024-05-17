@@ -197,6 +197,11 @@ const CheckoutPage = () => {
     };
 
     console.log("Form data:", JSON.stringify(formData));
+    console.log(
+      selectedSenderWards,
+      selectedOrganizationDistrict,
+      selectedSenderProvince
+    );
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
       alert("Access token not found. Please login again.");
@@ -211,7 +216,7 @@ const CheckoutPage = () => {
           method: "POST",
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
         }
@@ -230,7 +235,7 @@ const CheckoutPage = () => {
         );
         alert(
           "Failed to create order. Please check all information :" +
-          data.message
+            data.message
         );
         setCreatingOrder(false);
         return null;
@@ -242,8 +247,7 @@ const CheckoutPage = () => {
     } catch (error) {
       console.error("Error creating order:", error);
       alert(
-        "Failed to create order. Please check all information " +
-        error.message
+        "Failed to create order. Please check all information " + error.message
       );
       setCreatingOrder(false);
     }
@@ -376,7 +380,7 @@ const CheckoutPage = () => {
   };
 
   const convertDistrictIdToName = (districtId) => {
-    const district = districts.find((item) => item.DistrictID === districtId);
+    const district = districts.find((item) => item.DistrictID == districtId);
     if (!district) {
       return "No district found";
     }
@@ -420,7 +424,7 @@ const CheckoutPage = () => {
   };
 
   const convertProvinceIdToName = (provinceId) => {
-    const province = provinces.find((item) => item.ProvinceID === provinceId);
+    const province = provinces.find((item) => item.ProvinceID == provinceId);
     if (!province) {
       return "No province found";
     }
