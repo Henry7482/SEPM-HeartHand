@@ -229,7 +229,7 @@ const CheckoutPage = () => {
           data.message
         );
         alert(
-          "Failed to create order. Please check all information ",
+          "Failed to create order. Please check all information :" +
           data.message
         );
         setCreatingOrder(false);
@@ -242,7 +242,7 @@ const CheckoutPage = () => {
     } catch (error) {
       console.error("Error creating order:", error);
       alert(
-        "Failed to create order. Please check all information ",
+        "Failed to create order. Please check all information " +
         error.message
       );
       setCreatingOrder(false);

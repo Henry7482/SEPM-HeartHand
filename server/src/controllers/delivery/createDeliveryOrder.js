@@ -4,8 +4,17 @@ import Donation from "../../models/Donation.js";
 const createDeliveryOrder = async (req, res) => {
   try {
     // Check if required fields are provided
-    if (!req.body.organization.name || !req.body.organization.phone || !req.body.organization.address) {
-      res.status(400).send({ message: "Required fields are missing. Make sure to fill the name, phone and email of the organization" });
+    if (
+      !req.body.organization.name ||
+      !req.body.organization.phone ||
+      !req.body.organization.address
+    ) {
+      res
+        .status(400)
+        .send({
+          message:
+            "Required fields are missing. Make sure to fill the name, phone and email of the organization",
+        });
       return;
     }
 
@@ -64,9 +73,37 @@ const createDeliveryOrder = async (req, res) => {
         data,
         config
       )
-      .then((response) => {
+      .then(async (response) => {
         console.log("Response from create: ", response.data);
         dataCreate = response.data;
+
+        if (!dataCreate) {
+          res.status(500).send({ message: "Failed to create delivery order" });
+          return;
+        }
+
+        // Create a donation document
+        try {
+          await Donation.create({
+            donor_id: req.userID,
+            order_code: dataCreate.data.order_code,
+            sender_name: req.body.sender.name,
+            product_name: req.body.items[0].name,
+            product_category: req.body.items[0].category.level1,
+            product_quantity: req.body.items[0].quantity,
+            organization_name: req.body.organization.name,
+            description: req.body.content,
+            items: req.body.items,
+          });
+          res
+            .status(200)
+            .send({ "Delivery Order created successfully": dataCreate });
+        } catch (error) {
+          console.log(error);
+          res
+            .status(400)
+            .send({ "Error in creating Donation in database": error });
+        }
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -74,35 +111,7 @@ const createDeliveryOrder = async (req, res) => {
           message: "Error in creating Delivery Order",
           error: error.response.data,
         });
-        return;
       });
-
-    if (!dataCreate) {
-      res.status(500).send({ message: "Failed to create delivery order" });
-      return;
-    }
-
-    // Create a donation document
-    try {
-      await Donation.create({
-        donor_id: req.userID,
-        order_code: dataCreate.data.order_code,
-        sender_name: req.body.sender.name,
-        product_name: req.body.items[0].name,
-        product_category: req.body.items[0].category.level1,
-        product_quantity: req.body.items[0].quantity,
-        organization_name: req.body.organization.name,
-        description: req.body.content,
-        items: req.body.items,
-      });
-      res
-        .status(200)
-        .send({ "Delivery Order created successfully": dataCreate });
-    } catch (error) {
-      console.log(error);
-      res.status(400).send({ "Error in creating Donation in database": error });
-      return;
-    }
   } catch (error) {
     console.log(error);
     res.status(400).send({ "Error in creating Donation in database": error });
