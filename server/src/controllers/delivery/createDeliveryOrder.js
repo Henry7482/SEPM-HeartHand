@@ -3,6 +3,12 @@ import Donation from "../../models/Donation.js";
 
 const createDeliveryOrder = async (req, res) => {
   try {
+    // Check if required fields are provided
+    if (!req.body.organization.name || !req.body.organization.phone || !req.body.organization.address) {
+      res.status(400).send({ message: "Required fields are missing. Make sure to fill the name, phone and email of the organization" });
+      return;
+    }
+
     const data = {
       payment_type_id: 1,
       note: req.body.note,
@@ -50,7 +56,6 @@ const createDeliveryOrder = async (req, res) => {
         Token: "9865968a-0e0b-11ef-bfe9-c2d25c6518ab",
       },
     };
-
     // Create a delivery order
     let dataCreate;
     await axios
