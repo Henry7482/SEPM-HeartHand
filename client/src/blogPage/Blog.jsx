@@ -106,7 +106,7 @@ const BlogPage = () => {
                       style={{
                         minWidth: "300px",
                         maxWidth: "400px",
-                        height: "310px",
+                        minHeight: "310px",
                       }}
                     >
                       <img
