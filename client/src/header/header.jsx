@@ -84,7 +84,7 @@ const Navbar = () => {
       </ul>
 
       <nav>
-        <a href="/HomePage" className="logo">
+        <a href="/home" className="logo">
           <img src={logo} alt="logo" />
         </a>
 
