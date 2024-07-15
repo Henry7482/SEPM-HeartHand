@@ -3,74 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animals Australia</title>
-    <link rel="stylesheet" href="part1.css">
+    <title>Document</title>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">
-                <img src="https://www.clipartmax.com/png/middle/245-2451094_hands-holding-the-heart-hands-heart-icon.png" alt="Hearthand Logo">
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#">FAQs</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">My Account</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <div>
+        <audio controls autoplay muted>
+            <source src="AMelodyTree-TheDaydream_yh83.mp3" type="audio/mp3">
+            Your browser does not support the audio element
+        </audio>
+    </div>
 
-    <section class="hero">
-        <div class="container">
-            <h1>Lastest news</h1>
-            <p>Get the perspective and insights that improve the lives for people in our nation.</p>
+    <form>
+        <div>
+            <label>Contact Day(s)</label>
+            <br>
+            <input type="checkbox" name="contact-day" value="1"> Mon
+            <br>
+            <input type="checkbox" name="contact-day" value="2"> Tue
+            <br>
+            <input type="checkbox" name="contact-day" value="3"> Wed
+            <br>
+            <input type="checkbox" name="contact-day" value="4"> Thu
+            <br>
+            <input type="checkbox" name="contact-day" value="5"> Fri
+            <br>
+            <input type="checkbox" name="contact-day" value="6"> Sat
+            <br>
+            <input type="checkbox" name="contact-day" value="7"> Sun
         </div>
-    </section>
 
-    <section class="latest-news">
-        <div class="container">
-            <h2><i>Latest News</i></h2>
-            <div class="news-item">
-                <h3>Thiên Tai gây thiệt hại 65 Tỷ USD</h3>
-                <p><i> Hundreds of Australian cattle have died on board a list export ship, allegedly from a painful,fast-spreading disease-and there was no vet on board to help.Animals deserve better</i></p>
-            </div>
-            
+        <div>
+            <label for="attachment">Attachment</label>
+            <input type="file" id="attachment">
+
+        <div>
+            <label for="message">Message</label>
+            <textarea id="message"></textarea>
         </div>
-    </section>
-    
-    <footer class="footer">
-        <div class="footer__contact-us">
-            <h3><i>Contact Us</i></h3>
-            <p><i>Address: 702D, Nguyen Van Linh,Tan Hung,District 7,Ho Chi Minh City</i></p>
-            <p><i>Phone: 0123-123-123</i></p>
-            <p><i>Email: info@charityweb.org</i></p>
+
+        <div>
+            <button type="submit">Send</button>
+            <button type="reset">Clear</button>
         </div>
-        
-        <div class="footer__navigation">
-            <h3><i>Navigation</i></h3>
-            <ul>
-                <li><a href="#"><i>Latest news</i></a></li>
-                <li><a href="#"><i>Our impact</i></a></li>
-                <li><a href="#"><i>About Us</i></a></li>
-            </ul>
-        </div>
-        
-        <div class="footer__organization">
-            <h3><i>Organization</i></h3>
-        </div>
-        
-        <div class="footer__follow-us">
-            <h3><i>Follow Us</i></h3>
-            <ul>
-                <li><a href="https://t.ly/h-VSn" target="_blank"><i>Youtube</i></a></li>
-                <li><a href="" target="_blank"><i>Facebook</i></a></li>
-                <li><a href="" target="_blank"><i>Instagram</i></a></li>
-                <li><a href="" target="_blank"><i>Tweeter</i></a></li>
-            </ul>
-        </div>
-    </footer>    
+    </form>
 </body>
 </html>
 
