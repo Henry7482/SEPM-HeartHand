@@ -1,0 +1,32 @@
+h1,h2,h3,h4,h5, h6{
+    color: brown;
+}
+
+.active{
+    color: red;
+}
+
+a:hover {
+    color: black;
+}
+
+h1:hover{
+    color: red;
+    cursor: pointer;
+}
+
+nav ul li a:hover {
+    color: black;
+}
+
+nav a:hover {
+    color: black;
+}
+
+.job-description p{
+    color: red;
+}
+
+.abc p{
+    color: blue !important;
+}
