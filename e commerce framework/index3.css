@@ -1,0 +1,48 @@
+#Example {
+    float: left;
+    color: white;
+    display: block;
+    text-decoration: none;
+    background-color: black;
+    width: 100px;
+    height: 100px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    border: 5px solid green;
+    padding: 5px;
+    position: fixed;
+    top: 5;
+    left: 5;
+}
+
+#Example1 {
+    float: left;
+    display: block;
+    background-color: red;
+    margin: 5px;
+    width: 100px;
+    height: 100px;
+    padding: 5px;
+    box-sizing: content-box;
+    border: 5px solid green;
+
+}
+
+#Example2 {
+    display: block;
+    background-color: blue;
+    width: 10vw;
+    float: left;
+    height: 30vh;
+    margin-left: 5px;
+}
+
+#Example3 {
+    display: block;
+    background-color: salmon;
+    width: 10vw;
+    float: left;
+    height: 30vh;
+    margin-left: 5px;
+}

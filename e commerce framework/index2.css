@@ -1,0 +1,23 @@
+p::first-line {
+    background-color: lightblue;
+}
+
+p:first-child::first-line {
+    background-color: red;
+}
+
+p::selection {
+    background: green;
+}
+
+input[required] {
+    background-color: rosybrown;
+}
+
+.dark-background p::first-line {
+    background-color: black;
+}
+
+p em {
+    color: green;
+}

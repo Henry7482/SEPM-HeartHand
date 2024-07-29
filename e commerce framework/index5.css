@@ -1,0 +1,48 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+header,
+#left,
+#right,
+main,
+footer {
+    border: 1px solid #000;
+}
+
+header {
+    top: 0;
+    left: 0;
+    position: sticky;
+    z-index: 1;
+    background-color: rebeccapurple !important;
+}
+
+header,
+footer {
+    width: 100vw;
+    background-color: blue;
+}
+
+#main {
+    display: flex;
+    margin: 10px 0px;
+    background-color: lightgreen;
+}
+
+#left {
+    width: 30vw;
+    min-width: 200px;
+}
+
+#right {
+    width: 15vw;
+}
