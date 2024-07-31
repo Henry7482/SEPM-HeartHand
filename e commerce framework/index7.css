@@ -1,0 +1,56 @@
+.container {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.form-container {
+    margin-right: 20px;
+}
+
+.image-container img {
+    width: 285px;
+    height: 285px;
+}
+
+#shop-description {
+    background-color: lightyellow;
+    width: 90%;
+    margin: 30px auto;
+    padding: 10px;
+}
+
+
+body {
+    font-family: Arial sans-serif;
+}
+
+h1,
+h2 {
+    text-align: center;
+    color: red;
+    font-family: serif;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .form-container {
+        margin-right: 20px;
+    }
+}
+
+@media (max-width: 1199px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .image-container {
+        margin-top: 20px;
+    }
+}

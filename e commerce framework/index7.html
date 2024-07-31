@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to My Shop</title>
+    <link rel="stylesheet" href="index7.css">
+</head>
+
+<body>
+    <h1>
+        <header>Welcome to My Shop</header>
+    </h1>
+    <p id="shop-description">
+        This is my shop that have a lot of souvenirs
+    </p>
+    <h2>
+        Contact Us
+    </h2>
+    <div class="container">
+        <div class="form-container">
+            <form method="post" action="">
+                <div>
+                    <label for="title">Title:</label>
+                    <select name="title" id="title">
+                        <option value="Mr">Mr</option>
+                        <option value="Mrs">Mrs</option>
+                        <option value="Miss">Miss</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" id="name" required>
+                </div>
+
+                <div>
+                    <label for="name">Email:</label>
+                    <input type="text" name="email" id="email" required>
+                </div>
+
+                <div>
+                    <label for="name">Phone:</label>
+                    <input type="text" name="phone" id="phone" required>
+                </div>
+
+                <div>
+                    <label>Purpose:</label>
+                    <input type="radio" name="purpose" id="purpose1" value="inquiry">
+                    <label for="purpose1">Inquiry</label>
+                    <input type="radio" name="purpose" id="purpose2" value="feedback">
+                    <label for="purpose2">Feedback</label>
+                    <input type="radio" name="purpose" id="purpose3" value="support">
+                    <label for="purpose3">Support</label>
+                </div>
+
+                <div>
+                    <label for="question">Question:</label>
+                    <textarea name="question" id="question" rows="4" cols="50"></textarea>
+                </div>
+
+                <div>
+                    <button type="submit">Submit</button>
+                    <button type="reset">Clear</button>
+                </div>
+
+                <div class="image-container">
+                    <img src="https://github.com/TriDang/cosc2430-2024-s1/blob/main/test1/contact_us.png?raw=true"
+                        alt="Contact Us Illustration">
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
