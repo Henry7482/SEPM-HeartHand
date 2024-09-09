@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 6</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <style>
+        #message {
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <form id="frm-add-product">
+        <div class="form-floating">
+            <input type="text" name="product-name" id="product-name" class="form-control" placeholder="Product Name">
+            <label for="product-name">Product Name</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="number" name="product-price" id="product-price" class="form-control"
+                placeholder="Product Price">
+            <label for="product-price">Product Price</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="number" name="product-quantity" id="product-quantity" class="form-control"
+                placeholder="Product Quantity">
+            <label for="product-quantity">Product Quantity</label>
+        </div>
+
+        <button type="submit" class="btn btn-success">Add</button>
+    </form>
+
+    <div id="message" class="btn btn-success">Added a product</div>
+    <table class="table" id="table-product">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="index12.js"></script>
+</body>
+
+</html>

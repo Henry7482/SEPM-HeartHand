@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btn-start">Start</button>
+    <button id="btn-end">End</button>
+
+
+    <script>
+        let timer;
+        let second = 0;
+
+        const btn_start = document.getElementById('btn-start');
+        const btn_end = document.getElementById('btn-end');
+
+        btn_start.onclick = startTimer;
+        btn_end.onclick = stopTimer;
+
+        function startTimer() {
+            console.log('start');
+            timer = setInterval(() => {
+                second++;
+                console.log(second);
+            }, 1000);
+        }
+
+        function stopTimer() {
+            console.log('stop');
+            clearInterval(timer);
+        }
+    </script>
+</body>
+
+</html>

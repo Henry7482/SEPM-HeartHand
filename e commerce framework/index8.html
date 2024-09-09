@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+</head>
+
+<body>
+    <h1>Heading</h1>
+    <p id="p_1">Paragraph 01</p>
+    <p id="p_2">Paragraph 02</p>
+
+    <script>
+        const p = document.getElementsByTagName('p');
+        p[0].style.color = 'red';
+        p[1].innerHTML = 'Paragraph has been changed';
+
+        for (let i of p) {
+            i.style.fontWeight = 'bold';
+        }
+    </script>
+</body>
+
+</html>

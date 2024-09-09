@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+</head>
+
+<body>
+    <button id="btn-click">Click</button>
+
+    <form action="" id="frm-test">
+        <input type="text" name="" id="">
+        <button type="submit" id="submit">Submit</button>
+    </form>
+
+    <script>
+        const btn_click = document.getElementById('btn-click');
+
+        btn_click.onclick = normal_click;
+        btn_click.ondblclick = double_click;
+
+        function normal_click() {
+            console.log('Click')
+        }
+
+        function double_click() {
+            console.log('Double Click')
+        }
+
+        const frm_test = document.getElementById('frm-test');
+        frm_test.onsubmit = function (e) {
+            e.preventDefault();
+            console.log('Submit');
+        }
+    </script>
+</body>
+
+</html>

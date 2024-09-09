@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+</head>
+
+<body>
+    <h1 class="text">Heading</h1>
+
+    <div id="example">
+        <p>Inside DIV</p>
+    </div>
+
+    <script>
+        const example = document.getElementById('example');
+
+        const text = document.createElement('p');
+        text.textContent = 'Hello World';
+
+        example.append(text);
+
+        const Heading = document.createElement('h1');
+        Heading.textContent = 'Hello World';
+
+        example.append(text);
+    </script>
+</body>
+
+</html>
